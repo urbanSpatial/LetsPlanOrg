@@ -8,6 +8,9 @@ Change the web port from `7780` to something unsused if you have a port conflict
 
 Change the MailHog web port from `8725` to something unsused if you have a port conflict.
 
+If you have another Postgres running on 5432, add a line to your .env like
+`FORWARD_DB_PORT=5433`
+
 Composer install with your host computer's PHP/Composer.
 `composer install`
 
