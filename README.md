@@ -21,6 +21,8 @@ Use docker to run initial composer install
 
 run `./vendor/bin/sail up -d`
 
+run `./vendor/bin/sail artisan key:generate`
+
 run `./vendor/bin/sail artisan migrate`
 
 run `./vendor/bin/sail yarn install`
