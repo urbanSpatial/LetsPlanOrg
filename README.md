@@ -8,6 +8,14 @@ Change the web port from `7780` to something unsused if you have a port conflict
 
 Change the MailHog web port from `8725` to something unsused if you have a port conflict.
 
+Composer install with your host computer's PHP/Composer.
+`composer install`
+
+OR
+
+Use docker to run initial composer install
+`docker run -ti --rm -v $(pwd):/app -w /app composer:2.0 composer install`
+
 run `./vendor/bin/sail up -d`
 
 run `./vendor/bin/sail artisan migrate`
