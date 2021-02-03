@@ -1,21 +1,35 @@
-import { App, plugin } from '@inertiajs/inertia-vue';
 import Vue from 'vue';
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
+import { App, plugin } from '@inertiajs/inertia-vue';
+import { InertiaProgress } from '@inertiajs/progress';
+import Layout from './Shared/Layout.vue';
+import vuetify from './plugins/vuetify';
 
 import '../scss/app.scss';
+import 'vuetify/dist/vuetify.min.css';
+import '@mdi/font/css/materialdesignicons.css';
 
+// set up inertia
 Vue.use(plugin);
-Vue.use(BootstrapVue);
-Vue.use(IconsPlugin);
+
+// set up progress indicators
+InertiaProgress.init();
+
+// set up ziggy routes
+Vue.mixin({ methods: { route } });
 
 const el = document.getElementById('app');
 
 new Vue({
+  vuetify,
   render: (h) => h(App, {
     props: {
       initialPage: JSON.parse(el.dataset.page),
-      // eslint-disable-next-line global-require, import/no-dynamic-require
-      resolveComponent: (name) => require(`./Pages/${name}`).default,
+      resolveComponent: (name) => {
+        // eslint-disable-next-line global-require, import/no-dynamic-require
+        const page = require(`./Pages/${name}`).default;
+        page.layout = page.layout === undefined ? Layout : page.layout;
+        return page;
+      },
     },
   }),
 }).$mount(el);

@@ -1,18 +1,21 @@
 module.exports = {
-  "env": {
-    "browser": true,
-    "node": true
+  env: {
+    browser: true,
+    node: true,
   },
-  "extends": [
-    "plugin:vue/recommended",
-    "airbnb-base"
+  extends: [
+    'plugin:vue/recommended',
+    'airbnb-base',
   ],
-  "parserOptions": {
-    "sourceType": "module"
+  parserOptions: {
+    sourceType: 'module',
   },
-  "plugins": [
-    "vue"
+  plugins: [
+    'vue',
   ],
-  "rules": {
-  }
+  rules: {
+    global: [
+      'route', // Ziggy
+    ],
+  },
 };
