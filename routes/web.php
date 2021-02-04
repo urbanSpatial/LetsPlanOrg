@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', function() { return redirect()->route('about'); })->name('home');
+Route::inertia('/about', 'About')->name('about');
+Route::inertia('/explore', 'Explore')->name('explore');
+Route::inertia('/layers', 'Layers')->name('layers');
