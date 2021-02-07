@@ -44,8 +44,11 @@ services:
     #        - sail
     #    healthcheck:
     #      test: ["CMD", "mysqladmin", "ping"]
+
+    # PHP8 uses libpq 9.1
+    # https://stackoverflow.com/questions/58461178/how-to-fix-error-column-c-relhasoids-does-not-exist-in-postgres
     pgsql:
-        image: postgres:13
+        image: postgres:11
         ports:
             - '${FORWARD_DB_PORT:-5432}:5432'
         environment:
@@ -73,6 +76,12 @@ services:
     #         - '11211:11211'
     #     networks:
     #         - sail
+    adminer:
+        image: 'adminer'
+        ports:
+            - '${ADMINER_PORT:-9180}:8080'
+        networks:
+            - sail
     mailhog:
         image: 'mailhog/mailhog:latest'
         ports:
