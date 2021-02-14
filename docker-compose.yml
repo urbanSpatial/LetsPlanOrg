@@ -48,7 +48,7 @@ services:
     # PHP8 uses libpq 9.1
     # https://stackoverflow.com/questions/58461178/how-to-fix-error-column-c-relhasoids-does-not-exist-in-postgres
     pgsql:
-        image: postgres:11
+        image: postgis/postgis:11-3.1-alpine
         ports:
             - '${FORWARD_DB_PORT:-5432}:5432'
         environment:
