@@ -27,6 +27,23 @@ run `./vendor/bin/sail artisan migrate`
 
 run `./vendor/bin/sail yarn install`
 
+# Importing data
+
+Import PWD Parcel definitions.  A file will be saved into `./storage/app/` and imported into the `parcel` table.
+
+run `./vendor/bin/sail artisan lp:import-parcels`
+
+Copy your alteration permits and new construction permits CSV files into `./storage/app/`
+
+run `./vendor/bin/sail artisan lp:import-bldg-permits alteration_permits.csv`
+
+run `./vendor/bin/sail artisan lp:import-bldg-permits new_construction_permits.csv`
+
+Import Atlas API data to connect OPA and PWD parcel IDs
+
+run `./vendor/bin/sail artisan lp:scrape-atlas --key={your gatekeeper key}`
+
+
 # Running Commands in Dev Environment
 
 ### Artisan / Laravel
