@@ -7,3 +7,4 @@ database/initial/bldg_permit.sql filter=lfs diff=lfs merge=lfs -text
 database/initial/parcel.sql filter=lfs diff=lfs merge=lfs -text
 database/initial/real_estate_tx.sql filter=lfs diff=lfs merge=lfs -text
 database/initial/zoning_land_use.sql filter=lfs diff=lfs merge=lfs -text
+database/initial/atlas_data.sql.gz filter=lfs diff=lfs merge=lfs -text
