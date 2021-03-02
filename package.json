@@ -22,7 +22,7 @@
         "postcss": "^8.1",
         "resolve-url-loader": "^3.1.2",
         "sass": "^1.32.6",
-        "sass-loader": "^10.1.1",
+        "sass-loader": "11",
         "vue-loader": "^15.9.5",
         "vue-template-compiler": "^2.6.12"
     },
@@ -30,6 +30,7 @@
         "@inertiajs/inertia": "^0.8.4",
         "@inertiajs/inertia-vue": "^0.5.5",
         "@inertiajs/progress": "^0.2.4",
+        "mapbox-gl": "^2.1.1",
         "vue": "^2.6.12",
         "vuetify": "^2.4.3"
     }

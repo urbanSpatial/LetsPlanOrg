@@ -13,9 +13,7 @@ module.exports = {
   plugins: [
     'vue',
   ],
-  rules: {
-    global: [
-      'route', // Ziggy
-    ],
+  globals: {
+    route: true, // Ziggy
   },
 };
