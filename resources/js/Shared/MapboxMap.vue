@@ -30,6 +30,48 @@ export default {
         .addControl(new mapboxgl.NavigationControl({ visalizePitch: true }))
         .addControl(new mapboxgl.GeolocateControl())
         .addControl(new mapboxgl.ScaleControl());
+
+      var map = this.map;
+      this.map.on('load', function () {
+        // Find the ID of the first symbol layer in the map style
+        var layers = map.getStyle().layers;
+        console.log(layers);
+        var targetLayerId;
+        for (var i = 0; i < layers.length; i++) {
+          //if (layers[i].type === 'symbol') {
+          if (layers[i].id === 'building') {
+            // grab the next layer
+            targetLayerId = layers[i+1].id;
+            break;
+          }
+        }
+        map
+          .addSource('urban-areas', {
+            'name': 'urban-areas',
+            'type': 'vector',
+            'tiles': [process.env.MIX_MBTILE_URL],
+            'maxzoom': 11, // max zoom compiled into the mbtiles file
+          });
+
+        map
+          .addLayer(
+              {
+                'id': 'urban-areas-fill',
+                'type': 'fill',
+                'source': 'urban-areas',
+                'source-layer': 'us_tracts',
+                'minzoom': 9,  // min zoom to display
+                'maxzoom': 22, // max zoom to display
+                'layout': {},
+                'paint': {
+                'fill-color': '#f08',
+                'fill-opacity': 0.4
+                }
+              },
+              // Insert the layer beneath the first symbol layer.
+              targetLayerId
+          );
+      });
     }, 0);
   },
 };
