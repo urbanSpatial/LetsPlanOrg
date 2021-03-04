@@ -1,41 +1,40 @@
 <template>
-  <div class="lp-bottom-sheet">
-    <div class="lp-sheet__main">
-      <slot />
-    </div>
-    <div class="lp-sheet">
-      <v-card>
-        <v-btn
-          block
-          plain
-          small
-          @click="isExpanded = !isExpanded"
-        >
-          <v-icon>{{ isExpanded ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon>
-        </v-btn>
-        <v-divider />
+  <div class="lp-sheet">
+    <v-card>
+      <v-btn
+        block
+        plain
+        small
+        @click="toggle"
+      >
+        <v-icon>{{ isExpanded ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon>
+      </v-btn>
+      <v-divider />
 
-        <v-expansion-panels
-          flat
-          tile
-          :value="isExpanded ? 0 : false"
-        >
-          <v-expansion-panel readonly>
-            <v-expansion-panel-header
-              class="pa-0"
-              hide-actions
-            >
-              <slot name="sheet-collapsed" />
-            </v-expansion-panel-header>
-            <v-expansion-panel-content class="pa-0">
-              <slot
-                name="sheet-expanded"
-              />
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-      </v-card>
-    </div>
+      <v-expansion-panels
+        flat
+        tile
+        :value="isExpanded ? 0 : false"
+      >
+        <v-expansion-panel readonly>
+          <v-expansion-panel-header
+            v-show="hasCollapsedContent"
+            class="pa-0"
+            hide-actions
+          >
+            <slot name="sheet-collapsed" />
+          </v-expansion-panel-header>
+          <v-expansion-panel-content
+            eager
+            class="pa-0"
+          >
+            <slot
+              name="sheet-expanded"
+            />
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-card>
   </div>
 </template>
 
@@ -52,31 +51,26 @@ export default {
 
   data() {
     return {
-      isExpanded: true,
+      isExpanded: this.expanded,
     };
   },
 
-  mounted() {
-    this.isExpanded = this.expanded;
+  computed: {
+    hasCollapsedContent() {
+      return !!(this.$slots['sheet-collapsed'] && this.$slots['sheet-collapsed'][0]);
+    },
+  },
+
+  methods: {
+    toggle() {
+      this.isExpanded = !this.isExpanded;
+      this.$emit('toggle', this.isExpanded);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-  .lp-bottom-sheet {
-    height: 100%;
-    position: relative;
-  }
-
-  .lp-sheet__main {
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: 1;
-  }
-
   .lp-sheet {
     bottom: 0;
     position: absolute;

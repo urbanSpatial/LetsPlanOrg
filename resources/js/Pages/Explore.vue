@@ -1,9 +1,10 @@
 <template>
-  <lp-bottom-sheet>
-    <mapbox-map />
-
+  <lp-bottom-sheet
+    :expanded="isExpanded"
+    @toggle="handleToggle"
+  >
     <template #sheet-collapsed>
-      <v-card-title class="pt-3 px-1">
+      <v-card-title class="px-1">
         <v-btn icon>
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
@@ -27,13 +28,28 @@
 </template>
 
 <script>
+import Layout from '../Shared/Layouts/Layout.vue';
+import MapSheetLayout from '../Shared/Layouts/MapSheetLayout.vue';
 import LPBottomSheet from '../Shared/LPBottomSheet.vue';
-import MapboxMap from '../Shared/MapboxMap.vue';
+import uiState from '../uiState';
 
 export default {
   components: {
-    'mapbox-map': MapboxMap,
     'lp-bottom-sheet': LPBottomSheet,
+  },
+
+  layout: [Layout, MapSheetLayout],
+
+  data() {
+    return {
+      isExpanded: uiState.exploreIsExpanded,
+    };
+  },
+
+  methods: {
+    handleToggle(newState) {
+      uiState.exploreIsExpanded = newState;
+    },
   },
 };
 </script>

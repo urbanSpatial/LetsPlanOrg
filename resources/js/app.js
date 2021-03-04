@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { App, plugin } from '@inertiajs/inertia-vue';
 import { InertiaProgress } from '@inertiajs/progress';
-import Layout from './Shared/Layout.vue';
+import Layout from './Shared/Layouts/Layout.vue';
 import vuetify from './plugins/vuetify';
 
 import '../scss/app.scss';
