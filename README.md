@@ -39,9 +39,26 @@ run `./vendor/bin/sail artisan lp:import-bldg-permits alteration_permits.csv`
 
 run `./vendor/bin/sail artisan lp:import-bldg-permits new_construction_permits.csv`
 
+run `./vendor/bin/sail artisan lp:import-rco`
+
 Import Atlas API data to connect OPA and PWD parcel IDs
 
 run `./vendor/bin/sail artisan lp:scrape-atlas --key={your gatekeeper key}`
+
+
+#Creating a view of just 1 community
+
+```sql
+CREATE MATERIALIZED VIEW project_parcels_1
+AS
+SELECT p.*
+
+ FROM parcel AS p 
+   INNER JOIN rco AS n 
+    ON ST_Intersects(ST_GeomFromGeoJSON(p.geo_json), ST_GeomFromGeoJSON(n.geo_json))
+
+WHERE n.object_id = '23641'
+```
 
 
 # Running Commands in Dev Environment
