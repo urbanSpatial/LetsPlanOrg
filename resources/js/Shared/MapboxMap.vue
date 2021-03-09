@@ -23,7 +23,7 @@ export default {
         container: 'map-container',
         style: 'mapbox://styles/mapbox/dark-v10?optimize=true',
         center: [-75.1637900, 39.9523300],
-        zoom: 11,
+        zoom: 13,
       });
 
       this.map
@@ -50,7 +50,7 @@ export default {
             'name': 'urban-areas',
             'type': 'vector',
             'tiles': [process.env.MIX_MBTILE_URL],
-            'maxzoom': 11, // max zoom compiled into the mbtiles file
+            'maxzoom': 14, // max zoom compiled into the mbtiles file
           });
 
         map
@@ -59,8 +59,8 @@ export default {
                 'id': 'urban-areas-fill',
                 'type': 'fill',
                 'source': 'urban-areas',
-                'source-layer': 'us_tracts',
-                'minzoom': 9,  // min zoom to display
+                'source-layer': 'urban-areas',
+                'minzoom': 7,  // min zoom to display
                 'maxzoom': 22, // max zoom to display
                 'layout': {},
                 'paint': {

@@ -19,3 +19,5 @@ Route::get('/', function () {
 Route::inertia('/about', 'About')->name('about');
 Route::inertia('/explore', 'Explore')->name('explore');
 Route::inertia('/layers', 'Layers')->name('layers');
+
+Route::get('/{layer}/{z}/{x}/{y}.pbf', 'TileLayer@index');
