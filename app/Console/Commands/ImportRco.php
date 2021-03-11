@@ -56,14 +56,11 @@ class ImportRco extends Command
         $count = 0;
         //stream geo-json as new lines.
         //discard lines that do not json_decode as an object with ->type == 'Feature'
-        \DB::beginTransaction();
         while (is_resource($f) && !feof($f)) {
-            $line = fgets($f, 4096);
+            $line = fgets($f, 8192);
             $count++;
             if ($count % 1000 == 0) {
                 $this->info($count.' ...');
-                \DB::commit();
-                \DB::beginTransaction();
                 //fclose($f);
             }
             $feature = $this->transformGeoJsonFeature($line);
@@ -75,7 +72,6 @@ class ImportRco extends Command
                 $parcel->getAttributes()
             );
         }
-        \DB::commit();
 
         is_resource($f) && @fclose($f);
         return 0;
