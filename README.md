@@ -39,9 +39,37 @@ run `./vendor/bin/sail artisan lp:import-bldg-permits alteration_permits.csv`
 
 run `./vendor/bin/sail artisan lp:import-bldg-permits new_construction_permits.csv`
 
+run `./vendor/bin/sail artisan lp:import-rco`
+
 Import Atlas API data to connect OPA and PWD parcel IDs
 
 run `./vendor/bin/sail artisan lp:scrape-atlas --key={your gatekeeper key}`
+
+
+#Creating a view of just 1 community
+
+```sql
+CREATE MATERIALIZED VIEW project_parcels_1
+AS
+SELECT p.*
+
+ FROM parcel AS p 
+   INNER JOIN rco AS n 
+    ON ST_Intersects(ST_GeomFromGeoJSON(p.geo_json), ST_GeomFromGeoJSON(n.geo_json))
+
+WHERE n.object_id = '23641'
+```
+
+Extract the parcels for one community and compile them into MapBox tiles
+
+```
+./vendor/bin/sail artisan lp:stream-parcel-geo-json project_parcels_2 > project1.geojson
+docker run --rm -ti \
+  -v $(pwd):/app \
+  -w /app \
+  strikehawk/tippecanoe \
+  tippecanoe -z20 -Z8 -f --name=urban-areas -l urban-areas --output=storage/app/urban_area.mbtiles project1.geojson
+```
 
 
 # Running Commands in Dev Environment
