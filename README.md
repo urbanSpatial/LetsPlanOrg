@@ -60,6 +60,17 @@ SELECT p.*
 WHERE n.object_id = '23641'
 ```
 
+Extract the parcels for one community and compile them into MapBox tiles
+
+```
+./vendor/bin/sail artisan lp:stream-parcel-geo-json project_parcels_2 > project1.geojson
+docker run --rm -ti \
+  -v $(pwd):/app \
+  -w /app \
+  strikehawk/tippecanoe \
+  tippecanoe -z20 -Z8 -f --name=urban-areas -l urban-areas --output=storage/app/urban_area.mbtiles project1.geojson
+```
+
 
 # Running Commands in Dev Environment
 
