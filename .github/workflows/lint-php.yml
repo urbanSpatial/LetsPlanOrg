@@ -1,0 +1,10 @@
+name: Lint PHP
+
+on: pull_request
+
+jobs:
+  lint-php:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - uses: chekalsky/phpcs-action@v1
