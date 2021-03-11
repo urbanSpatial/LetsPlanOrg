@@ -10,14 +10,12 @@
     "production": "mix --production"
   },
   "devDependencies": {
-    "axios": "^0.21",
     "deepmerge": "^4.2.2",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-vue": "^7.5.0",
     "laravel-mix": "^6.0.6",
-    "lodash": "^4.17.19",
     "postcss": "^8.1",
     "resolve-url-loader": "^3.1.2",
     "sass": "^1.32.6",
@@ -29,8 +27,10 @@
     "@inertiajs/inertia": "^0.8.4",
     "@inertiajs/inertia-vue": "^0.5.5",
     "@inertiajs/progress": "^0.2.4",
-    "mapbox-gl": "^2.1.1",
     "@mdi/font": "^5.9.55",
+    "axios": "^0.21.1",
+    "lodash": "^4.17.21",
+    "mapbox-gl": "^2.1.1",
     "vue": "^2.6.12",
     "vuetify": "^2.4.3"
   }
