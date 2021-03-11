@@ -41,11 +41,11 @@ class ImportBldgPermits extends Command
     {
         $dataFile = $this->argument('permit-file');
         if (!Storage::disk('local')->exists($dataFile)) {
-            $this->error('Cannot find ['.$dataFile.'] locally, existing ... ');
+            $this->error('Cannot find [' . $dataFile . '] locally, existing ... ');
             return 1;
         }
 
-        $this->info('Found ['.$dataFile.'] locally, proceeding to import ... ');
+        $this->info('Found [' . $dataFile . '] locally, proceeding to import ... ');
         $path = Storage::path($dataFile);
         $f = fopen($path, 'r');
         if (!$f) {
@@ -57,13 +57,13 @@ class ImportBldgPermits extends Command
         \DB::beginTransaction();
         while (is_resource($f) && !feof($f)) {
             $line = fgets($f, 4096);
-            if (trim($line) == '' ) {
+            if (trim($line) == '') {
                 continue;
             }
             $bldg_permit = str_getcsv($line);
             $count++;
             if ($count % 1000 == 0) {
-                $this->info($count.' ...');
+                $this->info($count . ' ...');
                 \DB::commit();
                 \DB::beginTransaction();
                 //fclose($f);
@@ -71,12 +71,12 @@ class ImportBldgPermits extends Command
             $issAt = null;
             try {
                 $issAt = \Carbon\Carbon::parse($bldg_permit[3]);
-            } catch ( \Carbon\Exceptions\InvalidFormatException $e) {
+            } catch (\Carbon\Exceptions\InvalidFormatException $e) {
             }
             $inpAt = null;
             try {
                 $inpAt = \Carbon\Carbon::parse($bldg_permit[6]);
-            } catch ( \Carbon\Exceptions\InvalidFormatException $e) {
+            } catch (\Carbon\Exceptions\InvalidFormatException $e) {
             }
             $opaNum = $bldg_permit[5] == 'NA' ? null
                 : $bldg_permit[5];

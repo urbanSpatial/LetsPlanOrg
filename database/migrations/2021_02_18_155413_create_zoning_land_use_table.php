@@ -9,7 +9,7 @@ class CreateZoningLandUseTable extends Migration
     /**
      * Run the migrations.
      *
-	 *  1 "opa_account_num","zoning","landuse","number_stories","total_livable_area","bldg_desc","lat","lng"
+     *  1 "opa_account_num","zoning","landuse","number_stories","total_livable_area","bldg_desc","lat","lng"
      *  2 "011012000","RSA5 ","Single Family",3,1465,"ROW 3 STY MASONRY",39.9302486735636,-75.1487657003407
      *  3 "011012100","RSA5 ","Single Family",3,1465,"ROW 3 STY MASONRY",39.9302560204392,-75.1488218259425
      * @return void

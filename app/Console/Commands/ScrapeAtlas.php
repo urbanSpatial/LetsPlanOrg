@@ -38,14 +38,14 @@ class ScrapeAtlas extends Command
             ->leftJoin('atlas_data', 'parcel.parcel_id', '=', 'atlas_data.parcel_id')
             ->where('atlas_data.parcel_id', null)
             ->cursor()
-            ->each(function($item) use ($gatekeeperKey) {
-                $this->info( "Querying parcel id ". $item->parcel_id. "... ");
-                $this->info( sprintf($this->apiEndpoint, $item->parcel_id, $gatekeeperKey) );
+            ->each(function ($item) use ($gatekeeperKey) {
+                $this->info("Querying parcel id " . $item->parcel_id . "... ");
+                $this->info(sprintf($this->apiEndpoint, $item->parcel_id, $gatekeeperKey));
                 try {
-                    $json = file_get_contents( sprintf($this->apiEndpoint, $item->parcel_id, $gatekeeperKey) );
+                    $json = file_get_contents(sprintf($this->apiEndpoint, $item->parcel_id, $gatekeeperKey));
                     $response = json_decode($json);
                     $opaAcctNum = $response->features[0]->properties->opa_account_num;
-                    $this->info( "got opa_acct_num ". $opaAcctNum);
+                    $this->info("got opa_acct_num " . $opaAcctNum);
                     \DB::table('atlas_data')
                         ->insert([
                             'parcel_id' => $item->parcel_id,
@@ -53,7 +53,7 @@ class ScrapeAtlas extends Command
                             'response' => $json,
                         ]);
                 } catch (\ErrorException $e) {
-                    $this->error( "404, parcel ID not found:  [". $item->parcel_id."]");
+                    $this->error("404, parcel ID not found:  [" . $item->parcel_id . "]");
                 }
                 usleep(200);
             });

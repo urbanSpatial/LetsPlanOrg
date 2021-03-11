@@ -9,7 +9,8 @@ use MStaack\LaravelPostgis\Geometries\Point;
 
 class RealEstateTx extends Model
 {
-    use HasFactory, PostgisTrait;
+    use HasFactory;
+    use PostgisTrait;
 
     public $guarded = [];
     public $table = 'real_estate_tx';

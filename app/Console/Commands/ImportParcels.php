@@ -49,16 +49,17 @@ class ImportParcels extends Command
     {
         //http://data-phl.opendata.arcgis.com/datasets/84baed491de44f539889f2af178ad85c_0.geojson
 
-        if (!Storage::disk('local')->exists($this->dataDir.'/' . $this->dataFile)) {
-            $this->info('Cannot find ['.$this->dataDir.'/' . $this->dataFile.'] locally, proceeding to download (approx 400-500 Mb) ... ');
+        if (!Storage::disk('local')->exists($this->dataDir . '/' . $this->dataFile)) {
+            $this->info('Cannot find [' . $this->dataDir . '/' . $this->dataFile . '] locally, proceeding to download (approx 400-500 Mb) ... ');
             $f = fopen('http://data-phl.opendata.arcgis.com/datasets/84baed491de44f539889f2af178ad85c_0.geojson', 'r');
-            Storage::disk('local')->put($this->dataDir.'/'.$this->dataFile,
+            Storage::disk('local')->put(
+                $this->dataDir . '/' . $this->dataFile,
                 $f,
             );
             fclose($f);
         }
-        $this->info('Found ['.$this->dataDir.'/' . $this->dataFile.'] locally, proceeding to import ... ');
-        $path = Storage::path($this->dataDir.'/' . $this->dataFile);
+        $this->info('Found [' . $this->dataDir . '/' . $this->dataFile . '] locally, proceeding to import ... ');
+        $path = Storage::path($this->dataDir . '/' . $this->dataFile);
         $f = fopen($path, 'r');
         if (!$f) {
             $this->error('Unable to open import file.  quitting.');
@@ -72,7 +73,7 @@ class ImportParcels extends Command
             $line = fgets($f, 4096);
             $count++;
             if ($count % 1000 == 0) {
-                $this->info($count.' ...');
+                $this->info($count . ' ...');
                 \DB::commit();
                 \DB::beginTransaction();
                 //fclose($f);
@@ -97,7 +98,8 @@ class ImportParcels extends Command
      * remove trailing comma
      * discard non geojson Feature objects
      */
-    public function transformGeoJsonFeature($line) {
+    public function transformGeoJsonFeature($line)
+    {
         $line = trim($line);
         $line = rtrim($line, ',');  //treat each line as independent
         $feature = json_decode($line);

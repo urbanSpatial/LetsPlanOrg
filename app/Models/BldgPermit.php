@@ -9,7 +9,8 @@ use MStaack\LaravelPostgis\Geometries\Point;
 
 class BldgPermit extends Model
 {
-    use HasFactory, PostgisTrait;
+    use HasFactory;
+    use PostgisTrait;
 
     public $guarded = [];
     public $table = 'bldg_permit';

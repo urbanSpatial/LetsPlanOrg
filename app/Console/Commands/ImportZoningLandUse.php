@@ -40,11 +40,11 @@ class ImportZoningLandUse extends Command
     {
         $dataFile = $this->argument('zoning-file');
         if (!Storage::disk('local')->exists($dataFile)) {
-            $this->error('Cannot find ['.$dataFile.'] locally, existing ... ');
+            $this->error('Cannot find [' . $dataFile . '] locally, existing ... ');
             return 1;
         }
 
-        $this->info('Found ['.$dataFile.'] locally, proceeding to import ... ');
+        $this->info('Found [' . $dataFile . '] locally, proceeding to import ... ');
         $path = Storage::path($dataFile);
         $f = fopen($path, 'r');
         if (!$f) {
@@ -56,22 +56,22 @@ class ImportZoningLandUse extends Command
         \DB::beginTransaction();
         while (is_resource($f) && !feof($f)) {
             $line = fgets($f, 4096);
-            if (trim($line) == '' ) {
+            if (trim($line) == '') {
                 continue;
             }
             $data_row = str_getcsv($line);
             $count++;
             if ($count % 1000 == 0) {
-                $this->info($count.' ...');
+                $this->info($count . ' ...');
                 \DB::commit();
                 \DB::beginTransaction();
                 //fclose($f);
             }
             $issAt = null;
 
-		   // 1 "opa_account_num","zoning","landuse","number_stories","total_livable_area","bldg_desc","lat","lng"
-		   // 2 "011012000","RSA5 ","Single Family",3,1465,"ROW 3 STY MASONRY",39.9302486735636,-75.1487657003407
-		   // 3 "011012100","RSA5 ","Single Family",3,1465,"ROW 3 STY MASONRY",39.9302560204392,-75.1488218259425
+           // 1 "opa_account_num","zoning","landuse","number_stories","total_livable_area","bldg_desc","lat","lng"
+           // 2 "011012000","RSA5 ","Single Family",3,1465,"ROW 3 STY MASONRY",39.9302486735636,-75.1487657003407
+           // 3 "011012100","RSA5 ","Single Family",3,1465,"ROW 3 STY MASONRY",39.9302560204392,-75.1488218259425
             // Points are lat, lng
             $bp = new ZoningLandUse([
                 "opa_account_num"    => $data_row[0] == 'NA' ? null : $data_row[0],

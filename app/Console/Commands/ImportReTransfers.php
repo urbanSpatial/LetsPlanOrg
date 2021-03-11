@@ -35,11 +35,11 @@ class ImportReTransfers extends Command
     {
         $dataFile = $this->argument('data-file');
         if (!Storage::disk('local')->exists($dataFile)) {
-            $this->error('Cannot find ['.$dataFile.'] locally, existing ... ');
+            $this->error('Cannot find [' . $dataFile . '] locally, existing ... ');
             return 1;
         }
 
-        $this->info('Found ['.$dataFile.'] locally, proceeding to import ... ');
+        $this->info('Found [' . $dataFile . '] locally, proceeding to import ... ');
         $path = Storage::path($dataFile);
         $f = fopen($path, 'r');
         if (!$f) {
@@ -51,39 +51,39 @@ class ImportReTransfers extends Command
         \DB::beginTransaction();
         while (is_resource($f) && !feof($f)) {
             $line = fgets($f, 4096);
-            if (trim($line) == '' ) {
+            if (trim($line) == '') {
                 continue;
             }
             $data_row = str_getcsv($line);
             $count++;
             if ($count % 1000 == 0) {
-                $this->info($count.' ...');
+                $this->info($count . ' ...');
                 \DB::commit();
                 \DB::beginTransaction();
             }
             $saleDt = null;
             try {
                 $saleDt = \Carbon\Carbon::parse($data_row[5]);
-            } catch ( \Carbon\Exceptions\InvalidFormatException $e) {
+            } catch (\Carbon\Exceptions\InvalidFormatException $e) {
             }
             $assDt = null;
             try {
                 $assDt = \Carbon\Carbon::parse($data_row[26]);
-            } catch ( \Carbon\Exceptions\InvalidFormatException $e) {
+            } catch (\Carbon\Exceptions\InvalidFormatException $e) {
             }
             $opaNum = $data_row[1] == 'NA' ? null
                 : $data_row[1];
 
             $assVal = $data_row[3] == 'NA' ? null
-                : intval(round($data_row[3]*100)/100);
+                : intval(round($data_row[3] * 100) / 100);
 
             $salPri = $data_row[4] == 'NA' ? null
-                : intval(round($data_row[4]*100)/100);
+                : intval(round($data_row[4] * 100) / 100);
 
-			if ($salPri > pow(2,9)) {
-				// 5 billion dollar sales are not supported
-				continue;
-			}
+            if ($salPri > pow(2, 9)) {
+                // 5 billion dollar sales are not supported
+                continue;
+            }
             // Points are lat, lng
             $bp = new RealEstateTx([
                 "opa_account_num"    => $opaNum,
@@ -112,14 +112,14 @@ class ImportReTransfers extends Command
                 "exterior_condition" => (int)$data_row[25],
                 "assessment_date"    => $assDt,
                 "sale_year"          => $data_row[27],
-                "sale_price_adj"     => intval(round($data_row[28]*100)/100),
+                "sale_price_adj"     => intval(round($data_row[28] * 100) / 100),
             ]);
             try {
                 $q = $bp->save();
-				if (!$q) {
-					$this->error("Q was not true");
-                	\DB::rollback();
-				}
+                if (!$q) {
+                    $this->error("Q was not true");
+                    \DB::rollback();
+                }
             } catch (\Illuminate\Database\QueryException $e) {
                 // at least one property sold for 5.975e+09, which is too high for
                 // a signed integer sale price columne
