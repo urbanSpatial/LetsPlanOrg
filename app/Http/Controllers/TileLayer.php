@@ -23,13 +23,13 @@ class TileLayer extends Controller
       if (!$result) {
           return response('', 404);
       }
-      $hdrs = [
+      $headers = [
           'Content-Encoding' => 'gzip',
           'Content-Type' => 'application/x-protobuf',
           //'Content-Type' => 'text/html',
           'Access-Control-Allow-Origin' => '*',
       ];
-      foreach ($hdrs as $_key => $_val) {
+      foreach ($headers as $_key => $_val) {
           header($_key.': '. $_val);
       }
       echo $result->tile_data;
