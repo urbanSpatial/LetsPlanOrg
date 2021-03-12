@@ -1,6 +1,7 @@
 import Vue from 'vue';
 
 export default Vue.observable({
-  exploreIsExpanded: false,
+  exploreIsExpanded: true,
   layersIsExpanded: true,
+  exploreCurrentPane: 0,
 });
