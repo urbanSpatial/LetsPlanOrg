@@ -31,45 +31,44 @@ export default {
         .addControl(new mapboxgl.GeolocateControl())
         .addControl(new mapboxgl.ScaleControl());
 
-      var map = this.map;
-      this.map.on('load', function () {
+      const { map } = this;
+      this.map.on('load', () => {
         // Find the ID of the first symbol layer in the map style
-        var layers = map.getStyle().layers;
-        console.log(layers);
-        var targetLayerId;
-        for (var i = 0; i < layers.length; i++) {
-          //if (layers[i].type === 'symbol') {
+        const { layers } = map.getStyle();
+        let targetLayerId;
+        for (let i = 0; i < layers.length; i += 1) {
+          // if (layers[i].type === 'symbol') {
           if (layers[i].id === 'building') {
             // grab the next layer
-            targetLayerId = layers[i+1].id;
+            targetLayerId = layers[i + 1].id;
             break;
           }
         }
         map
           .addSource('urban-areas', {
-            'name': 'urban-areas',
-            'type': 'vector',
-            'tiles': [process.env.MIX_MBTILE_URL],
-            'maxzoom': 14, // max zoom compiled into the mbtiles file
+            name: 'urban-areas',
+            type: 'vector',
+            tiles: [process.env.MIX_MBTILE_URL],
+            maxzoom: 14, // max zoom compiled into the mbtiles file
           });
 
         map
           .addLayer(
-              {
-                'id': 'urban-areas-fill',
-                'type': 'fill',
-                'source': 'urban-areas',
-                'source-layer': 'urban-areas',
-                'minzoom': 7,  // min zoom to display
-                'maxzoom': 22, // max zoom to display
-                'layout': {},
-                'paint': {
+            {
+              id: 'urban-areas-fill',
+              type: 'fill',
+              source: 'urban-areas',
+              'source-layer': 'urban-areas',
+              minzoom: 7, // min zoom to display
+              maxzoom: 22, // max zoom to display
+              layout: {},
+              paint: {
                 'fill-color': '#f08',
-                'fill-opacity': 0.4
-                }
+                'fill-opacity': 0.4,
               },
-              // Insert the layer beneath the first symbol layer.
-              targetLayerId
+            },
+            // Insert the layer beneath the first symbol layer.
+            targetLayerId,
           );
       });
     }, 0);
