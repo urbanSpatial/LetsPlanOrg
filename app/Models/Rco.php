@@ -8,14 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Rco extends Model
 {
     use HasFactory;
+
     public $guarded = [];
     public $table = 'rco';
     protected $casts = [
         'geo_json' => 'array',
     ];
 
-	/**
-	 * +"OBJECTID": 23628
+    /**
+     * +"OBJECTID": 23628
      * +"ORGANIZATION_NAME": "Asian American Federation of the United States"
      * +"ORGANIZATION_ADDRESS": """
      *   1118 Buttonwood Street, Unit A\r\n
@@ -42,8 +43,9 @@ class Rco extends Model
      * +"LNI_ID": 110
      * +"Shape__Area": 1489562.4414062
      * +"Shape__Length": 4934.3990676634
-	 */
-    public static function fromGeoJsonFeature($feature) {
+     */
+    public static function fromGeoJsonFeature($feature)
+    {
         $prop = $feature->properties;
         $obj = new static([
             'object_id'   => $prop->OBJECTID,

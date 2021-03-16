@@ -38,16 +38,17 @@ class ImportRco extends Command
     public function handle()
     {
 
-        if (!Storage::disk('local')->exists($this->dataDir.'/' . $this->dataFile)) {
-            $this->info('Cannot find ['.$this->dataDir.'/' . $this->dataFile.'] locally, proceeding to download (approx 2-3 Mb) ... ');
-            $f = fopen('http://data-phl.opendata.arcgis.com/datasets/'.$this->dataFile, 'r');
-            Storage::disk('local')->put($this->dataDir.'/'.$this->dataFile,
+        if (!Storage::disk('local')->exists($this->dataDir . '/' . $this->dataFile)) {
+            $this->info('Cannot find [' . $this->dataDir . '/' . $this->dataFile . '] locally, proceeding to download (approx 2-3 Mb) ... ');
+            $f = fopen('http://data-phl.opendata.arcgis.com/datasets/' . $this->dataFile, 'r');
+            Storage::disk('local')->put(
+                $this->dataDir . '/' . $this->dataFile,
                 $f,
             );
             fclose($f);
         }
-        $this->info('Found ['.$this->dataDir.'/' . $this->dataFile.'] locally, proceeding to import ... ');
-        $path = Storage::path($this->dataDir.'/' . $this->dataFile);
+        $this->info('Found [' . $this->dataDir . '/' . $this->dataFile . '] locally, proceeding to import ... ');
+        $path = Storage::path($this->dataDir . '/' . $this->dataFile);
         $f = fopen($path, 'r');
         if (!$f) {
             $this->error('Unable to open import file.  quitting.');
@@ -60,7 +61,7 @@ class ImportRco extends Command
             $line = fgets($f, 8192);
             $count++;
             if ($count % 1000 == 0) {
-                $this->info($count.' ...');
+                $this->info($count . ' ...');
                 //fclose($f);
             }
             $feature = $this->transformGeoJsonFeature($line);
@@ -82,7 +83,8 @@ class ImportRco extends Command
      * remove trailing comma
      * discard non geojson Feature objects
      */
-    public function transformGeoJsonFeature($line) {
+    public function transformGeoJsonFeature($line)
+    {
         $line = trim($line);
         $line = rtrim($line, ',');  //treat each line as independent
         $feature = json_decode($line);
@@ -95,5 +97,4 @@ class ImportRco extends Command
         }
         return $feature;
     }
-
 }
