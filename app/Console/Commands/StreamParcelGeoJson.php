@@ -28,7 +28,11 @@ class StreamParcelGeoJson extends Command
     public function handle()
     {
         $table = $this->argument('project_table');
-        $parcels = \DB::table($table)->cursor();
+        $parcels = \DB::table($table)
+            ->select([$table.'.*', 'zoning_land_use.landuse', 'zoning_land_use.bldg_desc'])
+            ->leftJoin('atlas_data', 'atlas_data.parcel_id', $table.'.parcel_id')
+            ->leftJoin('zoning_land_use', 'zoning_land_use.opa_account_num', 'atlas_data.opa_account_num')
+            ->cursor();
         echo '{
         "type": "FeatureCollection",
             "name": "RCO_PARCELS",
@@ -39,7 +43,17 @@ class StreamParcelGeoJson extends Command
         $lastDelim = '';
         foreach ($parcels as $parcel) {
             echo $lastDelim;
-            echo $parcel->geo_json;
+            $geoJson = json_decode($parcel->geo_json, true);
+            $feature = [
+                'type'=>'Feature',
+                'properties' => [
+                    'landuse'  => $parcel->landuse,
+                    'bldg_desc' => $parcel->bldg_desc,
+                    'parcel_id' => $parcel->parcel_id,
+                ],
+                'geometry' => $geoJson
+            ];
+            echo json_encode($feature);
             $lastDelim = ",\n";
         }
 
