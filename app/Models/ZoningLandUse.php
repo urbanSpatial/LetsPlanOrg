@@ -9,7 +9,8 @@ use MStaack\LaravelPostgis\Geometries\Point;
 
 class ZoningLandUse extends Model
 {
-    use HasFactory, PostgisTrait;
+    use HasFactory;
+    use PostgisTrait;
 
     public $guarded = [];
     public $table = 'zoning_land_use';

@@ -1,0 +1,6 @@
+{
+    "recommendations": [
+        "ikappas.phpcs",
+        "dbaeumer.vscode-eslint"
+    ]
+}

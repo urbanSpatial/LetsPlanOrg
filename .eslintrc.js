@@ -1,4 +1,5 @@
 module.exports = {
+  ignorePatterns: ['node_modules/', 'vendor/', 'public/'],
   env: {
     browser: true,
     node: true,

@@ -14,7 +14,7 @@ class InstallPostgisExtension extends Migration
      */
     public function up()
     {
-		DB::statement('CREATE EXTENSION IF NOT EXISTS Postgis');
+        DB::statement('CREATE EXTENSION IF NOT EXISTS Postgis');
     }
 
     /**
