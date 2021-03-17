@@ -1,4 +1,3 @@
-
 # How to Contribute
 
 ## General Guidelines
@@ -48,12 +47,12 @@ Run this command to auto-format all `.php` files:
 This command will auto-format all `.js` files that your current branch adds, run it from the root of the repository:
 
 ```bash
-yarn run eslint --fix `git diff --name-only --diff-filter=A origin/develop HEAD | grep '.js'`
+yarn run eslint --fix `git diff --name-only --diff-filter=A origin/main HEAD | grep '.js'`
 ```
 
 ## Common Style Guide
 
-**Configure your editor to lint in realtime based on [`.editorconfig`](./.editorconfig), [`.php_cs.dist`](./.php_cs.dist), and [`.eslintrc.js`](./.eslintrc.js)**
+**Configure your editor to lint in realtime based on [`.editorconfig`](./.editorconfig), [`.phpcs.xml`](./.phpcs.xml), and [`.eslintrc.js`](./.eslintrc.js)**
 
 ### Naming conventions
 
