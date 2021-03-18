@@ -1,0 +1,26 @@
+[holomapping]
+files = [
+    "app/**",
+    "bootstrap/*.php",
+    "bootstrap/**/.gitignore",
+    "config/**",
+    "database/**",
+
+    "public/**",
+    "!public/css/**",
+    "!public/fonts/**",
+    "!public/js/**",
+    "!public/mix-manifest.json",
+
+    "resources/**",
+    "routes/**",
+    "storage/**/.gitignore",
+
+    "artisan",
+    "composer.json",
+    "composer.lock",
+    "package.json",
+    "yarn.lock",
+    "server.php",
+    "webpack.mix.js",
+]
