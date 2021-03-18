@@ -1,11 +1,21 @@
+# package caches
 /node_modules
-/public/hot
-/public/storage
-/storage/*.key
 /vendor
+
+# built assets
+/public/css/
+/public/fonts/
+/public/hot
+/public/js/
+/public/mix-manifest.json
+/public/storage
+
+# misc files
 .env
-.env.backup
+.env.*
+!.env.example
 .phpunit.result.cache
+/storage/*.key
 docker-compose.override.yml
 Homestead.json
 Homestead.yaml
