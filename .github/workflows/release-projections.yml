@@ -1,0 +1,33 @@
+name: Release Projections
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
+  HAB_LICENSE: accept-no-persist
+
+
+jobs:
+  release-projections:
+    name: Release Projections
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.7.0
+      with:
+        access_token: ${{ github.token }}
+
+    - name: 'Update holobranch: releases/laravel-site'
+      uses: JarvusInnovations/hologit@actions/projector/v1
+      with:
+        holobranch: laravel-site
+        commit-to: releases/laravel-site
+
+    - name: 'Update holobranch: gh-pages'
+      uses: JarvusInnovations/hologit@actions/projector/v1
+      with:
+        holobranch: docs-site
+        commit-to: gh-pages
