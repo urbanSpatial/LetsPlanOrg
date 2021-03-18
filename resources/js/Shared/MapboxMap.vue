@@ -23,13 +23,70 @@ export default {
         container: 'map-container',
         style: 'mapbox://styles/mapbox/dark-v10?optimize=true',
         center: [-75.1637900, 39.9523300],
-        zoom: 11,
+        zoom: 13,
       });
 
       this.map
         .addControl(new mapboxgl.NavigationControl({ visalizePitch: true }))
         .addControl(new mapboxgl.GeolocateControl())
         .addControl(new mapboxgl.ScaleControl());
+
+      const { map } = this;
+      this.map.on('load', () => {
+        // Find the ID of the first symbol layer in the map style
+        const { layers } = map.getStyle();
+        let targetLayerId;
+        for (let i = 0; i < layers.length; i += 1) {
+          // if (layers[i].type === 'symbol') {
+          if (layers[i].id === 'building') {
+            // grab the next layer
+            targetLayerId = layers[i + 1].id;
+            break;
+          }
+        }
+        map
+          .addSource('urban-areas', {
+            name: 'urban-areas',
+            type: 'vector',
+            tiles: [process.env.MIX_MBTILE_URL],
+            maxzoom: 14, // max zoom compiled into the mbtiles file
+          });
+
+        map
+          .addLayer(
+            {
+              id: 'urban-areas-fill',
+              type: 'fill',
+              source: 'urban-areas',
+              'source-layer': 'urban-areas',
+              minzoom: 7, // min zoom to display
+              maxzoom: 22, // max zoom to display
+              layout: {},
+              paint: {
+                'fill-color': '#f08',
+                'fill-opacity': 0.4,
+              },
+            },
+            // Insert the layer beneath the first symbol layer.
+            targetLayerId,
+          );
+        map.on('click', 'urban-areas-fill', (e) => {
+          const coordinates = e.features[0].geometry.coordinates[0][0].slice();
+          const description = `<ul><li>landuse: ${e.features[0].properties.landuse}</li></ul>`;
+
+          // Ensure that if the map is zoomed out such that multiple
+          // copies of the feature are visible, the popup appears
+          // over the copy being pointed to.
+          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+          }
+
+          new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML(description)
+            .addTo(map);
+        });
+      });
     }, 0);
   },
 };

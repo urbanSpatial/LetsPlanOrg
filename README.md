@@ -27,6 +27,14 @@ run `./vendor/bin/sail artisan migrate`
 
 run `./vendor/bin/sail yarn install`
 
+# MapBox setup
+Edit the `.env` and add a vector (pbf) source URL to MBTILE\_URL
+
+```
+MBTILE_URL="https://api.maptiler.com/tiles/contours/11/599/770.pbf?key=yd4rAVOD6ZdfBCcbKnIE"
+```
+You might change `fill-color` to `fill-outline-color` in `resources/js/Shared/MapboxMap.vue` for this example.
+
 # Importing data
 
 Import PWD Parcel definitions.  A file will be saved into `./storage/app/` and imported into the `parcel` table.
