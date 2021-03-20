@@ -16,11 +16,15 @@ files = [
     "routes/**",
     "storage/**/.gitignore",
 
+    ".dockerignore",
     "artisan",
     "composer.json",
     "composer.lock",
+    "docker-entrypoint.sh",
+    "Dockerfile",
+    "nginx.conf",
     "package.json",
-    "yarn.lock",
     "server.php",
     "webpack.mix.js",
+    "yarn.lock",
 ]
