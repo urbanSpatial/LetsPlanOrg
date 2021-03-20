@@ -4,7 +4,7 @@ app:
   environment: production
 
   secrets:
-    app: "app-production"
+    app: "letsplan-production"
 
 replicaCount: 1
 strategyType: Recreate
