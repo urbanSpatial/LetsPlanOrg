@@ -5,7 +5,7 @@ on:
     branches: [ releases/laravel-site ]
 
 env:
-  DOCKER_PACKAGE: api-facade
+  DOCKER_PACKAGE: laravel-site
 
 
 jobs:
