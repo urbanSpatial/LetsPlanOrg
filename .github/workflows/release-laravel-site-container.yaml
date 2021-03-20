@@ -25,7 +25,7 @@ jobs:
     - name: Login to GitHub Packages Docker Registry
       uses: docker/login-action@v1
       with:
-        registry: ghcr.io
+        registry: docker.pkg.github.com
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -33,7 +33,7 @@ jobs:
       run: |
         DOCKER_REPOSITORY="${GITHUB_REPOSITORY,,}"
 
-        DOCKER_IMAGE="ghcr.io/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}"
+        DOCKER_IMAGE="docker.pkg.github.com/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}"
         echo "Using path: ${DOCKER_IMAGE}"
         echo "DOCKER_IMAGE=${DOCKER_IMAGE}" >> $GITHUB_ENV
         echo "DOCKER_REPOSITORY=${DOCKER_REPOSITORY}" >> $GITHUB_ENV
@@ -49,7 +49,7 @@ jobs:
         DOCKER_MANIFEST="$(curl -X GET \
           -u "${{ github.repository_owner }}:${{ secrets.GITHUB_TOKEN }}" \
           --fail \
-          "https://ghcr.io/v2/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}/manifests/${SOURCE_TREE}"
+          "https://docker.pkg.github.com/v2/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}/manifests/${SOURCE_TREE}"
         )"
 
         if [ $? -eq 0 ]; then
@@ -69,7 +69,7 @@ jobs:
           -u "${{ github.repository_owner }}:${{ secrets.GITHUB_TOKEN }}" \
           --fail \
           -d "${DOCKER_MANIFEST}" \
-          "https://ghcr.io/v2/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}/manifests/latest"
+          "https://docker.pkg.github.com/v2/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}/manifests/latest"
 
     # - uses: mxschmitt/action-tmate@v3
     #   env:
