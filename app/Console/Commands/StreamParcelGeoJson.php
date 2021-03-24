@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\RealEstateTx;
 use Illuminate\Console\Command;
 
 class StreamParcelGeoJson extends Command
@@ -44,12 +45,17 @@ class StreamParcelGeoJson extends Command
         foreach ($parcels as $parcel) {
             echo $lastDelim;
             $geoJson = json_decode($parcel->geo_json, true);
+            $salePrice = RealEstateTx::leftJoin('atlas_data', 'atlas_data.opa_account_num', 'real_estate_tx.opa_account_num')
+                ->where('atlas_data.parcel_id', $parcel->parcel_id)
+                ->orderBy('sale_date', 'DESC')
+                ->first();
             $feature = [
                 'type'=>'Feature',
                 'properties' => [
                     'landuse'  => $parcel->landuse,
                     'bldg_desc' => $parcel->bldg_desc,
                     'parcel_id' => $parcel->parcel_id,
+                    'sale_price_adj' => $salePrice->sale_price_adj ?? null,
                 ],
                 'geometry' => $geoJson
             ];
