@@ -72,7 +72,8 @@ export default {
           );
         map.on('click', 'urban-areas-fill', (e) => {
           const coordinates = e.features[0].geometry.coordinates[0][0].slice();
-          const description = `<ul><li>landuse: ${e.features[0].properties.landuse}</li></ul>`;
+          const description = `<ul><li>Landuse: ${e.features[0].properties.landuse}</li>`
+              + `<li>Desc: ${e.features[0].properties.bldg_desc}</li></ul>`;
 
           // Ensure that if the map is zoomed out such that multiple
           // copies of the feature are visible, the popup appears
