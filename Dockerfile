@@ -7,8 +7,10 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
         gosu \
         multirun \
         nginx \
+        postgresql-dev \
     && mkdir -p /run/nginx \
-    && adduser nginx www-data
+    && adduser nginx www-data \
+    && docker-php-ext-install pdo_pgsql
 
 # deploy application to /srv/app
 WORKDIR /srv/app
