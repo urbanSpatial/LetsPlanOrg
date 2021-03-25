@@ -59,7 +59,7 @@ configs:
     LOG_LEVEL: debug
 
     BROADCAST_DRIVER: log
-    CACHE_DRIVER: =file
+    CACHE_DRIVER: file
     QUEUE_CONNECTION: sync
     SESSION_DRIVER: file
     SESSION_LIFETIME: '120'
