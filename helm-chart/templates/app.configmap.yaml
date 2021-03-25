@@ -1,0 +1,22 @@
+{{- if .Values.configs.app }}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "letsplan.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "letsplan.labels" . | nindent 4 }}
+    component: app
+data:
+  {{- if not .Values.configs.app.DB_HOST }}
+  DB_HOST: {{ include "letsplan.fullname" . }}-database.{{ .Release.Namespace }}.svc.cluster.local
+  {{- end}}
+
+  {{- if not .Values.configs.app.DB_PORT }}
+  DB_PORT: "{{ .Values.services.database.port }}"
+  {{- end}}
+
+  {{- toYaml .Values.configs.app | nindent 2 }}
+
+{{- end }}

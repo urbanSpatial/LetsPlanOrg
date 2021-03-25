@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "letsplan.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "letsplan.labels" . | nindent 4 }}
+    component: app
+spec:
+  replicas: {{ .Values.workloads.app.replicas }}
+  strategy:
+    type: {{ .Values.workloads.app.strategy }}
+  selector:
+    matchLabels:
+      {{- include "letsplan.selectorLabels" . | nindent 6 }}
+      component: app
+  template:
+    metadata:
+      labels:
+        {{- include "letsplan.selectorLabels" . | nindent 8 }}
+        component: app
+    spec:
+
+      {{- with .Values.images.app.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      containers:
+        - name: {{ .Release.Name }}
+          image: {{ .Values.images.app.repository }}:{{ .Values.images.app.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.images.app.pullPolicy }}
+
+          ports:
+          - containerPort: {{ .Values.workloads.app.port }}
+            name: http
+            protocol: TCP
+
+          envFrom:
+            {{- range $key, $value := .Values.workloads.app.secrets }}
+            - secretRef:
+                name: {{ $value }}
+                optional: true
+            {{- end }}
+
+            {{- if .Values.configs.app }}
+            - configMapRef:
+                name: {{ include "letsplan.fullname" . }}
+            {{- end }}

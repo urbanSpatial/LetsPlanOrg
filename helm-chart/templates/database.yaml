@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "letsplan.fullname" . }}-database
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "letsplan.labels" . | nindent 4 }}
+    component: database
+spec:
+  replicas: {{ .Values.workloads.database.replicas }}
+  selector:
+    matchLabels:
+      {{- include "letsplan.selectorLabels" . | nindent 6 }}
+      component: database
+  serviceName: database
+  template:
+    metadata:
+      labels:
+        {{- include "letsplan.selectorLabels" . | nindent 8 }}
+        component: database
+      {{- with .Values.workloads.database.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+    {{- with .Values.images.database.imagePullSecrets }}
+      imagePullSecrets:
+      {{ toYaml . | nindent 6 }}
+    {{- end }}
+      containers:
+      - name: database
+        image: {{ .Values.images.database.repository }}:{{ .Values.images.database.tag }}
+        {{- if .Values.configs.database }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "letsplan.fullname" . }}-database
+        {{- end }}
+        ports:
+        - containerPort: {{ .Values.workloads.database.port }}
+          name: postgresql
+        {{- if .Values.volumes.database }}
+        volumeMounts:
+          {{- if .Values.volumes.database.data }}
+          - name: data
+            mountPath: /var/lib/postgresql/data
+            subPath: postgresql-data
+          {{- end }}
+        {{- end }}
+        readinessProbe:
+          tcpSocket:
+            port: {{ .Values.workloads.database.port }}
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: {{ .Values.workloads.database.port }}
+          initialDelaySeconds: 15
+          periodSeconds: 20
+
+      {{- with .Values.workloads.database.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.workloads.database.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.workloads.database.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+  {{- if .Values.volumes.database }}
+  volumeClaimTemplates:
+    {{- if .Values.volumes.database.data }}
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        {{- if .Values.volumes.database.data.storageClassName }}
+        storageClassName: {{ .Values.volumes.database.data.storageClassName }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.volumes.database.data.size }}
+    {{- end }}
+  {{- end }}

@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "letsplan.fullname" . }}-metabase
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "letsplan.labels" . | nindent 4 }}
+    component: metabase
+spec:
+  replicas: {{ .Values.workloads.metabase.replicas }}
+  selector:
+    matchLabels:
+      {{- include "letsplan.selectorLabels" . | nindent 6 }}
+      component: metabase
+  template:
+    metadata:
+      labels:
+        {{- include "letsplan.selectorLabels" . | nindent 8 }}
+        component: metabase
+    spec:
+      containers:
+        - name: metabase
+          image: {{ .Values.images.metabase.repository }}:{{ .Values.images.metabase.tag }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "letsplan.fullname" . }}-metabase
+          ports:
+          - containerPort: {{ .Values.workloads.metabase.port }}
+            name: metabase
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.workloads.metabase.port }}
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.workloads.metabase.port }}
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            periodSeconds: 10
+            failureThreshold: 3
+
+      {{- with .Values.workloads.metabase.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.workloads.metabase.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.workloads.metabase.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

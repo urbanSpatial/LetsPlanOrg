@@ -5,11 +5,12 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "letsplan.labels" . | nindent 4 }}
+    component: app
 spec:
-  type: {{ .Values.services.http.type }}
-  ports:
-    - port: 80
-      protocol: TCP
-      name: http
   selector:
     {{- include "letsplan.selectorLabels" . | nindent 4 }}
+    component: app
+  type: {{ .Values.services.app.type }}
+  ports:
+    - name: http
+      port: {{ .Values.services.app.port }}
