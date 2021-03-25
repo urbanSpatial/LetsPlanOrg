@@ -6,8 +6,8 @@ images:
     imagePullSecrets:
     - name: regcred
   database:
-    repository: postgres
-    tag: 13.1
+    repository: postgis/postgis
+    tag: 13-3.1
   metabase:
     repository: metabase/metabase
     tag: v0.38.2
