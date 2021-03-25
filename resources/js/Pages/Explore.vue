@@ -88,7 +88,7 @@ export default {
         Zoning,
         'Land Use': LandUse,
         'New Construction Permits': NewConstruction,
-        Alteration,
+        'Alteration Permits': Alteration,
       },
     };
   },
