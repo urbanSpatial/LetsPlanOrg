@@ -68,7 +68,6 @@ configs:
     DB_DATABASE: laravel
     DB_USERNAME: admin
     DB_PASSWORD: PO1cDzKOsu8X8Y6OdfjaTJYZEJnaPumM
-    DB_HOST: foo
   database:
     POSTGRES_DB: metabase
     POSTGRES_USER: admin
