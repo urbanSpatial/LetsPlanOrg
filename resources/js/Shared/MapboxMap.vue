@@ -18,12 +18,24 @@ export default {
     mapboxgl.accessToken = 'pk.eyJ1IjoibGV0c3BsYW4iLCJhIjoiY2trY3phaHMxMDVnZzJubzV1cjdkOGZhaSJ9.cnIlJqWhotB0yniunP2Z6w';
 
     // push to end of call stack to avoid layout race
-    setTimeout(() => {
+    setTimeout(this.initMap, 0);
+  },
+
+  methods: {
+    initMap() {
+      const emptyPolygonFeature = {
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [],
+        },
+      };
+
       this.map = new mapboxgl.Map({
         container: 'map-container',
         style: 'mapbox://styles/mapbox/dark-v10?optimize=true',
-        center: [-75.1637900, 39.9523300],
-        zoom: 13,
+        center: [-75.207138, 39.950872],
+        zoom: 14,
       });
 
       this.map
@@ -70,10 +82,62 @@ export default {
             // Insert the layer beneath the first symbol layer.
             targetLayerId,
           );
+
+        // add empty source to highlight clicked parcels
+        map.addSource('click-highlight', {
+          type: 'geojson',
+          data: emptyPolygonFeature,
+        });
+        map.addLayer({
+          id: 'click-highlight',
+          type: 'line',
+          source: 'click-highlight',
+          layout: {},
+          paint: {
+            'line-color': '#f08',
+            'line-width': 3,
+          },
+        });
+
         map.on('click', 'urban-areas-fill', (e) => {
-          const coordinates = e.features[0].geometry.coordinates[0][0].slice();
-          const description = `<ul><li>Landuse: ${e.features[0].properties.landuse}</li>`
-              + `<li>Desc: ${e.features[0].properties.bldg_desc}</li></ul>`;
+          const coordinates = e.lngLat;
+          const parcel = e.features[0].properties;
+          const clickHighlightSource = map.getSource('click-highlight');
+
+          function parcelFigure(key, value, descriptionCls, contentCls) {
+            return `
+              <figure class="figure">
+                <figcaption class="figure__description ${descriptionCls || 'text--secondary'}">${key}</figcaption>
+                <div class="figure__content ${contentCls}">${value}</div>
+              </figure>
+            `;
+          }
+
+          const description = `
+            <h1 class="popup__title pink--text text--darken-1">4100 Pine St</h1>
+
+            <div class="popup__subtitle text--secondary">
+              ${parcel.bldg_desc}
+            </div>
+
+            <div class="figure-group">
+              ${parcelFigure('Built', '1975')}
+              ${parcelFigure('Zoning', 'RTA1')}
+              ${parcelFigure('Permits', '5')}
+            </div>
+
+            <div class="figure-group">
+              ${parcelFigure('Last Sale', '$112,000')}
+              ${parcelFigure('Sale Date', '1996')}
+            </div>
+
+            <div class="figure-group -scores pb-0">
+              ${parcelFigure('Preservation', '0.5', null, 'teal--text')}
+              ${parcelFigure('Community', '0.5', null, 'purple--text')}
+              ${parcelFigure('Variance', '0.5', null, 'orange--text')}
+              ${parcelFigure('Development', '0.5', null, 'lime--text text--darken-2')}
+            </div>
+          `;
 
           // Ensure that if the map is zoomed out such that multiple
           // copies of the feature are visible, the popup appears
@@ -82,13 +146,15 @@ export default {
             coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
           }
 
-          new mapboxgl.Popup()
+          clickHighlightSource.setData(e.features[0]);
+
+          new mapboxgl.Popup({ focusAfterOpen: false })
             .setLngLat(coordinates)
             .setHTML(description)
             .addTo(map);
         });
       });
-    }, 0);
+    },
   },
 };
 </script>
@@ -96,6 +162,74 @@ export default {
 <style lang="scss">
   #map-container {
     height: 100%;
+  }
+
+  .mapboxgl-map {
+    font: inherit;
+  }
+
+  .mapboxgl-popup {
+    font-size: .875rem;
+    line-height: (4/3);
+
+    .popup__title {
+      font-size: 1rem;
+
+      small {
+        font-weight: normal;
+      }
+    }
+
+    .popup__subtitle {
+      font-size: .75rem;
+      font-weight: normal;
+      margin-bottom: .25rem;
+    }
+
+    .figure-group {
+      border-top: 1px solid rgba(black, .1);
+      display: flex;
+      padding: .25rem 0;
+
+      &.-scores {
+        display: grid;
+        grid-gap: .25rem 1rem;
+        grid-template-columns: 1fr 1fr;
+
+        .figure {
+          margin: 0;
+        }
+
+        .figure__content {
+          font-size: 1.25rem;
+          font-weight: normal;
+          letter-spacing: -.05em;
+          line-height: 1.125;
+        }
+      }
+    }
+
+    .figure {
+      + .figure {
+        margin-left: 1rem;
+      }
+    }
+
+    .figure__description {
+      font-size: .75rem;
+    }
+
+    .figure__content {
+      font-weight: bold;
+    }
+  }
+
+  .mapboxgl-popup-content {
+    padding: .5rem .75rem;
+  }
+
+  .mapboxgl-popup-close-button {
+    padding: 0 .375rem;
   }
 
   // account for collapsed bottom sheet

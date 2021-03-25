@@ -86,7 +86,7 @@ export default {
         },
         {
           label: 'Community Preferences',
-          color: 'pink',
+          color: 'purple',
           isDialogVisible: false,
           value: true,
         },
