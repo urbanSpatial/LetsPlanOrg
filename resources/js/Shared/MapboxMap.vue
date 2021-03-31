@@ -22,6 +22,22 @@ export default {
   },
 
   methods: {
+    highlightSource(featue) {
+        const clickHighlightSource = this.map.getSource('click-highlight');
+        clickHighlightSource.setData(featue);
+    },
+    highlightClear() {
+        const clickHighlightSource = this.map.getSource('click-highlight');
+        const emptyPolygonFeature = {
+          type: 'Feature',
+          geometry: {
+            type: 'Polygon',
+            coordinates: [],
+          },
+        };
+        clickHighlightSource.setData(emptyPolygonFeature);
+    },
+
     initMap() {
       const emptyPolygonFeature = {
         type: 'Feature',
@@ -102,56 +118,15 @@ export default {
         map.on('click', 'urban-areas-fill', (e) => {
           const coordinates = e.lngLat;
           const parcel = e.features[0].properties;
-          const clickHighlightSource = map.getSource('click-highlight');
-
-          function parcelFigure(key, value, descriptionCls, contentCls) {
-            return `
-              <figure class="figure">
-                <figcaption class="figure__description ${descriptionCls || 'text--secondary'}">${key}</figcaption>
-                <div class="figure__content ${contentCls}">${value}</div>
-              </figure>
-            `;
-          }
-
-          const description = `
-            <h1 class="popup__title pink--text text--darken-1">4100 Pine St</h1>
-
-            <div class="popup__subtitle text--secondary">
-              ${parcel.bldg_desc}
-            </div>
-
-            <div class="figure-group">
-              ${parcelFigure('Built', '1975')}
-              ${parcelFigure('Zoning', 'RTA1')}
-              ${parcelFigure('Permits', '5')}
-            </div>
-
-            <div class="figure-group">
-              ${parcelFigure('Last Sale', '$112,000')}
-              ${parcelFigure('Sale Date', '1996')}
-            </div>
-
-            <div class="figure-group -scores pb-0">
-              ${parcelFigure('Preservation', '0.5', null, 'teal--text')}
-              ${parcelFigure('Community', '0.5', null, 'purple--text')}
-              ${parcelFigure('Variance', '0.5', null, 'orange--text')}
-              ${parcelFigure('Development', '0.5', null, 'lime--text text--darken-2')}
-            </div>
-          `;
-
+          const feature = e.features[0];
           // Ensure that if the map is zoomed out such that multiple
           // copies of the feature are visible, the popup appears
           // over the copy being pointed to.
           while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
             coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
           }
-
-          clickHighlightSource.setData(e.features[0]);
-
-          new mapboxgl.Popup({ focusAfterOpen: false })
-            .setLngLat(coordinates)
-            .setHTML(description)
-            .addTo(map);
+          this.$emit('parcel-click', { properties: parcel, coords: coordinates, feature: feature });
+          return;
         });
       });
     },
