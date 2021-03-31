@@ -1,6 +1,7 @@
 [holomapping]
 files = [
     ".github/workflows/release-laravel-site-container.yaml",
+    ".github/workflows/tag-laravel-site-container.yaml",
 
     "app/**",
     "bootstrap/*.php",
