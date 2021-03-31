@@ -1,40 +1,20 @@
-
 <script>
-const popupEvents = {
-  open: "open",
-  close: "close"
-};
-
 import mapboxgl from 'mapbox-gl';
 
 /**
  * @see https://github.com/soal/vue-mapbox/blob/development/src/components/UI/Popup.js
  */
 export default {
-  name: "ParcelPopup",
-
-  render(h) {
-    console.log('render function');
-    return h(
-      "div",
-      {
-        style: {
-          display: "block"
-        }
-      },
-      [this.$slots.default]
-    );
-  },
+  name: 'ParcelPopup',
 
   props: {
     mapbox: {
-      default: null
-    },
-    map: {
-      default: null
+      default: null,
+      type: Object,
     },
     marker: {
-      default: null
+      default: null,
+      type: Object,
     },
 
     /**
@@ -43,7 +23,7 @@ export default {
      */
     closeButton: {
       type: Boolean,
-      default: true
+      default: true,
     },
 
     /**
@@ -52,29 +32,30 @@ export default {
      */
     closeOnClick: {
       type: Boolean,
-      default: true
+      default: true,
     },
     /**
      * Mapbox GL popup option.
      * A string indicating the popup's location relative to the coordinate set.
-     * If unset the anchor will be dynamically set to ensure the popup falls within the map container with a preference for 'bottom' .
+     * If unset the anchor will be dynamically set to ensure the popup falls
+     * within the map container with a preference for 'bottom' .
      *  'top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'
      */
     anchor: {
       validator(value) {
-        let allowedValues = [
-          "top",
-          "bottom",
-          "left",
-          "right",
-          "top-left",
-          "top-right",
-          "bottom-left",
-          "bottom-right"
+        const allowedValues = [
+          'top',
+          'bottom',
+          'left',
+          'right',
+          'top-left',
+          'top-right',
+          'bottom-left',
+          'bottom-right',
         ];
-        return typeof value === "string" && allowedValues.includes(value);
+        return typeof value === 'string' && allowedValues.includes(value);
       },
-      default: undefined
+      default: undefined,
     },
 
     /**
@@ -82,35 +63,34 @@ export default {
      * A pixel offset applied to the popup's location
      * a single number specifying a distance from the popup's location
      * a PointLike specifying a constant offset
-     * an object of Points specifing an offset for each anchor position Negative offsets indicate left and up.
+     * an object of Points specifing an offset for each anchor position
+     * Negative offsets indicate left and up.
      */
     offset: {
       type: [Number, Object, Array],
-      default: () => [0, 0]
+      default: () => [0, 0],
     },
-    coordinates: {
-      type: Array
-    },
-
     /**
      * Component option.
      * If `true`, popup treats data in deafult slot as plain text
      */
     onlyText: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     showed: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data() {
     return {
       initial: true,
-      popup: undefined
+      popup: undefined,
+      coordinates: [],
+      map: null,
     };
   },
 
@@ -119,10 +99,8 @@ export default {
       cache: false,
       get() {
         if (this.popup !== undefined) {
-        console.log('computed returning is open');
           return this.popup.isOpen();
         }
-        console.log('computed returning false');
         return false;
       },
       set(value) {
@@ -133,8 +111,8 @@ export default {
             this.popup.addTo(this.map);
           }
         }
-      }
-    }
+      },
+    },
   },
 
   watch: {
@@ -150,11 +128,11 @@ export default {
           this.marker.togglePopup();
         }
       }
-    }
+    },
   },
 
   created() {
-    //this.popup = new this.mapbox.Popup(this.$props);
+    // this.popup = new this.mapbox.Popup(this.$props);
   },
 
   mounted() {
@@ -165,7 +143,7 @@ export default {
   beforeDestroy() {
     if (this.map) {
       this.popup.remove();
-      this.$_emitEvent("removed");
+      this.$_emitEvent('removed');
     }
   },
 
@@ -176,7 +154,6 @@ export default {
       this.popup.addTo(this.map);
     },
     setMapboxMap(map) {
-    console.log(this.map);
       if (this.map !== null) {
         return;
       }
@@ -191,7 +168,7 @@ export default {
       if (this.$slots.default !== undefined) {
         if (this.onlyText) {
           if (this.$slots.default[0].elm.nodeType === 3) {
-            let tmpEl = document.createElement("span");
+            const tmpEl = document.createElement('span');
             tmpEl.appendChild(this.$slots.default[0].elm);
             this.popup.setText(tmpEl.innerText);
           } else {
@@ -202,9 +179,9 @@ export default {
         }
       }
 
-      //this.$_bindSelfEvents(Object.keys(popupEvents), this.popup);
+      // this.$_bindSelfEvents(Object.keys(popupEvents), this.popup);
 
-      //this.$_emitEvent("added", { popup: this.popup });
+      // this.$_emitEvent("added", { popup: this.popup });
 
       if (this.marker) {
         this.marker.setPopup(this.popup);
@@ -224,8 +201,20 @@ export default {
 
     remove() {
       this.popup.remove();
-      this.$_emitEvent("remove", { popup: this.popup });
-    }
+      this.$_emitEvent('remove', { popup: this.popup });
+    },
+  },
+
+  render(h) {
+    return h(
+      'div',
+      {
+        style: {
+          display: 'block',
+        },
+      },
+      [this.$slots.default],
+    );
   },
 
 };

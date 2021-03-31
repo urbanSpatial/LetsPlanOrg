@@ -37,8 +37,8 @@ export default {
   layout: Layout,
   methods: {
     showPopup(event) {
-      const coordinates = event.coords;
-      const feature = event.feature;
+      const { coordinates } = event.coords;
+      const { feature } = event.feature;
 
       // click off closes everything
       if (this.$refs.parcelpopup.open) {

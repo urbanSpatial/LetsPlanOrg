@@ -23,19 +23,19 @@ export default {
 
   methods: {
     highlightSource(featue) {
-        const clickHighlightSource = this.map.getSource('click-highlight');
-        clickHighlightSource.setData(featue);
+      const clickHighlightSource = this.map.getSource('click-highlight');
+      clickHighlightSource.setData(featue);
     },
     highlightClear() {
-        const clickHighlightSource = this.map.getSource('click-highlight');
-        const emptyPolygonFeature = {
-          type: 'Feature',
-          geometry: {
-            type: 'Polygon',
-            coordinates: [],
-          },
-        };
-        clickHighlightSource.setData(emptyPolygonFeature);
+      const clickHighlightSource = this.map.getSource('click-highlight');
+      const emptyPolygonFeature = {
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [],
+        },
+      };
+      clickHighlightSource.setData(emptyPolygonFeature);
     },
 
     initMap() {
@@ -125,8 +125,7 @@ export default {
           while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
             coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
           }
-          this.$emit('parcel-click', { properties: parcel, coords: coordinates, feature: feature });
-          return;
+          this.$emit('parcel-click', { properties: parcel, coords: coordinates, feature });
         });
       });
     },
