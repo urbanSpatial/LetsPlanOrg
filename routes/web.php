@@ -21,3 +21,4 @@ Route::inertia('/explore', 'Explore')->name('explore');
 Route::inertia('/layers', 'Layers')->name('layers');
 
 Route::get('/{layer}/{z}/{x}/{y}.pbf', 'TileLayer@index');
+Route::get('/parcel/{parcelId}', 'ParcelInfo@index');
