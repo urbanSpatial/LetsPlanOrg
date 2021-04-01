@@ -31,7 +31,7 @@ export default {
     return {
       currentRoute: route().current(),
       navItems: [
-        { title: 'About', route: 'about', icon: 'mdi-information' },
+        { title: 'Engage!', route: 'engage', icon: 'mdi-flag-checkered' },
         { title: 'Explore', route: 'explore', icon: 'mdi-chart-timeline-variant' },
         { title: 'Layers', route: 'layers', icon: 'mdi-layers' },
       ],
