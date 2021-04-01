@@ -37,18 +37,15 @@ export default {
   layout: Layout,
   methods: {
     showPopup(event) {
-      const { coordinates } = event.coords;
-      const { feature } = event.feature;
-
       // click off closes everything
       if (this.$refs.parcelpopup.open) {
         this.$refs.parcelpopup.open = false;
         this.$refs.mapboxmap.highlightClear();
       } else {
         this.$refs.parcelpopup.setMapboxMap(this.$refs.mapboxmap.map);
-        this.$refs.parcelpopup.setCoords(coordinates);
+        this.$refs.parcelpopup.setCoords(event.coords);
         this.$refs.parcelinfo.fetchParcel(event.properties.parcel_id);
-        this.$refs.mapboxmap.highlightSource(feature);
+        this.$refs.mapboxmap.highlightSource(event.feature);
       }
     },
   },

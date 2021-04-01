@@ -22,9 +22,9 @@ export default {
   },
 
   methods: {
-    highlightSource(featue) {
+    highlightSource(feature) {
       const clickHighlightSource = this.map.getSource('click-highlight');
-      clickHighlightSource.setData(featue);
+      clickHighlightSource.setData(feature);
     },
     highlightClear() {
       const clickHighlightSource = this.map.getSource('click-highlight');

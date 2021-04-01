@@ -89,7 +89,7 @@ export default {
     return {
       initial: true,
       popup: undefined,
-      coordinates: [],
+      coordinates: undefined,
       map: null,
     };
   },
@@ -136,7 +136,6 @@ export default {
   },
 
   mounted() {
-    this.$_addPopup();
     this.initial = false;
   },
 
