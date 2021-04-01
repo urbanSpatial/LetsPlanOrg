@@ -12,6 +12,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
     && adduser nginx www-data \
     && docker-php-ext-install pdo_pgsql
 
+COPY --from=ghcr.io/jarvusinnovations/tippecanoe-alpine:1.36.0 /usr/local/bin /usr/local/bin
+
 # deploy application to /srv/app
 WORKDIR /srv/app
 
