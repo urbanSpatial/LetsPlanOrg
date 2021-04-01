@@ -7,6 +7,7 @@ import vuetify from './plugins/vuetify';
 import '../scss/app.scss';
 import 'vuetify/dist/vuetify.min.css';
 import '@mdi/font/css/materialdesignicons.css';
+import './bootstrap';
 
 // set up inertia
 Vue.use(plugin);

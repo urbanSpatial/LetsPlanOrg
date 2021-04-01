@@ -89,7 +89,7 @@ export default {
     return {
       initial: true,
       popup: undefined,
-      coordinates: [],
+      coordinates: undefined,
       map: null,
     };
   },
@@ -136,7 +136,6 @@ export default {
   },
 
   mounted() {
-    this.$_addPopup();
     this.initial = false;
   },
 
@@ -178,10 +177,6 @@ export default {
           this.popup.setDOMContent(this.$slots.default[0].elm);
         }
       }
-
-      // this.$_bindSelfEvents(Object.keys(popupEvents), this.popup);
-
-      // this.$_emitEvent("added", { popup: this.popup });
 
       if (this.marker) {
         this.marker.setPopup(this.popup);
