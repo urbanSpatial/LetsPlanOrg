@@ -179,10 +179,6 @@ export default {
         }
       }
 
-      // this.$_bindSelfEvents(Object.keys(popupEvents), this.popup);
-
-      // this.$_emitEvent("added", { popup: this.popup });
-
       if (this.marker) {
         this.marker.setPopup(this.popup);
       }
