@@ -5,8 +5,8 @@
       @parcel-click="showPopup"
     />
     <parcel-popup
-      :showed="true"
       ref="parcelpopup"
+      :showed="true"
     >
       <parcel-info
         ref="parcelinfo"
