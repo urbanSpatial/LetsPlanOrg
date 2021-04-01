@@ -11,7 +11,6 @@ class ParcelInfo extends Controller
 {
     public function index(Request $request, $parcelId)
     {
-        sleep(1);
         $parcel = Parcel::where('parcel_id', $parcelId)->first();
 
         $salePrice = RealEstateTx::leftJoin('atlas_data', 'atlas_data.opa_account_num', 'real_estate_tx.opa_account_num')
