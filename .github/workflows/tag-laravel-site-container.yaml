@@ -22,8 +22,7 @@ jobs:
     - name: Check if tag is ancestor of release branches
       run: |
         SOURCE_HOLOBRANCH="$(
-          git show "${GITHUB_REF}" \
-            --no-patch \
+          git log -1 "${GITHUB_REF}" \
             --format="format:%(trailers:key=Source-holobranch,valueonly)"
         )"
 
