@@ -1,0 +1,101 @@
+name: Tag laravel-site Container
+
+on:
+  push:
+    tags: [ 'laravel-site/v*' ]
+
+env:
+  DOCKER_PACKAGE: laravel-site
+
+
+jobs:
+  compute-content-tag:
+    name: Compute content tag
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        ref: releases/laravel-site
+        fetch-depth: 0
+
+    - name: Check if tag is ancestor of release branches
+      run: |
+        SOURCE_HOLOBRANCH="$(
+          git show "${GITHUB_REF}" \
+            --no-patch \
+            --format="format:%(trailers:key=Source-holobranch,valueonly)"
+        )"
+
+        if [ "${SOURCE_HOLOBRANCH}" != "laravel-site" ]; then
+          echo "Commit for ${GITHUB_REF} does not contain Source-holobranch: laravel-site"
+          exit 1
+        fi
+
+    - name: Capture content hash for laravel-site tree
+      run: echo "$(git rev-parse "${GITHUB_REF}^{tree}")" > tree-hash
+
+    - name: Save content hash for laravel-site tree
+      uses: actions/upload-artifact@v2
+      with:
+        name: tree-hash
+        path: tree-hash
+
+  tag-docker-image:
+    name: Tag Docker container image
+    needs: compute-content-tag
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Download content hash for laravel-site tree
+      uses: actions/download-artifact@v2
+      with:
+        name: tree-hash
+
+    - name: Read content hash for laravel-site tree
+      run: |
+        SOURCE_TREE="$(cat tree-hash)"
+        echo "SOURCE_TREE=${SOURCE_TREE}" >> $GITHUB_ENV
+        echo "Using SOURCE_TREE=${SOURCE_TREE}"
+
+    - name: Compute Docker container image address
+      run: |
+        DOCKER_REPOSITORY="${GITHUB_REPOSITORY,,}"
+
+        DOCKER_IMAGE="docker.pkg.github.com/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}"
+        echo "Using path: ${DOCKER_IMAGE}"
+        echo "DOCKER_IMAGE=${DOCKER_IMAGE}" >> $GITHUB_ENV
+        echo "DOCKER_REPOSITORY=${DOCKER_REPOSITORY}" >> $GITHUB_ENV
+        echo "DOCKER_PACKAGE=${DOCKER_PACKAGE}" >> $GITHUB_ENV
+
+
+        set +e
+        echo "Checking registry for existing Docker container image"
+        DOCKER_MANIFEST="$(curl -X GET \
+          -u "${{ github.repository_owner }}:${{ secrets.GITHUB_TOKEN }}" \
+          --fail \
+          "https://docker.pkg.github.com/v2/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}/manifests/${SOURCE_TREE}"
+        )"
+
+        if [ $? -ne 0 ]; then
+          echo "Container image ${DOCKER_IMAGE}:${SOURCE_TREE} not found"
+          exit 1
+        fi
+        set -e
+
+
+        echo 'DOCKER_MANIFEST<<END_OF_MANIFEST' >> $GITHUB_ENV
+        echo "${DOCKER_MANIFEST}" >> $GITHUB_ENV
+        echo 'END_OF_MANIFEST' >> $GITHUB_ENV
+
+    - name: Applying :version tag to existing Docker container image
+      run: |
+        PACKAGE_VERSION="${GITHUB_REF##*/v}"
+
+        curl -X PUT \
+          -u "${{ github.repository_owner }}:${{ secrets.GITHUB_TOKEN }}" \
+          --fail \
+          -d "${DOCKER_MANIFEST}" \
+          "https://docker.pkg.github.com/v2/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}/manifests/${PACKAGE_VERSION}"
+
+        echo "Tagged :${SOURCE_TREE} to :${PACKAGE_VERSION}"
