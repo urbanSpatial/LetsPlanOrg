@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('about');
+    return redirect()->route('engage');
 })->name('home');
-Route::inertia('/about', 'About')->name('about');
+Route::inertia('/engage', 'Engage')->name('engage');
 Route::inertia('/explore', 'Explore')->name('explore');
 Route::inertia('/layers', 'Layers')->name('layers');
 
