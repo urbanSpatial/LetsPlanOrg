@@ -76,9 +76,23 @@ export default {
           .addSource('urban-areas', {
             name: 'urban-areas',
             type: 'vector',
+            generateId: true,
+            promoteId: 'parcel_id',
             tiles: [process.env.MIX_MBTILE_URL],
             maxzoom: 14, // max zoom compiled into the mbtiles file
           });
+
+        // match the feature-state of a feature to the "rank"
+        const parcelColorSteps = [
+          'step',
+          ['feature-state', 'rank'],
+          '#c0c0c0', 1,
+          '#28caf4', 20,
+          '#377bf4', 40,
+          '#311df4', 60,
+          '#8104f4', 80,
+          '#c804f4',
+        ];
 
         map
           .addLayer(
@@ -91,7 +105,7 @@ export default {
               maxzoom: 22, // max zoom to display
               layout: {},
               paint: {
-                'fill-color': '#f08',
+                'fill-color': parcelColorSteps,
                 'fill-opacity': 0.4,
               },
             },
@@ -113,6 +127,14 @@ export default {
             'line-color': '#f08',
             'line-width': 3,
           },
+        });
+
+        // pass events up to vue
+        map.on('sourcedata', (e) => {
+          // sourceDataType == 'visibility' for events that aren't loading events
+          if (e.isSourceLoaded && !e.sourceDataType) {
+            this.$emit('source-data-loaded', e);
+          }
         });
 
         map.on('click', 'urban-areas-fill', (e) => {
