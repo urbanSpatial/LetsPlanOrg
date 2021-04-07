@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,35 @@ Route::inertia('/layers', 'Layers')->name('layers');
 
 Route::get('/{layer}/{z}/{x}/{y}.pbf', 'TileLayer@index');
 Route::get('/parcel/{parcelId}', 'ParcelInfo@index');
+
+
+Route::get('/mbtile', function (Request $request) {
+    $tippecanoeCmd = 'tippecanoe';
+    $output = [];
+    $result = 0;
+    exec('which ' . $tippecanoeCmd, $output, $result);
+    if ($result !== 0) {
+        return 'cannot find tippecanoe';
+    }
+
+    $output = new \Symfony\Component\Console\Output\BufferedOutput();
+    $exitCode = \Illuminate\Support\Facades\Artisan::call('lp:stream-parcel-geo-json', [
+        'project_table' => 'project_parcels_2',
+    ], $output);
+
+    $output = \Illuminate\Support\Facades\Artisan::output();
+    file_put_contents(
+        storage_path('app/mbtiles.geojson'),
+        $output
+    );
+    exec(
+        sprintf(
+            $tippecanoeCmd . ' -z20 -Z8 -f --name=urban-areas -l urban-areas --output=%s %s',
+            storage_path('app/urban_area.mbtiles'),
+            storage_path('app/project1.geojson')
+        ),
+        $output,
+        $result
+    );
+    return 'done';
+});
