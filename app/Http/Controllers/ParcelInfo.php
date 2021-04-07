@@ -15,6 +15,7 @@ class ParcelInfo extends Controller
 
         $salePrice = RealEstateTx::leftJoin('atlas_data', 'atlas_data.opa_account_num', 'real_estate_tx.opa_account_num')
             ->where('atlas_data.parcel_id', $parcel->parcel_id)
+            ->where('real_estate_tx.sale_price_adj', '>', 0)
             ->orderBy('sale_date', 'DESC')
             ->firstOrNew();
 

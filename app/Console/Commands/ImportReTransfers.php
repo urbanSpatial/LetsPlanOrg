@@ -27,12 +27,14 @@ class ImportReTransfers extends Command
     /**
      * Execute the console command.
      *
+     *
      * "","opa_account_num","zip_code","assessed_value","sale_price","sale_date","parcel_id","street_address","property_count","document_type","document_id","lat","lng","property_type","basements","central_air","fireplaces","garage_spaces","garage_type","number_of_bathrooms","number_of_bedrooms","number_stories","number_of_rooms","total_livable_area","year_built","exterior_condition","assessment_date","year","adjusted_sale_price"
 "1",351084600,19120,NA,75000,"2010-01-04","140N190013","626 ALLENGROVE ST",1,"DEED",52162343,40.0381461604154,-75.1030921999736,"Single Family","D","N",0,0,"F",1,3,2,6,1024,"1927",4,NA,2010,63185.31
      * @return int
      */
     public function handle()
     {
+        $saleColumnMax = pow(2, 32);
         $dataFile = $this->argument('data-file');
         if (!Storage::disk('local')->exists($dataFile)) {
             $this->error('Cannot find [' . $dataFile . '] locally, existing ... ');
@@ -47,6 +49,10 @@ class ImportReTransfers extends Command
             return 1;
         }
         $headers = fgets($f, 4096);
+        $hasId = false;
+        if (strlen($headers[0]) == "") {
+            $hasId = true;
+        }
         $count = 0;
         \DB::beginTransaction();
         while (is_resource($f) && !feof($f)) {
@@ -55,6 +61,11 @@ class ImportReTransfers extends Command
                 continue;
             }
             $data_row = str_getcsv($line);
+            // put an empty element to regain
+            // consistency with previous CSV layout
+            if (!$hasId) {
+                array_unshift($data_row, "");
+            }
             $count++;
             if ($count % 1000 == 0) {
                 $this->info($count . ' ...');
@@ -80,7 +91,7 @@ class ImportReTransfers extends Command
             $salPri = $data_row[4] == 'NA' ? null
                 : intval(round($data_row[4] * 100) / 100);
 
-            if ($salPri > pow(2, 9)) {
+            if ($salPri > $saleColumnMax) {
                 // 5 billion dollar sales are not supported
                 continue;
             }

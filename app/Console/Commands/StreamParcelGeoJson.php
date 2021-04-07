@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Models\RealEstateTx;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class StreamParcelGeoJson extends Command
 {
@@ -28,12 +30,14 @@ class StreamParcelGeoJson extends Command
      */
     public function handle()
     {
+        ob_start();
         $table = $this->argument('project_table');
         $parcels = \DB::table($table)
-            ->select([$table.'.*', 'zoning_land_use.landuse', 'zoning_land_use.bldg_desc'])
-            ->leftJoin('atlas_data', 'atlas_data.parcel_id', $table.'.parcel_id')
+            ->select([$table . '.*', 'zoning_land_use.landuse', 'zoning_land_use.bldg_desc'])
+            ->leftJoin('atlas_data', 'atlas_data.parcel_id', $table . '.parcel_id')
             ->leftJoin('zoning_land_use', 'zoning_land_use.opa_account_num', 'atlas_data.opa_account_num')
             ->cursor();
+
         echo '{
         "type": "FeatureCollection",
             "name": "RCO_PARCELS",
@@ -45,12 +49,17 @@ class StreamParcelGeoJson extends Command
         foreach ($parcels as $parcel) {
             echo $lastDelim;
             $geoJson = json_decode($parcel->geo_json, true);
-            $salePrice = RealEstateTx::leftJoin('atlas_data', 'atlas_data.opa_account_num', 'real_estate_tx.opa_account_num')
+            $salePrice = RealEstateTx::leftJoin(
+                    'atlas_data',
+                    'atlas_data.opa_account_num',
+                    'real_estate_tx.opa_account_num'
+                )
                 ->where('atlas_data.parcel_id', $parcel->parcel_id)
+                ->where('real_estate_tx.sale_price_adj', '>', 0)
                 ->orderBy('sale_date', 'DESC')
                 ->first();
             $feature = [
-                'type'=>'Feature',
+                'type' => 'Feature',
                 'properties' => [
                     'landuse'  => $parcel->landuse,
                     'bldg_desc' => $parcel->bldg_desc,
@@ -64,6 +73,8 @@ class StreamParcelGeoJson extends Command
         }
 
         echo "]}\n";
+        $this->getOutput()->write(ob_get_contents());
+        ob_end_clean();
         return 0;
     }
 }
