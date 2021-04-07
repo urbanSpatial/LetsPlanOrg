@@ -10,7 +10,7 @@
       class="figure__content"
       :class="contentClass"
     >
-      {{ value || '\u2014' }}
+      {{ value ? value.toString() : '\u2014' }}
     </div>
   </figure>
 </template>
@@ -24,7 +24,7 @@ export default {
     },
 
     value: {
-      type: String,
+      type: [String, Number],
       default: null,
     },
 
