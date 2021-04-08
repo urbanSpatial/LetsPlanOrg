@@ -17,7 +17,7 @@
       </v-btn>
     </v-bottom-navigation>
 
-    <v-main>
+    <v-main style="overflow: hidden">
       <slot />
     </v-main>
   </v-app>
