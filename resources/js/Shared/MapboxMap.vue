@@ -78,7 +78,7 @@ export default {
             type: 'vector',
             generateId: true,
             promoteId: 'parcel_id',
-            tiles: [process.env.MIX_MBTILE_URL],
+            tiles: [window.location.origin + '/urban/{z}/{x}/{y}.pbf'],
             maxzoom: 14, // max zoom compiled into the mbtiles file
           });
 
