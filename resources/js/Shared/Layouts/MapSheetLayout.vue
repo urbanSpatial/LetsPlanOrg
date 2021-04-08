@@ -6,8 +6,8 @@
       @source-data-loaded="sourceDataLoaded"
     />
     <parcel-popup
+      v-show="isPopupVisible"
       ref="parcelpopup"
-      :showed="true"
     >
       <parcel-info
         ref="parcelinfo"
@@ -36,6 +36,12 @@ export default {
   },
 
   layout: Layout,
+
+  data() {
+    return {
+      isPopupVisible: false,
+    };
+  },
   mounted: () => {
   },
   methods: {
@@ -79,6 +85,7 @@ export default {
         this.$refs.parcelpopup.open = false;
         this.$refs.mapboxmap.highlightClear();
       } else {
+        this.isPopupVisible = true;
         this.$refs.parcelpopup.setMapboxMap(this.$refs.mapboxmap.map);
         this.$refs.parcelpopup.setCoords(event.coords);
         this.$refs.parcelinfo.fetchParcel(event.properties.parcel_id);
