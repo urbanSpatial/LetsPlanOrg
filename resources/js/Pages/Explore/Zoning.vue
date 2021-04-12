@@ -1,6 +1,7 @@
 <template>
   <div>
     <bar-chart
+      ref="chartComponent"
       :chart-data="chartData"
       :options="options"
       :height="null"
@@ -19,12 +20,32 @@ export default {
     BarChart,
   },
 
+  mounted() {
+    this.fetchData()
+      .then((result) => {
+        return result.data;
+      }).then( (jsonApi) => {
+        return jsonApi.data;
+      }).then ( (dataset) => {
+        this.chartData.datasets[0].data =  dataset.attributes.data;
+        this.chartData.labels           =  dataset.attributes.labels;
+      }).then(() => {
+        this.$nextTick( () => {
+          this.$refs.chartComponent.redraw();
+        });
+      });
+  },
+  methods: {
+    fetchData() {
+      return axios.get(window.location.origin + '/chart/zoning/1');
+    },
+  },
   data() {
     return {
       chartData: {
         labels: ['Industrial', 'Lo Res', 'Hi Res', 'Lo Com', 'Hi Com', 'Special'],
         datasets: [{
-          data: [0.1, 0.23, 0.13, 0.19, 0.18, 0.17],
+          data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
           backgroundColor: [
             '#28CAF4',
             '#377BF4',
