@@ -23,6 +23,7 @@ Route::inertia('/layers', 'Layers')->name('layers');
 
 Route::get('/{layer}/{z}/{x}/{y}.pbf', 'TileLayer@index');
 Route::get('/parcel/{parcelId}', 'ParcelInfo@index');
+Route::get('/chart/zoning/{projectId}', 'ChartInfo@zoningChartInfo');
 
 
 Route::get('/mbtile', function (Request $request) {
