@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\RealEstateTx;
+use App\Models\ZoningLandUse;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -58,6 +59,15 @@ class StreamParcelGeoJson extends Command
                 ->where('real_estate_tx.sale_price_adj', '>', 0)
                 ->orderBy('sale_date', 'DESC')
                 ->first();
+            $landUse = ZoningLandUse::leftJoin(
+                    'atlas_data',
+                    'atlas_data.opa_account_num',
+                    'zoning_land_use.opa_account_num'
+                )
+                ->select('zoning_land_use.bldg_desc', 'zoning_land_use.zoning')
+                ->where('atlas_data.parcel_id', $parcel->parcel_id)
+                ->first();
+
             $feature = [
                 'type' => 'Feature',
                 'properties' => [
@@ -65,6 +75,7 @@ class StreamParcelGeoJson extends Command
                     'bldg_desc' => $parcel->bldg_desc,
                     'parcel_id' => $parcel->parcel_id,
                     'sale_price_adj' => $salePrice->sale_price_adj ?? null,
+                    'zoning' => $landUser->zoning ?? null,
                 ],
                 'geometry' => $geoJson
             ];
