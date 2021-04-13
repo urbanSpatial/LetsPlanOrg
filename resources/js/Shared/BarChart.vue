@@ -15,14 +15,13 @@ export default {
       default: null,
     },
   },
-
+  mounted() {
+    this.renderChart(this.chartData, this.options);
+  },
   methods: {
     redraw() {
       this.renderChart(this.chartData, this.options);
     },
-  },
-  mounted() {
-    this.renderChart(this.chartData, this.options);
   },
 };
 </script>

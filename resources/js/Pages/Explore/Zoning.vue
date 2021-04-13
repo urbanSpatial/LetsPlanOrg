@@ -54,15 +54,13 @@ export default {
   },
   mounted() {
     this.fetchData()
-      .then((result) => {
-        return result.data;
-      }).then((jsonApi) => {
-        return jsonApi.data;
-      }).then((dataset) => {
+      .then((result) => result.data)
+      .then((jsonApi) => jsonApi.data)
+      .then((dataset) => {
         this.chartData.datasets[0].data = dataset.attributes.data;
         this.chartData.labels = dataset.attributes.labels;
       })
-	  .then(() => {
+      .then(() => {
         this.$nextTick(() => {
           this.$refs.chartComponent.redraw();
         });
@@ -70,6 +68,7 @@ export default {
   },
   methods: {
     fetchData() {
+      /* eslint-disable prefer-template */
       return window.axios.get(window.location.origin + '/chart/zoning/1');
     },
   },
