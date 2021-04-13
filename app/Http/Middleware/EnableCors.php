@@ -4,7 +4,8 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Response;
 
-class EnableCors {
+class EnableCors
+{
     /**
      * Handle an incoming request.
      *
