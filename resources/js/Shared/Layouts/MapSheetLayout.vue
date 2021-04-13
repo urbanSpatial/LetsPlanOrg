@@ -83,7 +83,6 @@ export default {
         this.$refs.parcelpopup.setCoords(event.coords);
         this.$refs.parcelinfo.fetchParcel(event.properties.parcel_id);
         this.$refs.mapboxmap.highlightSource(event.feature);
-        console.log(event.feature);
       }
     },
   },

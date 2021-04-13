@@ -78,7 +78,8 @@ export default {
             type: 'vector',
             generateId: true,
             promoteId: 'parcel_id',
-            tiles: [window.location.origin + '/urban/{z}/{x}/{y}.pbf'],
+            /* eslint-disable prefer-template */
+            tiles: [process.env.MIX_MBTILE_URL ? process.env.MIX_MBTILE_URL : window.location.origin + '/urban/{z}/{x}/{y}.pbf'],
             maxzoom: 14, // max zoom compiled into the mbtiles file
           });
 
