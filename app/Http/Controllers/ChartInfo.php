@@ -47,35 +47,35 @@ class ChartInfo extends Controller
             'CA1', 'CA2', 'SPINS', 'SPENT', 'SPSTA', 'SPPOP', 'SPPOA', 'SPAIR', '12', 'SC', 'SP', '2002'
         ];
         //total count of all properties that have a zoning value
-        $totalCount = $parcels->sum(function($item) {
+        $totalCount = $parcels->sum(function ($item) {
             return $item->zoning ? $item->cnt : 0;
         });
-        $industrialPct = $parcels->sum(function($item) use ($industrial) {
+        $industrialPct = $parcels->sum(function ($item) use ($industrial) {
             return in_array($item->zoning, $industrial) ? $item->cnt : 0;
         });
         $industrialPct = round($industrialPct / $totalCount * 100) / 100;
 
-        $residentialLowPct = $parcels->sum(function($item) use ($residential) {
+        $residentialLowPct = $parcels->sum(function ($item) use ($residential) {
             return in_array($item->zoning, $residential) ? $item->cnt : 0;
         });
         $residentialLowPct = round($residentialLowPct / $totalCount * 100) / 100;
 
-        $residentialHighPct = $parcels->sum(function($item) use ($residentialHigh) {
+        $residentialHighPct = $parcels->sum(function ($item) use ($residentialHigh) {
             return in_array($item->zoning, $residentialHigh) ? $item->cnt : 0;
         });
         $residentialHighPct = round($residentialHighPct / $totalCount * 100) / 100;
 
-        $commercialLowPct = $parcels->sum(function($item) use ($commercial) {
+        $commercialLowPct = $parcels->sum(function ($item) use ($commercial) {
             return in_array($item->zoning, $commercial) ? $item->cnt : 0;
         });
         $commercialLowPct = round($commercialLowPct / $totalCount * 100) / 100;
 
-        $commercialHighPct = $parcels->sum(function($item) use ($commercialHigh) {
+        $commercialHighPct = $parcels->sum(function ($item) use ($commercialHigh) {
             return in_array($item->zoning, $commercialHigh) ? $item->cnt : 0;
         });
         $commercialHighPct = round($commercialHighPct / $totalCount * 100) / 100;
 
-        $specialPct = $parcels->sum(function($item) use ($special) {
+        $specialPct = $parcels->sum(function ($item) use ($special) {
             return in_array($item->zoning, $special) ? $item->cnt : 0;
         });
         $specialPct = round($specialPct / $totalCount * 100) / 100;
