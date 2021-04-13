@@ -101,4 +101,58 @@ class ChartInfo extends Controller
             ]
         ]);
     }
+
+    public function salesChartInfo(Request $request, $rcoId)
+    {
+        return response()->json([
+            'data' => [
+                'type' => 'dataset',
+                'id'   => 'sales-x-axis',
+                'attributes' => array_merge(
+                    [
+                        'labels' => ['2011', '2012', '2013', '2014', '2015'],
+                        'data' => [
+                            500, 525, 900, 925, 1200,
+                        ],
+                    ]
+                ),
+            ]
+        ]);
+    }
+
+    public function permitsChartInfo(Request $request, $rcoId)
+    {
+        return response()->json([
+            'data' => [
+                'type' => 'dataset',
+                'id'   => 'permits-c-x-axis',
+                'attributes' => array_merge(
+                    [
+                        'labels' => ['2011', '2012', '2013', '2014', '2015'],
+                        'data' => [
+                            100, 125, 200, 225, 500,
+                        ],
+                    ]
+                ),
+            ]
+        ]);
+    }
+
+    public function adjustmentPermitsChartInfo(Request $request, $rcoId)
+    {
+        return response()->json([
+            'data' => [
+                'type' => 'dataset',
+                'id'   => 'permits-a-x-axis',
+                'attributes' => array_merge(
+                    [
+                        'labels' => ['2011', '2012', '2013', '2014', '2015'],
+                        'data' => [
+                            200, 225, 375, 525, 715,
+                        ],
+                    ]
+                ),
+            ]
+        ]);
+    }
 }
