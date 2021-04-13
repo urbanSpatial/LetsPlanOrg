@@ -19,27 +19,6 @@ export default {
   components: {
     BarChart,
   },
-
-  mounted() {
-    this.fetchData()
-      .then((result) => {
-        return result.data;
-      }).then( (jsonApi) => {
-        return jsonApi.data;
-      }).then ( (dataset) => {
-        this.chartData.datasets[0].data =  dataset.attributes.data;
-        this.chartData.labels           =  dataset.attributes.labels;
-      }).then(() => {
-        this.$nextTick( () => {
-          this.$refs.chartComponent.redraw();
-        });
-      });
-  },
-  methods: {
-    fetchData() {
-      return axios.get(window.location.origin + '/chart/zoning/1');
-    },
-  },
   data() {
     return {
       chartData: {
@@ -72,6 +51,26 @@ export default {
         },
       },
     };
+  },
+  mounted() {
+    this.fetchData()
+      .then((result) => {
+        return result.data;
+      }).then((jsonApi) => {
+        return jsonApi.data;
+      }).then ((dataset) => {
+        this.chartData.datasets[0].data =  dataset.attributes.data;
+        this.chartData.labels           =  dataset.attributes.labels;
+      }).then(() => {
+        this.$nextTick( () => {
+          this.$refs.chartComponent.redraw();
+        });
+      });
+  },
+  methods: {
+    fetchData() {
+      return window.axios.get(window.location.origin + '/chart/zoning/1');
+    },
   },
 };
 </script>
