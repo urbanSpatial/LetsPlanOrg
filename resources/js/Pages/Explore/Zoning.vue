@@ -58,11 +58,12 @@ export default {
         return result.data;
       }).then((jsonApi) => {
         return jsonApi.data;
-      }).then ((dataset) => {
-        this.chartData.datasets[0].data =  dataset.attributes.data;
-        this.chartData.labels           =  dataset.attributes.labels;
-      }).then(() => {
-        this.$nextTick( () => {
+      }).then((dataset) => {
+        this.chartData.datasets[0].data = dataset.attributes.data;
+        this.chartData.labels = dataset.attributes.labels;
+      })
+	  .then(() => {
+        this.$nextTick(() => {
           this.$refs.chartComponent.redraw();
         });
       });
