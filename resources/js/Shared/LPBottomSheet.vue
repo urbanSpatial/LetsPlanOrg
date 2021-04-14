@@ -1,6 +1,6 @@
 <template>
-  <div class="lp-sheet">
-    <v-card>
+  <div class="lp-sheet d-flex">
+    <v-card class="d-flex flex-column flex-grow-1">
       <v-btn
         block
         plain
@@ -12,6 +12,7 @@
       <v-divider />
 
       <v-expansion-panels
+        style="flex: 1 1 auto; overflow: auto"
         flat
         tile
         :value="isExpanded ? 0 : false"
@@ -73,8 +74,10 @@ export default {
 <style lang="scss" scoped>
   .lp-sheet {
     bottom: 0;
+    max-height: 100%;
+    max-width: 100%;
     position: absolute;
-    width: 100%;
+    width: 425px;
     z-index: 2;
   }
 
