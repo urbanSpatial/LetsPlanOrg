@@ -45,11 +45,11 @@ export default {
       mapTiles: 'sales',
       parcelSourceId: 'urban-areas',
       rankPropertyMap: {
-        'sales': 'sale_price_adj',
-        'construction': 'permitsc',
-        'alteration': 'permitsa',
-        'zoning': 'zoning',
-      }
+        sales: 'sale_price_adj',
+        construction: 'permitsc',
+        alteration: 'permitsa',
+        zoning: 'zoning',
+      },
     };
   },
   mounted: () => {
@@ -76,11 +76,11 @@ export default {
       if (this.rankPropertyMap[rankType] === undefined) {
         // clear all rank
         features.forEach((feat) => {
-            this.$refs.mapboxmap.map.setFeatureState({
-              source: 'urban-areas',
-              sourceLayer: 'urban-areas',
-              id: feat.id,
-            }, {rank: 0});
+          this.$refs.mapboxmap.map.setFeatureState({
+            source: 'urban-areas',
+            sourceLayer: 'urban-areas',
+            id: feat.id,
+          }, { rank: 0 });
         });
         return;
       }
@@ -89,11 +89,11 @@ export default {
       /* eslint-disable prefer-spread */
       const featMax = Math.max.apply(Math, features.map((f) => f.properties[propertyName] || 0));
       /* eslint-disable prefer-spread */
-      const featMin = Math.min.apply(Math, features.map((f) => f.properties[propertyName]|| 0));
+      const featMin = Math.min.apply(Math, features.map((f) => f.properties[propertyName] || 0));
       features.forEach((feat) => {
         const fstate = { rank: 0 };
         if (feat.properties.sale_price_adj) {
-          fstate.rank = (feat.properties[propertyName]- featMin) / (featMax - featMin);
+          fstate.rank = (feat.properties[propertyName] - featMin) / (featMax - featMin);
         }
         fstate.rank = Math.round(fstate.rank * 100) * 10;
         if (fstate.rank > 100) {
