@@ -89,11 +89,11 @@ export default {
       /* eslint-disable prefer-spread */
       const featMax = Math.max.apply(Math, features.map((f) => f.properties[propertyName] || 0));
       /* eslint-disable prefer-spread */
-      const featMin = Math.min.apply(Math, features.map((f) => f.properties.[propertyName]|| 0));
+      const featMin = Math.min.apply(Math, features.map((f) => f.properties[propertyName]|| 0));
       features.forEach((feat) => {
         const fstate = { rank: 0 };
         if (feat.properties.sale_price_adj) {
-          fstate.rank = (feat.properties.[propertyName]- featMin) / (featMax - featMin);
+          fstate.rank = (feat.properties[propertyName]- featMin) / (featMax - featMin);
         }
         fstate.rank = Math.round(fstate.rank * 100) * 10;
         if (fstate.rank > 100) {
