@@ -1,7 +1,8 @@
 <template>
-  <lp-bottom-sheet>
+  <lp-bottom-sheet @new-pane="handleNewPane">
     <mapbox-map
       ref="mapboxmap"
+      :tiles="mapTiles"
       @parcel-click="showPopup"
       @source-data-loaded="sourceDataLoaded"
     />
@@ -40,11 +41,17 @@ export default {
   data() {
     return {
       isPopupVisible: false,
+      mapTiles: 'sales',
     };
   },
   mounted: () => {
   },
   methods: {
+    handleNewPane(pane) {
+      console.log('handling new pane:', pane);
+      this.mapTiles = pane;
+    },
+
     sourceDataLoaded(event) {
       // we should not mess with the parcel color
       // ranks when other layers have events

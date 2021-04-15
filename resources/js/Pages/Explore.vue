@@ -21,11 +21,11 @@
             vertical
           >
             <v-window-item
-              v-for="(pane, title) in panes"
-              :key="title"
+              v-for="item in panes"
+              :key="item.title"
             >
               <div class="text-truncate">
-                {{ title }}
+                {{ item.title }}
               </div>
             </v-window-item>
           </v-window>
@@ -46,11 +46,11 @@
         class="mt-n6"
       >
         <v-window-item
-          v-for="(pane, title) in panes"
-          :key="title"
+          v-for="item in panes"
+          :key="item.title"
         >
           <v-card-text>
-            <component :is="pane" />
+            <component :is="item.component" />
           </v-card-text>
         </v-window-item>
       </v-window>
@@ -65,7 +65,6 @@ import LPBottomSheet from '../Shared/LPBottomSheet.vue';
 
 // panes
 import Alteration from './Explore/Alteration.vue';
-import LandUse from './Explore/LandUse.vue';
 import NewConstruction from './Explore/NewConstruction.vue';
 import SalePrices from './Explore/SalePrices.vue';
 import Zoning from './Explore/Zoning.vue';
@@ -79,27 +78,54 @@ export default {
 
   layout: [Layout, MapSheetLayout],
 
+  props: {
+    pane: {
+      type: Number,
+      default: uiState.exploreCurrentPane,
+    },
+  },
+
   data() {
     return {
       isExpanded: uiState.exploreIsExpanded,
-      currentPane: uiState.exploreCurrentPane,
-      panes: {
-        'Sale Prices': SalePrices,
-        Zoning,
-        'Land Use': LandUse,
-        'New Construction Permits': NewConstruction,
-        'Alteration Permits': Alteration,
-      },
+      currentPane: this.pane,
+      panes: [{
+        title: 'Sale Prices',
+        component: SalePrices,
+        route: 'sales',
+      }, {
+        title: 'Zoning',
+        component: Zoning,
+        route: 'zoning',
+      }, {
+        title: 'New Construction Permits',
+        component: NewConstruction,
+        route: 'construction',
+      }, {
+        title: 'Alteration Permits',
+        component: Alteration,
+        route: 'alteration',
+      }],
     };
   },
 
   computed: {
+    currentPaneRoute() {
+      return this.panes[this.currentPane].route;
+    },
+
     paneCount() {
-      return Object.keys(this.panes).length;
+      return this.panes.length;
     },
   },
 
   methods: {
+    handleNewPane() {
+      window.history.pushState(null, null, `/explore/${this.currentPaneRoute}`);
+      uiState.exploreCurrentPane = this.currentPane;
+      this.$parent.$emit('new-pane', this.currentPaneRoute);
+    },
+
     handleToggle(newState) {
       uiState.exploreIsExpanded = newState;
     },
@@ -111,7 +137,7 @@ export default {
         this.currentPane = 0;
       }
 
-      uiState.exploreCurrentPane = this.currentPane;
+      this.handleNewPane();
     },
 
     goToPrevPane() {
@@ -121,7 +147,7 @@ export default {
         this.currentPane = this.paneCount - 1;
       }
 
-      uiState.exploreCurrentPane = this.currentPane;
+      this.handleNewPane();
     },
   },
 };
