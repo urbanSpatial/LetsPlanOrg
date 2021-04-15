@@ -24,6 +24,7 @@ export default {
   watch: {
     tiles(newTiles, oldTiles) {
       console.log('watching tiles:', oldTiles, '->', newTiles);
+      this.$emit('parcel-rank-changed', newTiles);
 
       // TODO change or update the tile set here
       // newTiles will be one of ['sales', 'zoning', 'construction', 'alteration']
