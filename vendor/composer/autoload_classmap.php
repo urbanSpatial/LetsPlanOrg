@@ -17,6 +17,7 @@ return array(
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\ChartInfo' => $baseDir . '/app/Http/Controllers/ChartInfo.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Controllers\\ExploreController' => $baseDir . '/app/Http/Controllers/ExploreController.php',
     'App\\Http\\Controllers\\ParcelInfo' => $baseDir . '/app/Http/Controllers/ParcelInfo.php',
     'App\\Http\\Controllers\\TileLayer' => $baseDir . '/app/Http/Controllers/TileLayer.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',

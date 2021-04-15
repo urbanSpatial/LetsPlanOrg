@@ -18,7 +18,8 @@ Route::get('/', function () {
     return redirect()->route('engage');
 })->name('home');
 Route::inertia('/engage', 'Engage')->name('engage');
-Route::inertia('/explore', 'Explore')->name('explore');
+// Route::inertia('/explore', 'Explore')->name('explore');
+Route::get('/explore/{pane?}', 'ExploreController@index')->name('explore');
 Route::inertia('/layers', 'Layers')->name('layers');
 
 Route::get('/{layer}/{z}/{x}/{y}.pbf', 'TileLayer@index');
