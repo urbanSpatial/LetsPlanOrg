@@ -33,11 +33,11 @@ export default {
         'match',
         ['get', 'zoning'],
         '', '#c0c0c0',
-        'residential', '#28caf4',
-        'residential-high', '#377bf4',
-        'commercial', '#311df4',
-        'commercial-high', '#8104f4',
-        'industrial', '#c804f4',
+        'residential', '#377bf4',
+        'residential-high', '#311df4',
+        'commercial', '#8104f4',
+        'commercial-high', '#c804f4',
+        'industrial', '#28caf4',
         '#c0c0c0',
       ],
     };
@@ -49,16 +49,13 @@ export default {
       this.$emit('parcel-rank-changed', newTiles);
       if (newTiles === 'sales') {
         this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorRankSteps);
-        this.map.triggerRepaint();
         return;
       }
       if (newTiles === 'zoning') {
         this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorZoningCategories);
-        this.map.triggerRepaint();
         return;
       }
       this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorNone);
-      this.map.triggerRepaint();
 
       // TODO change or update the tile set here
       // newTiles will be one of ['sales', 'zoning', 'construction', 'alteration']
