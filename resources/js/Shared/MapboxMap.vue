@@ -18,6 +18,28 @@ export default {
   data() {
     return {
       map: null,
+      colorNone: '#c0c0c0',
+      colorRankSteps: [
+        'step',
+        ['feature-state', 'rank'],
+        '#c0c0c0', 1,
+        '#28caf4', 20,
+        '#377bf4', 40,
+        '#311df4', 60,
+        '#8104f4', 80,
+        '#c804f4',
+      ],
+      colorZoningCategories:[
+        'match',
+        ['get', 'zoning'],
+        '', '#c0c0c0',
+        'residential',      '#28caf4',
+        'residential-high', '#377bf4',
+        'commercial',       '#311df4',
+        'commercial-high',  '#8104f4',
+        'industrial',       '#c804f4',
+        '#c0c0c0',
+      ],
     };
   },
 
@@ -25,6 +47,18 @@ export default {
     tiles(newTiles, oldTiles) {
       console.log('watching tiles:', oldTiles, '->', newTiles);
       this.$emit('parcel-rank-changed', newTiles);
+      if (newTiles == 'sales') {
+        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorRankSteps);
+        this.map.triggerRepaint();
+        return;
+      }
+      if (newTiles == 'zoning') {
+        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorZoningCategories);
+        this.map.triggerRepaint();
+        return;
+      }
+      this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorNone);
+      this.map.triggerRepaint();
 
       // TODO change or update the tile set here
       // newTiles will be one of ['sales', 'zoning', 'construction', 'alteration']
@@ -101,18 +135,7 @@ export default {
             maxzoom: 14, // max zoom compiled into the mbtiles file
           });
 
-        // match the feature-state of a feature to the "rank"
-        const parcelColorSteps = [
-          'step',
-          ['feature-state', 'rank'],
-          '#c0c0c0', 1,
-          '#28caf4', 20,
-          '#377bf4', 40,
-          '#311df4', 60,
-          '#8104f4', 80,
-          '#c804f4',
-        ];
-
+        const colorNone = '#c0c0c0';
         map
           .addLayer(
             {
@@ -124,7 +147,7 @@ export default {
               maxzoom: 22, // max zoom to display
               layout: {},
               paint: {
-                'fill-color': parcelColorSteps,
+                'fill-color': colorNone,
                 'fill-opacity': 0.4,
               },
             },

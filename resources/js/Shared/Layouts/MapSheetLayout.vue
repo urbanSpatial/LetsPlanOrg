@@ -56,7 +56,6 @@ export default {
   },
   methods: {
     handleNewPane(pane) {
-      console.log('handling new pane:', pane);
       this.mapTiles = pane;
     },
 
@@ -85,7 +84,14 @@ export default {
         return;
       }
       const propertyName = this.rankPropertyMap[rankType];
-
+      if (propertyName == 'sale_price_adj') {
+        this.rankProperty(propertyName, features);
+      }
+      if (propertyName == 'zoning') {
+        //this.categorizeProperty(propertyName, features);
+      }
+    },
+    rankProperty(propertyName, features) {
       /* eslint-disable prefer-spread */
       const featMax = Math.max.apply(Math, features.map((f) => f.properties[propertyName] || 0));
       /* eslint-disable prefer-spread */
