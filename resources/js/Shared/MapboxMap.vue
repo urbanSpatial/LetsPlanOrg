@@ -8,10 +8,27 @@ import mapboxgl from 'mapbox-gl';
 export default {
   name: 'MapboxMap',
 
+  props: {
+    tiles: {
+      type: String,
+      default: 'sales',
+    },
+  },
+
   data() {
     return {
       map: null,
     };
+  },
+
+  watch: {
+    tiles(newTiles, oldTiles) {
+      console.log('watching tiles:', oldTiles, '->', newTiles);
+      this.$emit('parcel-rank-changed', newTiles);
+
+      // TODO change or update the tile set here
+      // newTiles will be one of ['sales', 'zoning', 'construction', 'alteration']
+    },
   },
 
   mounted() {
@@ -19,6 +36,7 @@ export default {
 
     // push to end of call stack to avoid layout race
     setTimeout(this.initMap, 0);
+    console.log('mapping tiles:', this.mapTiles);
   },
 
   methods: {
