@@ -84,11 +84,8 @@ export default {
         return;
       }
       const propertyName = this.rankPropertyMap[rankType];
-      if (propertyName == 'sale_price_adj') {
+      if (propertyName === 'sale_price_adj') {
         this.rankProperty(propertyName, features);
-      }
-      if (propertyName == 'zoning') {
-        //this.categorizeProperty(propertyName, features);
       }
     },
     rankProperty(propertyName, features) {

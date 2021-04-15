@@ -29,30 +29,30 @@ export default {
         '#8104f4', 80,
         '#c804f4',
       ],
-      colorZoningCategories:[
+      colorZoningCategories: [
         'match',
         ['get', 'zoning'],
         '', '#c0c0c0',
-        'residential',      '#28caf4',
+        'residential', '#28caf4',
         'residential-high', '#377bf4',
-        'commercial',       '#311df4',
-        'commercial-high',  '#8104f4',
-        'industrial',       '#c804f4',
+        'commercial', '#311df4',
+        'commercial-high', '#8104f4',
+        'industrial', '#c804f4',
         '#c0c0c0',
       ],
     };
   },
 
   watch: {
+    // eslint-disable-next-line no-unused-vars
     tiles(newTiles, oldTiles) {
-      console.log('watching tiles:', oldTiles, '->', newTiles);
       this.$emit('parcel-rank-changed', newTiles);
-      if (newTiles == 'sales') {
+      if (newTiles === 'sales') {
         this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorRankSteps);
         this.map.triggerRepaint();
         return;
       }
-      if (newTiles == 'zoning') {
+      if (newTiles === 'zoning') {
         this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorZoningCategories);
         this.map.triggerRepaint();
         return;
@@ -70,7 +70,6 @@ export default {
 
     // push to end of call stack to avoid layout race
     setTimeout(this.initMap, 0);
-    console.log('mapping tiles:', this.mapTiles);
   },
 
   methods: {
