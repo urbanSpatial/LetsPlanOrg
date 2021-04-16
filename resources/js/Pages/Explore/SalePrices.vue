@@ -5,6 +5,7 @@
       :pips="legendPips"
     />
     <line-chart
+      ref="chartComponent"
       :chart-data="chartData"
       :options="options"
       :height="null"
@@ -31,7 +32,7 @@ export default {
       chartData: {
         labels: [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
         datasets: [{
-          data: [80000, 150000, 175000, 180000, 200000, 190000, 210000, 250000, 260000, 320000],
+          data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
           borderColor: '#f08',
           backgroundColor: '#ff008833',
           pointBackgroundColor: 'white',
@@ -73,5 +74,26 @@ export default {
       },
     };
   },
+  mounted() {
+    this.fetchData()
+      .then((result) => result.data)
+      .then((jsonApi) => jsonApi.data)
+      .then((dataset) => {
+        this.chartData.datasets[0].data = dataset.attributes.data;
+        this.chartData.labels = dataset.attributes.labels;
+      })
+      .then(() => {
+        this.$nextTick(() => {
+          this.$refs.chartComponent.redraw();
+        });
+      });
+  },
+  methods: {
+    fetchData() {
+      /* eslint-disable prefer-template */
+      return window.axios.get(window.location.origin + '/chart/sales/1');
+    },
+  },
+
 };
 </script>
