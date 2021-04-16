@@ -35,6 +35,7 @@ return array(
     'App\\Models\\Parcel' => $baseDir . '/app/Models/Parcel.php',
     'App\\Models\\Rco' => $baseDir . '/app/Models/Rco.php',
     'App\\Models\\RealEstateTx' => $baseDir . '/app/Models/RealEstateTx.php',
+    'App\\Models\\Traits\\DefinesLandUseZones' => $baseDir . '/app/Models/Traits/DefinesLandUseZones.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Models\\ZoningLandUse' => $baseDir . '/app/Models/ZoningLandUse.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',

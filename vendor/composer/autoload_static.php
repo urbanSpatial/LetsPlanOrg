@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitfb4160756fc403ef26f9eda7cdd7aecb
+class ComposerStaticInite26965a769be1154c0c7ee9c9391aaa2
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -590,6 +590,7 @@ class ComposerStaticInitfb4160756fc403ef26f9eda7cdd7aecb
         'App\\Models\\Parcel' => __DIR__ . '/../..' . '/app/Models/Parcel.php',
         'App\\Models\\Rco' => __DIR__ . '/../..' . '/app/Models/Rco.php',
         'App\\Models\\RealEstateTx' => __DIR__ . '/../..' . '/app/Models/RealEstateTx.php',
+        'App\\Models\\Traits\\DefinesLandUseZones' => __DIR__ . '/../..' . '/app/Models/Traits/DefinesLandUseZones.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Models\\ZoningLandUse' => __DIR__ . '/../..' . '/app/Models/ZoningLandUse.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
@@ -5620,10 +5621,10 @@ class ComposerStaticInitfb4160756fc403ef26f9eda7cdd7aecb
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitfb4160756fc403ef26f9eda7cdd7aecb::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitfb4160756fc403ef26f9eda7cdd7aecb::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitfb4160756fc403ef26f9eda7cdd7aecb::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitfb4160756fc403ef26f9eda7cdd7aecb::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite26965a769be1154c0c7ee9c9391aaa2::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite26965a769be1154c0c7ee9c9391aaa2::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInite26965a769be1154c0c7ee9c9391aaa2::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInite26965a769be1154c0c7ee9c9391aaa2::$classMap;
 
         }, null, ClassLoader::class);
     }
