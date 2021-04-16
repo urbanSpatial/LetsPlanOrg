@@ -1,8 +1,10 @@
 <script>
 import { Bar } from 'vue-chartjs';
+import ChartComponent from './ChartComponent';
 
 export default {
   extends: Bar,
+  mixins: [ChartComponent],
 
   props: {
     chartData: {
@@ -17,11 +19,6 @@ export default {
   },
   mounted() {
     this.renderChart(this.chartData, this.options);
-  },
-  methods: {
-    redraw() {
-      this.renderChart(this.chartData, this.options);
-    },
   },
 };
 </script>

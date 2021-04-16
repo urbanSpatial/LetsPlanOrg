@@ -1,8 +1,10 @@
 <script>
 import { Line } from 'vue-chartjs';
+import ChartComponent from './ChartComponent';
 
 export default {
   extends: Line,
+  mixins: [ChartComponent],
 
   props: {
     chartData: {
@@ -15,7 +17,6 @@ export default {
       default: null,
     },
   },
-
   mounted() {
     this.renderChart(this.chartData, this.options);
   },
