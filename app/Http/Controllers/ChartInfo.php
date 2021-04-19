@@ -89,16 +89,34 @@ class ChartInfo extends Controller
 
     public function salesChartInfo(Request $request, $rcoId)
     {
+        $table = 'project_parcels_2';
+        if ($rcoId == null) {
+            $table = 'project_parcels_2';
+        }
+
+        $parcels = \DB::table($table)
+            ->select([
+                \DB::raw("AVG(sale_price_adj)"),
+                'sale_year',
+            ])
+            ->leftJoin('atlas_data', 'atlas_data.parcel_id', $table . '.parcel_id')
+            ->leftJoin('real_estate_tx', 'real_estate_tx.opa_account_num', 'atlas_data.opa_account_num')
+            ->groupBy([
+                'real_estate_tx.sale_year',
+            ])
+            ->whereNotNull('sale_year')
+            ->orderBy('sale_year', 'ASC')
+            ->get();
+
+
         return response()->json([
             'data' => [
                 'type' => 'dataset',
                 'id'   => 'sales-x-axis',
                 'attributes' => array_merge(
                     [
-                        'labels' => ['2011', '2012', '2013', '2014', '2015'],
-                        'data' => [
-                            500, 525, 900, 925, 1200,
-                        ],
+                        'labels' => $parcels->pluck('sale_year'),
+                        'data' => $parcels->pluck('avg'),
                     ]
                 ),
             ]
