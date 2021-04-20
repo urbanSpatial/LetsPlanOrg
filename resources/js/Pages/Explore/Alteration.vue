@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import MapLegend from '../../Shared/MapLegend.vue';
 import BarChart from '../../Shared/BarChart.vue';
 
 export default {
