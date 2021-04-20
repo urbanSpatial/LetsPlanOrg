@@ -125,15 +125,28 @@ class ChartInfo extends Controller
 
     public function permitsChartInfo(Request $request, $rcoId)
     {
+        $table = 'project_parcels_2';
+        if ($rcoId == null) {
+            $table = 'project_parcels_2';
+        }
+
+        $parcels = $this->getPermitsPerParcel($table, 'BP_NEWCNST');
+
+        $permitCountColl = $parcels->countBy(function ($item, $key) {
+            return $item->permit_count >= 2 ? 1 : 2;
+        });
+
+        $zeroCount = $this->getZeroCount($table);
+
         return response()->json([
             'data' => [
                 'type' => 'dataset',
                 'id'   => 'permits-c-x-axis',
                 'attributes' => array_merge(
                     [
-                        'labels' => ['2011', '2012', '2013', '2014', '2015'],
+                        'labels' => ['0', '1', '2+'],
                         'data' => [
-                            100, 125, 200, 225, 500,
+                            $zeroCount->permit_count, $permitCountColl->get(1), $permitCountColl->get(2),
                         ],
                     ]
                 ),
@@ -143,19 +156,60 @@ class ChartInfo extends Controller
 
     public function adjustmentPermitsChartInfo(Request $request, $rcoId)
     {
+        $table = 'project_parcels_2';
+        if ($rcoId == null) {
+            $table = 'project_parcels_2';
+        }
+
+        $parcels = $this->getPermitsPerParcel($table, 'BP_ALTER  ');
+
+        $permitCountColl = $parcels->countBy(function ($item, $key) {
+            return $item->permit_count >= 2 ? 1 : 2;
+        });
+
+        $zeroCount = $this->getZeroCount($table);
+
         return response()->json([
             'data' => [
                 'type' => 'dataset',
                 'id'   => 'permits-a-x-axis',
                 'attributes' => array_merge(
                     [
-                        'labels' => ['2011', '2012', '2013', '2014', '2015'],
+                        'labels' => ['0', '1', '2+'],
                         'data' => [
-                            200, 225, 375, 525, 715,
+                            $zeroCount->permit_count, $permitCountColl->get(1), $permitCountColl->get(2),
                         ],
                     ]
                 ),
             ]
         ]);
+    }
+
+    protected function getZeroCount($table)
+    {
+        return \DB::table($table)
+            ->select([
+                \DB::raw("COUNT(\"atlas_data\".opa_account_num) as permit_count"),
+            ])
+            ->leftJoin('atlas_data', 'atlas_data.parcel_id', $table . '.parcel_id')
+            ->leftJoin('bldg_permit', 'bldg_permit.opa_account_num', 'atlas_data.opa_account_num')
+            ->whereNull('permit_type')
+            ->first();
+    }
+
+
+    protected function getPermitsPerParcel($table, $type)
+    {
+        return \DB::table($table)
+            ->select([
+                \DB::raw("COUNT(bldg_permit.id) as permit_count"),
+            ])
+            ->leftJoin('atlas_data', 'atlas_data.parcel_id', $table . '.parcel_id')
+            ->leftJoin('bldg_permit', 'bldg_permit.opa_account_num', 'atlas_data.opa_account_num')
+            ->groupBy([
+                'bldg_permit.opa_account_num',
+            ])
+            ->where('permit_type', $type)
+            ->get();
     }
 }
