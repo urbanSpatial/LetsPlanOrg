@@ -43,20 +43,16 @@ export default {
       colorPermitsAlterSteps: [
         'step',
         ['get', 'alter_permits'],
-        '#c0c0c0', 0,
-        '#c0c0c0', 1,
-        '#8104f4', 2,
-        '#28caf4', 3,
-        '#28caf4',
+        '#c0c0c0',
+        1, '#28caf4',
+        2, '#8104f4',
       ],
       colorPermitsConstSteps: [
         'step',
         ['get', 'const_permits'],
-        '#c0c0c0', 0,
-        '#c0c0c0', 1,
-        '#8104f4', 2,
-        '#28caf4', 3,
-        '#28caf4'
+        '#c0c0c0',
+        1, '#28caf4',
+        2, '#8104f4',
       ],
     };
   },
