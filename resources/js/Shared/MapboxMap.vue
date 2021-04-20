@@ -40,6 +40,24 @@ export default {
         'industrial', '#28caf4',
         '#c0c0c0',
       ],
+      colorPermitsAlterSteps: [
+        'step',
+        ['get', 'alter_permits'],
+        '#c0c0c0', 0,
+        '#c0c0c0', 1,
+        '#8104f4', 2,
+        '#28caf4', 3,
+        '#28caf4',
+      ],
+      colorPermitsConstSteps: [
+        'step',
+        ['get', 'const_permits'],
+        '#c0c0c0', 0,
+        '#c0c0c0', 1,
+        '#8104f4', 2,
+        '#28caf4', 3,
+        '#28caf4'
+      ],
     };
   },
 
@@ -55,10 +73,15 @@ export default {
         this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorZoningCategories);
         return;
       }
+      if (newTiles === 'alteration') {
+        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorPermitsAlterSteps);
+        return;
+      }
+      if (newTiles === 'construction') {
+        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorPermitsConstSteps);
+        return;
+      }
       this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorNone);
-
-      // TODO change or update the tile set here
-      // newTiles will be one of ['sales', 'zoning', 'construction', 'alteration']
     },
   },
 
