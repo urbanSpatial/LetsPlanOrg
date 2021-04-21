@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     fetchData() {
-      /* eslint-disable prefer-template */
+      /* eslint-disable-next-line prefer-template */
       return window.axios.get(window.location.origin + '/chart/sales/1');
     },
   },

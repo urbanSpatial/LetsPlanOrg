@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\RealEstateTx;
 use App\Models\ZoningLandUse;
+use App\Models\BldgPermit;
 use App\Models\Traits\DefinesLandUseZones;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,7 +38,12 @@ class StreamParcelGeoJson extends Command
         ob_start();
         $table = $this->argument('project_table');
         $parcels = \DB::table($table)
-            ->select([$table . '.*', 'zoning_land_use.landuse', 'zoning_land_use.bldg_desc'])
+            ->select([
+                $table . '.parcel_id',
+                $table . '.geo_json',
+                'zoning_land_use.landuse',
+                'zoning_land_use.bldg_desc',
+            ])
             ->leftJoin('atlas_data', 'atlas_data.parcel_id', $table . '.parcel_id')
             ->leftJoin('zoning_land_use', 'zoning_land_use.opa_account_num', 'atlas_data.opa_account_num')
             ->cursor();
@@ -71,6 +77,27 @@ class StreamParcelGeoJson extends Command
                 ->where('atlas_data.parcel_id', $parcel->parcel_id)
                 ->first();
 
+            $alterPermit = BldgPermit::leftJoin(
+                    'atlas_data',
+                    'atlas_data.opa_account_num',
+                    'bldg_permit.opa_account_num'
+                )
+                ->selectRaw('count(bldg_permit.id) as permit_count')
+                ->where('atlas_data.parcel_id', $parcel->parcel_id)
+                ->where('bldg_permit.permit_type', 'BP_ALTER  ')
+                ->first();
+
+            $constPermit = BldgPermit::leftJoin(
+                    'atlas_data',
+                    'atlas_data.opa_account_num',
+                    'bldg_permit.opa_account_num'
+                )
+                ->selectRaw('count(bldg_permit.id) as permit_count')
+                ->where('atlas_data.parcel_id', $parcel->parcel_id)
+                ->where('bldg_permit.permit_type', 'BP_NEWCNST')
+                ->first();
+
+
             $feature = [
                 'type' => 'Feature',
                 'properties' => [
@@ -78,6 +105,8 @@ class StreamParcelGeoJson extends Command
                     'bldg_desc' => $parcel->bldg_desc,
                     'parcel_id' => $parcel->parcel_id,
                     'sale_price_adj' => $salePrice->sale_price_adj ?? null,
+                    'alter_permits' => $alterPermit->permit_count ?? null,
+                    'const_permits' => $constPermit->permit_count ?? null,
                     'zoning' => $this->transformLandUse($landUse),
                 ],
                 'geometry' => $geoJson
