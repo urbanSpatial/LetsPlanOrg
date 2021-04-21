@@ -1,10 +1,7 @@
 <template>
   <div>
-    <map-legend
-      class="mb-4"
-      :pips="legendPips"
-    />
-    <line-chart
+    <bar-chart
+      ref="chartComponent"
       :chart-data="chartData"
       :options="options"
       :height="null"
@@ -16,35 +13,26 @@
 </template>
 
 <script>
-import MapLegend from '../../Shared/MapLegend.vue';
-import LineChart from '../../Shared/LineChart.vue';
+import BarChart from '../../Shared/BarChart.vue';
 
 export default {
   components: {
-    MapLegend,
-    LineChart,
+    BarChart,
   },
 
   data() {
     return {
       chartData: {
-        labels: [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
+        labels: ['0', '1', '2+'],
         datasets: [{
-          data: [500, 600, 700, 750, 800, 1000, 1200, 1800, 2000, 2600],
-          borderColor: '#f08',
-          backgroundColor: '#ff008833',
-          pointBackgroundColor: 'white',
+          data: [0.0, 0.0, 0.0],
+          backgroundColor: [
+            '#C0C0C0',
+            '#28CAF4',
+            '#8104F4',
+          ],
         }],
       },
-
-      legendPips: [
-        { name: '100K', color: '#28CAF4' },
-        { name: '100K', color: '#377BF4' },
-        { name: '100K', color: '#311DF4' },
-        { name: '100K', color: '#8104F4' },
-        { name: '100K', color: '#C804F4' },
-      ],
-
       options: {
         aspectRatio: 16 / 9,
         scales: {
@@ -59,6 +47,26 @@ export default {
         },
       },
     };
+  },
+  mounted() {
+    this.fetchData()
+      .then((result) => result.data)
+      .then((jsonApi) => jsonApi.data)
+      .then((dataset) => {
+        this.chartData.datasets[0].data = dataset.attributes.data;
+        this.chartData.labels = dataset.attributes.labels;
+      })
+      .then(() => {
+        this.$nextTick(() => {
+          this.$refs.chartComponent.redraw();
+        });
+      });
+  },
+  methods: {
+    fetchData() {
+      /* eslint-disable-next-line prefer-template */
+      return window.axios.get(window.location.origin + '/chart/permits-c/1');
+    },
   },
 };
 </script>
