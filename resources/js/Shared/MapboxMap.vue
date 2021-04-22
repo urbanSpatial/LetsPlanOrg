@@ -60,24 +60,7 @@ export default {
   watch: {
     // eslint-disable-next-line no-unused-vars
     tiles(newTiles, oldTiles) {
-      this.$emit('parcel-rank-changed', newTiles);
-      if (newTiles === 'sales') {
-        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorRankSteps);
-        return;
-      }
-      if (newTiles === 'zoning') {
-        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorZoningCategories);
-        return;
-      }
-      if (newTiles === 'alteration') {
-        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorPermitsAlterSteps);
-        return;
-      }
-      if (newTiles === 'construction') {
-        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorPermitsConstSteps);
-        return;
-      }
-      this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorNone);
+      this.showTiles(newTiles);
     },
   },
 
@@ -105,6 +88,27 @@ export default {
       clickHighlightSource.setData(emptyPolygonFeature);
     },
 
+    showTiles(tiles) {
+      this.$emit('parcel-rank-changed', tiles);
+      if (tiles === 'sales') {
+        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorRankSteps);
+        return;
+      }
+      if (tiles === 'zoning') {
+        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorZoningCategories);
+        return;
+      }
+      if (tiles === 'alteration') {
+        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorPermitsAlterSteps);
+        return;
+      }
+      if (tiles === 'construction') {
+        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorPermitsConstSteps);
+        return;
+      }
+      this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorNone);
+    },
+
     initMap() {
       const emptyPolygonFeature = {
         type: 'Feature',
@@ -127,7 +131,7 @@ export default {
         .addControl(new mapboxgl.ScaleControl());
 
       const { map } = this;
-      this.map.on('load', () => {
+      map.on('load', () => {
         // Find the ID of the first symbol layer in the map style
         const { layers } = map.getStyle();
         let targetLayerId;
@@ -206,6 +210,8 @@ export default {
           }
           this.$emit('parcel-click', { properties: parcel, coords: coordinates, feature });
         });
+
+        this.showTiles(this.tiles);
       });
     },
   },
