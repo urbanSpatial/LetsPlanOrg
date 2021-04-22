@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       isPopupVisible: false,
-      mapTiles: 'sales',
+      mapTiles: route().params.pane,
       parcelSourceId: 'urban-areas',
       rankPropertyMap: {
         sales: 'sale_price_adj',
