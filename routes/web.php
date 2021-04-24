@@ -19,6 +19,9 @@ Route::get('/', function () {
 })->name('home');
 Route::inertia('/engage', 'Engage')->name('engage');
 // Route::inertia('/explore', 'Explore')->name('explore');
+Route::get('/explore', function () {
+    return redirect()->route('explore', ['pane' => 'sales']);
+});
 Route::get('/explore/{pane?}', 'ExploreController@index')->name('explore');
 Route::inertia('/layers', 'Layers')->name('layers');
 
