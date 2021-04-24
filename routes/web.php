@@ -57,5 +57,8 @@ Route::get('/mbtile', function (Request $request) {
         $output,
         $result
     );
+    if ($result !== 0) {
+        return "failure to run tippecanoe. " . $tippecanoeCmd;
+    }
     return 'done';
 });
