@@ -45,18 +45,14 @@ Route::get('/mbtile', function (Request $request) {
     $output = new \Symfony\Component\Console\Output\BufferedOutput();
     $exitCode = \Illuminate\Support\Facades\Artisan::call('lp:stream-parcel-geo-json', [
         'project_table' => 'project_parcels_2',
+        'output_file' => storage_path('app/mbtiles.geojson'),
     ], $output);
 
-    $output = \Illuminate\Support\Facades\Artisan::output();
-    file_put_contents(
-        storage_path('app/mbtiles.geojson'),
-        $output
-    );
     exec(
         sprintf(
             $tippecanoeCmd . ' -z20 -Z8 -f --name=urban-areas -l urban-areas --output=%s %s',
             storage_path('app/urban_area.mbtiles'),
-            storage_path('app/project1.geojson')
+            storage_path('app/mbtiles.geojson')
         ),
         $output,
         $result
