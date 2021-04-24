@@ -13,10 +13,10 @@ class ExploreController extends Controller
         'alteration' => 3,
     ];
 
-    public function index(string $pane = null)
+    public function index(string $pane)
     {
         return inertia('Explore', [
-            'pane' => self::PANES[$pane] ?? null,
+            'pane' => self::PANES[$pane],
         ]);
     }
 }
