@@ -19,7 +19,7 @@ class StreamParcelGeoJson extends Command
      *
      * @var string
      */
-    protected $signature = 'lp:stream-parcel-geo-json {project_table}';
+    protected $signature = 'lp:stream-parcel-geo-json {project_table} {output_file?}';
 
     /**
      * The console command description.
@@ -35,8 +35,13 @@ class StreamParcelGeoJson extends Command
      */
     public function handle()
     {
-        ob_start();
         $table = $this->argument('project_table');
+        $outputFile = $this->argument('output_file');
+        if ($outputFile === null) {
+            $outputStream = fopen('php://output', 'w');
+        } else {
+            $outputStream = fopen($outputFile, 'w');
+        }
         $parcels = \DB::table($table)
             ->select([
                 $table . '.parcel_id',
@@ -48,16 +53,16 @@ class StreamParcelGeoJson extends Command
             ->leftJoin('zoning_land_use', 'zoning_land_use.opa_account_num', 'atlas_data.opa_account_num')
             ->cursor();
 
-        echo '{
+        fputs($outputStream, '{
         "type": "FeatureCollection",
             "name": "RCO_PARCELS",
             "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
             "features": [
-';
+');
 
         $lastDelim = '';
         foreach ($parcels as $parcel) {
-            echo $lastDelim;
+            fputs($outputStream, $lastDelim);
             $geoJson = json_decode($parcel->geo_json, true);
             $salePrice = RealEstateTx::leftJoin(
                     'atlas_data',
@@ -111,13 +116,13 @@ class StreamParcelGeoJson extends Command
                 ],
                 'geometry' => $geoJson
             ];
-            echo json_encode($feature);
+            fputs($outputStream, json_encode($feature));
+            fflush($outputStream);
             $lastDelim = ",\n";
         }
 
-        echo "]}\n";
-        $this->getOutput()->write(ob_get_contents());
-        ob_end_clean();
+        fputs($outputStream, "]}\n");
+        fclose($outputStream);
         return 0;
     }
 
