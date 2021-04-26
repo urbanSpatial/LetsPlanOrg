@@ -1,0 +1,19 @@
+{{- if .Values.volumes.app.data }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "letsplan.fullname" . }}-app-data
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "letsplan.labels" . | nindent 4 }}
+    component: app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    {{- if .Values.volumes.app.data.storageClassName }}
+    storageClassName: {{ .Values.volumes.app.data.storageClassName }}
+    {{- end }}
+    requests:
+      storage: {{ .Values.volumes.app.data.size }}
+{{- end }}
