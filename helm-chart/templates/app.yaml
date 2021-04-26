@@ -26,6 +26,18 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 
+      {{- if .Values.volumes.app }}
+      volumes:
+        {{- if .Values.volumes.app.data }}
+        - name: {{ include "letsplan.fullname" . }}-app-data
+          persistentVolumeClaim:
+            claimName: {{ include "letsplan.fullname" . }}-app-data
+        {{- end }}
+      {{- end }}
+
+      securityContext:
+        {{- toYaml .Values.workloads.app.podSecurityContext | nindent 8 }}
+
       containers:
         - name: {{ .Release.Name }}
           image: {{ .Values.images.app.repository }}:{{ .Values.images.app.tag | default .Chart.AppVersion }}
@@ -35,6 +47,14 @@ spec:
           - containerPort: {{ .Values.workloads.app.port }}
             name: http
             protocol: TCP
+
+          {{- if .Values.volumes.app }}
+          volumeMounts:
+            {{- if .Values.volumes.app.data }}
+            - name: {{ include "letsplan.fullname" . }}-app-data
+              mountPath: /srv/app/storage/app
+            {{- end }}
+          {{- end }}
 
           envFrom:
             {{- range $key, $value := .Values.workloads.app.secrets }}

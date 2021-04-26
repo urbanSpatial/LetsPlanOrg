@@ -20,6 +20,8 @@ workloads:
     port: 80
     secrets:
       app: "letsplan-production"
+    podSecurityContext:
+      fsGroup: 82 # www-data
   database:
     replicas: 1
     port: 5432
@@ -106,6 +108,9 @@ ingress:
     #      - chart-example.local
 
 volumes:
+  app:
+    data:
+      size: 5Gi
   database:
     data:
       size: 10Gi
