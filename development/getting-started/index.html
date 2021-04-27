@@ -473,13 +473,12 @@
 <p>Initialize new <code>.env</code> file:</p>
 <div class="highlight"><pre><span></span><code>cp .env.example .env
 </code></pre></div>
-<p>!!! tip</p>
-<div class="highlight"><pre><span></span><code>  Change the web port from 7780 to something unsused if you have a port conflict.
-
-  Change the MailHog web port from 8725 to something unsused if you have a port conflict.
-
-  If you have another Postgres running on 5432, add a line to your .env like `FORWARD_DB_PORT=5433`
-</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Change the web port from 7780 to something unsused if you have a port conflict.</p>
+<p>Change the MailHog web port from 8725 to something unsused if you have a port conflict.</p>
+<p>If you have another Postgres running on 5432, add a line to your .env like <code>FORWARD_DB_PORT=5433</code></p>
+</div>
 </li>
 <li>
 <p>Configure <code>.env</code> to use online database and map tiles so you can skip loading data and building tiles locally:</p>

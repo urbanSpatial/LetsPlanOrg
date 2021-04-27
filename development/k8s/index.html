@@ -434,11 +434,11 @@
   --set workloads.app.secrets.app<span class="o">=</span>letsplan-dev <span class="se">\</span>
   --set images.app.repository<span class="o">=</span>ghcr.io/jarvusinnovations/letsplanorg/laravel-site
 </code></pre></div>
-<p>!!! warning</p>
-<div class="highlight"><pre><span></span><code>  Kind is incompatible with docker.pkg.github.com and the urbanSpatial organization does not have ghcr.io support enabled
-
-  The above command overrides the release to use a ghcr.io-hosted image under Jarvus&#39; organization. This image is not automatically updated when new versions are pushed/released on the urbanSpatial organization and must have updated container images manually pushed.
-</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Kind is incompatible with docker.pkg.github.com and the urbanSpatial organization does not have ghcr.io support enabled</p>
+<p>The above command overrides the release to use a ghcr.io-hosted image under Jarvus&rsquo; organization. This image is not automatically updated when new versions are pushed/released on the urbanSpatial organization and must have updated container images manually pushed.</p>
+</div>
 </li>
 <li>
 <p>Generate <code>APP_KEY</code> secret and restart pod:</p>
