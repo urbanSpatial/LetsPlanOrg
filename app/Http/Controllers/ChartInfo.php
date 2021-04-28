@@ -94,6 +94,21 @@ class ChartInfo extends Controller
             $table = 'project_parcels_2';
         }
 
+        $recentYear = RealEstateTx::orderBy('sale_year', 'DESC')->first();
+
+        $minMax = \DB::table($table)
+            ->select([
+                \DB::raw("MIN(sale_price_adj) as min_sale"),
+                \DB::raw("MAX(sale_price_adj) as max_sale"),
+            ])
+            ->leftJoin('atlas_data', 'atlas_data.parcel_id', $table . '.parcel_id')
+            ->leftJoin('real_estate_tx', 'real_estate_tx.opa_account_num', 'atlas_data.opa_account_num')
+            ->where('sale_year', $recentYear->sale_year)
+            ->whereNotNull('sale_price_adj')
+            ->first();
+
+
+
         $parcels = \DB::table($table)
             ->select([
                 \DB::raw("AVG(sale_price_adj)"),
@@ -119,6 +134,12 @@ class ChartInfo extends Controller
                         'data' => $parcels->pluck('avg'),
                     ]
                 ),
+            ],
+            'meta' => [
+                'current_year' => [
+                    'min_price' => $minMax->min_sale,
+                    'max_price' => $minMax->max_sale,
+                ]
             ]
         ]);
     }
