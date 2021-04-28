@@ -1,0 +1,9 @@
+// override vuetify to fix mobile webkit layout
+// via https://allthingssmitty.com/2020/05/11/css-fix-for-100vh-in-mobile-webkit/
+// and @supports targeting via https://github.com/postcss/postcss-100vh-fix
+@supports (-webkit-touch-callout: none) {
+  .v-application--wrap {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+}

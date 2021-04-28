@@ -40,11 +40,11 @@ export default {
       },
 
       legendPips: [
-        { name: '100K', color: '#28CAF4' },
-        { name: '100K', color: '#377BF4' },
-        { name: '100K', color: '#311DF4' },
-        { name: '100K', color: '#8104F4' },
-        { name: '100K', color: '#C804F4' },
+        { name: '', color: '#28CAF4' },
+        { name: '', color: '#377BF4' },
+        { name: '', color: '#311DF4' },
+        { name: '', color: '#8104F4' },
+        { name: '', color: '#C804F4' },
       ],
 
       options: {
@@ -72,12 +72,20 @@ export default {
           display: false,
         },
       },
+      saleMeta: {
+        min: 0,
+        max: 0,
+      },
     };
   },
   mounted() {
     this.fetchData()
       .then((result) => result.data)
-      .then((jsonApi) => jsonApi.data)
+      .then((jsonApi) => {
+        this.saleMeta.min = jsonApi.meta.min_price;
+        this.saleMeta.max = jsonApi.meta.max_price;
+        return jsonApi.data;
+      })
       .then((dataset) => {
         this.chartData.datasets[0].data = dataset.attributes.data;
         this.chartData.labels = dataset.attributes.labels;
@@ -89,6 +97,17 @@ export default {
       });
   },
   methods: {
+    updateLegend() {
+    // make 5 buckets at 20% of max-min
+    // const diff = this.saleMeta.max - this.saleMeta.min;
+      this.legendPips = [
+        { name: '', color: '#28CAF4' },
+        { name: '', color: '#377BF4' },
+        { name: '', color: '#311DF4' },
+        { name: '', color: '#8104F4' },
+        { name: '', color: '#C804F4' },
+      ];
+    },
     fetchData() {
       /* eslint-disable-next-line prefer-template */
       return window.axios.get(window.location.origin + '/chart/sales/1');
