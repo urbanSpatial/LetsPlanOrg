@@ -61,7 +61,7 @@ jobs:
       run: |
         DOCKER_REPOSITORY="${GITHUB_REPOSITORY,,}"
 
-        DOCKER_IMAGE="docker.pkg.github.com/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}"
+        DOCKER_IMAGE="ghcr.io/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}"
         echo "Using path: ${DOCKER_IMAGE}"
         echo "DOCKER_IMAGE=${DOCKER_IMAGE}" >> $GITHUB_ENV
         echo "DOCKER_REPOSITORY=${DOCKER_REPOSITORY}" >> $GITHUB_ENV
@@ -73,7 +73,7 @@ jobs:
         DOCKER_MANIFEST="$(curl -X GET \
           -u "${{ github.repository_owner }}:${{ secrets.GITHUB_TOKEN }}" \
           --fail \
-          "https://docker.pkg.github.com/v2/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}/manifests/${SOURCE_TREE}"
+          "https://ghcr.io/v2/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}/manifests/${SOURCE_TREE}"
         )"
 
         if [ $? -ne 0 ]; then
@@ -95,6 +95,6 @@ jobs:
           -u "${{ github.repository_owner }}:${{ secrets.GITHUB_TOKEN }}" \
           --fail \
           -d "${DOCKER_MANIFEST}" \
-          "https://docker.pkg.github.com/v2/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}/manifests/${PACKAGE_VERSION}"
+          "https://ghcr.io/v2/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}/manifests/${PACKAGE_VERSION}"
 
         echo "Tagged :${SOURCE_TREE} to :${PACKAGE_VERSION}"

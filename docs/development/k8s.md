@@ -10,15 +10,8 @@
 
     ```bash
     helm install letsplan ./helm-chart \
-      --set workloads.app.secrets.app=letsplan-dev \
-      --set images.app.repository=ghcr.io/jarvusinnovations/letsplanorg/laravel-site
+      --set workloads.app.secrets.app=letsplan-dev
     ```
-
-    !!! warning
-
-        Kind is incompatible with docker.pkg.github.com and the urbanSpatial organization does not have ghcr.io support enabled
-
-        The above command overrides the release to use a ghcr.io-hosted image under Jarvus' organization. This image is not automatically updated when new versions are pushed/released on the urbanSpatial organization and must have updated container images manually pushed.
 
 3. Generate `APP_KEY` secret and restart pod:
 

@@ -1,6 +1,6 @@
 images:
   app:
-    repository: docker.pkg.github.com/urbanspatial/letsplanorg/laravel-site
+    repository: ghcr.io/urbanspatial/letsplanorg/laravel-site
     tag: latest
     pullPolicy: Always
     imagePullSecrets:
