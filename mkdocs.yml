@@ -1,6 +1,6 @@
 site_name: Let's Plan
 repo_url: https://github.com/urbanSpatial/LetsPlanOrg
-site_url: https://urbanspatial.github.io/letsplanorg
+site_url: https://urbanspatial.github.io/LetsPlanOrg
 edit_uri: edit/main/docs
 
 theme:
