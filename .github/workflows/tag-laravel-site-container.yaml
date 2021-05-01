@@ -90,11 +90,13 @@ jobs:
     - name: Applying :version tag to existing Docker container image
       run: |
         PACKAGE_VERSION="${GITHUB_REF##*/v}"
+        echo "Using version: ${PACKAGE_VERSION}"
 
         curl -X PUT \
           -u "${{ github.repository_owner }}:${{ secrets.GITHUB_TOKEN }}" \
           --fail \
-          -d "${DOCKER_MANIFEST}" \
+          --header "Content-Type: application/vnd.docker.distribution.manifest.v2+json" \
+          --data "${DOCKER_MANIFEST}" \
           "https://ghcr.io/v2/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}/manifests/${PACKAGE_VERSION}"
 
         echo "Tagged :${SOURCE_TREE} to :${PACKAGE_VERSION}"
