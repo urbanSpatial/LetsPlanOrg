@@ -9,14 +9,14 @@
       
       
       
-        <link rel="canonical" href="https://urbanspatial.github.io/letsplanorg/development/getting-started/">
+        <link rel="canonical" href="https://urbanspatial.github.io/letsplanorg/development/local-dev/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.3">
     
     
       
-        <title>Getting Started - Let's Plan</title>
+        <title>Local development - Let's Plan</title>
       
     
     
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#getting-started" class="md-skip">
+        <a href="#local-development" class="md-skip">
           Skip to content
         </a>
       
@@ -97,7 +97,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Getting Started
+              Local development
             
           </span>
         </div>
@@ -185,7 +185,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="./" class="md-tabs__link md-tabs__link--active">
+      <a href="../quick-start/" class="md-tabs__link md-tabs__link--active">
         Development
       </a>
     </li>
@@ -296,6 +296,18 @@
             
   
   
+  
+    <li class="md-nav__item">
+      <a href="../quick-start/" class="md-nav__link">
+        Quick start
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
     
   
   
@@ -308,12 +320,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Getting Started
+          Local development
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Getting Started
+        Local development
       </a>
       
         
@@ -331,9 +343,71 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    Quick start
+  <a href="#initial-setup" class="md-nav__link">
+    Initial setup
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapbox-setup" class="md-nav__link">
+    MapBox setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#importing-data" class="md-nav__link">
+    Importing data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-view-of-just-1-community" class="md-nav__link">
+    Creating a view of just 1 community
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-commands-in-dev-environment" class="md-nav__link">
+    Running Commands in Dev Environment
+  </a>
+  
+    <nav class="md-nav" aria-label="Running Commands in Dev Environment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#artisan-laravel" class="md-nav__link">
+    Artisan / Laravel
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yarn" class="md-nav__link">
+    Yarn
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgres" class="md-nav__link">
+    Postgres
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#php-composer" class="md-nav__link">
+    PHP / Composer
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -341,6 +415,18 @@
   
 </nav>
       
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/" class="md-nav__link">
+        Documentation
+      </a>
     </li>
   
 
@@ -443,9 +529,71 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    Quick start
+  <a href="#initial-setup" class="md-nav__link">
+    Initial setup
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapbox-setup" class="md-nav__link">
+    MapBox setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#importing-data" class="md-nav__link">
+    Importing data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-view-of-just-1-community" class="md-nav__link">
+    Creating a view of just 1 community
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-commands-in-dev-environment" class="md-nav__link">
+    Running Commands in Dev Environment
+  </a>
+  
+    <nav class="md-nav" aria-label="Running Commands in Dev Environment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#artisan-laravel" class="md-nav__link">
+    Artisan / Laravel
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yarn" class="md-nav__link">
+    Yarn
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgres" class="md-nav__link">
+    Postgres
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#php-composer" class="md-nav__link">
+    PHP / Composer
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -461,70 +609,136 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/urbanSpatial/LetsPlanOrg/edit/main/docs/development/getting-started.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/urbanSpatial/LetsPlanOrg/edit/main/docs/development/local-dev.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link"> ¶</a></h1>
-<h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link"> ¶</a></h2>
-<ol>
+                <h1 id="local-development">Local development<a class="headerlink" href="#local-development" title="Permanent link"> ¶</a></h1>
+<h2 id="initial-setup">Initial setup<a class="headerlink" href="#initial-setup" title="Permanent link"> ¶</a></h2>
+<ul>
+<li>Copy <code>.env.example</code> to <code>.env</code></li>
+<li>Change the web port from <code>7780</code> to something unsused if you have a port conflict.</li>
+<li>Change the MailHog web port from <code>8725</code> to something unsused if you have a port conflict.</li>
+<li>If you have another Postgres running on 5432, add a line to your <code>.env</code> like <code>FORWARD_DB_PORT=5433</code></li>
 <li>
-<p>Initialize new <code>.env</code> file:</p>
-<div class="highlight"><pre><span></span><code>cp .env.example .env
+<p>Composer install with your host computer&rsquo;s PHP/Composer.</p>
+<div class="highlight"><pre><span></span><code>composer install
 </code></pre></div>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Change the web port from 7780 to something unsused if you have a port conflict.</p>
-<p>Change the MailHog web port from 8725 to something unsused if you have a port conflict.</p>
-<p>If you have another Postgres running on 5432, add a line to your .env like <code>FORWARD_DB_PORT=5433</code></p>
-</div>
-</li>
-<li>
-<p>Configure <code>.env</code> to use online database and map tiles so you can skip loading data and building tiles locally:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">MBTILE_URL</span><span class="o">=</span><span class="s2">&quot;https://letsplan.live.k8s.jarv.us/urban/{z}/{x}/{y}.pbf&quot;</span>
-<span class="nv">MIX_MBTILE_URL</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MBTILE_URL</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="nv">DB_HOST</span><span class="o">=</span>WORKSTATION_LAN_IP
-<span class="nv">DB_PORT</span><span class="o">=</span><span class="m">5433</span>
-<span class="nv">DB_USERNAME</span><span class="o">=</span>read_only
-<span class="nv">DB_PASSWORD</span><span class="o">=</span>FROM_BITWARDEN
-</code></pre></div>
-<p>The password is available in BitWarden under the entry <code>read_only @ postgresql</code></p>
-</li>
-<li>
-<p>Use Docker to install PHP dependencies:</p>
+<p>OR, use docker to run initial composer install:</p>
 <div class="highlight"><pre><span></span><code>docker run -ti --rm -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/app -w /app composer:2.0 composer install
 </code></pre></div>
 </li>
 <li>
-<p>Open a tunnel from the online PostgreSQL database to local port <code>5433</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">KUBECONFIG</span><span class="o">=</span>~/.kube/letsplan-deployer.yaml
-<span class="nv">DB_POD</span><span class="o">=</span><span class="k">$(</span>kubectl get pod -l <span class="nv">component</span><span class="o">=</span>database -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span>
-kubectl port-forward pods/<span class="nv">$DB_POD</span> --address <span class="m">0</span>.0.0.0 <span class="m">5433</span>:5432
-</code></pre></div>
-<p>Download <code>letsplan-deployer.yaml</code> from the <code>letsplan-deployer @ jarvus-live-cluster</code> entry in BitWarden</p>
-</li>
-<li>
-<p>Start local Docker environment with Laravel Sail:</p>
+<p>Bring up containers:</p>
 <div class="highlight"><pre><span></span><code>./vendor/bin/sail up -d
 </code></pre></div>
 </li>
 <li>
-<p>Generate unique local app key:</p>
+<p>Generate unique app key:</p>
 <div class="highlight"><pre><span></span><code>./vendor/bin/sail artisan key:generate
 </code></pre></div>
 </li>
 <li>
-<p>Install frontend dependencies:</p>
-<div class="highlight"><pre><span></span><code>./vendor/bin/sail yarn install
+<p>Run all database migrations:</p>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail artisan migrate
 </code></pre></div>
 </li>
 <li>
-<p>Execute a frontend build:</p>
-<div class="highlight"><pre><span></span><code>./vendor/bin/sail yarn production
+<p>Build frontend:</p>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail yarn install
 </code></pre></div>
 </li>
-</ol>
+</ul>
+<h2 id="mapbox-setup">MapBox setup<a class="headerlink" href="#mapbox-setup" title="Permanent link"> ¶</a></h2>
+<ul>
+<li>
+<p>Edit the <code>.env</code> and add a vector (pbf) source URL to <code>MBTILE_URL</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">MBTILE_URL</span><span class="o">=</span><span class="s2">&quot;https://api.maptiler.com/tiles/contours/11/599/770.pbf?key=yd4rAVOD6ZdfBCcbKnIE&quot;</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You might change <code>fill-color</code> to <code>fill-outline-color</code> in <code>resources/js/Shared/MapboxMap.vue</code> for this example.</p>
+</div>
+</li>
+</ul>
+<h2 id="importing-data">Importing data<a class="headerlink" href="#importing-data" title="Permanent link"> ¶</a></h2>
+<ul>
+<li>Import PWD Parcel definitions. A file will be saved into <code>./storage/app/</code> and imported into the <code>parcel</code> table.</li>
+<li>
+<p>Run:</p>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail artisan lp:import-parcels
+</code></pre></div>
+</li>
+<li>
+<p>Copy your alteration permits and new construction permits CSV files into <code>./storage/app/</code></p>
+</li>
+<li>
+<p>Run:</p>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail artisan lp:import-bldg-permits alteration_permits.csv
+</code></pre></div>
+</li>
+<li>
+<p>Run:</p>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail artisan lp:import-bldg-permits new_construction_permits.csv
+</code></pre></div>
+</li>
+<li>
+<p>Run:</p>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail artisan lp:import-rco
+</code></pre></div>
+</li>
+<li>
+<p>Import Atlas API data to connect OPA and PWD parcel IDs:</p>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail artisan lp:scrape-atlas --key<span class="o">=</span><span class="si">${</span><span class="nv">your</span><span class="p"> gatekeeper key</span><span class="si">}</span>
+</code></pre></div>
+</li>
+</ul>
+<h2 id="creating-a-view-of-just-1-community">Creating a view of just 1 community<a class="headerlink" href="#creating-a-view-of-just-1-community" title="Permanent link"> ¶</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span> <span class="n">MATERIALIZED</span> <span class="k">VIEW</span> <span class="n">project_parcels_1</span>
+<span class="k">AS</span>
+<span class="k">SELECT</span> <span class="n">p</span><span class="p">.</span><span class="o">*</span>
+
+ <span class="k">FROM</span> <span class="n">parcel</span> <span class="k">AS</span> <span class="n">p</span>
+   <span class="k">INNER</span> <span class="k">JOIN</span> <span class="n">rco</span> <span class="k">AS</span> <span class="n">n</span>
+    <span class="k">ON</span> <span class="n">ST_Intersects</span><span class="p">(</span><span class="n">ST_GeomFromGeoJSON</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">geo_json</span><span class="p">),</span> <span class="n">ST_GeomFromGeoJSON</span><span class="p">(</span><span class="n">n</span><span class="p">.</span><span class="n">geo_json</span><span class="p">))</span>
+
+<span class="k">WHERE</span> <span class="n">n</span><span class="p">.</span><span class="n">object_id</span> <span class="o">=</span> <span class="s1">&#39;23641&#39;</span>
+</code></pre></div>
+<p>Extract the parcels for one community and compile them into MapBox tiles:</p>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail artisan lp:stream-parcel-geo-json project_parcels_2 &gt; project1.geojson
+
+docker run --rm -ti <span class="se">\</span>
+  -v <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/app <span class="se">\</span>
+  -w /app <span class="se">\</span>
+  strikehawk/tippecanoe <span class="se">\</span>
+  tippecanoe -z20 -Z8 -f --name<span class="o">=</span>urban-areas -l urban-areas --output<span class="o">=</span>storage/app/urban_area.mbtiles project1.geojson
+</code></pre></div>
+<h2 id="running-commands-in-dev-environment">Running Commands in Dev Environment<a class="headerlink" href="#running-commands-in-dev-environment" title="Permanent link"> ¶</a></h2>
+<h3 id="artisan-laravel">Artisan / Laravel<a class="headerlink" href="#artisan-laravel" title="Permanent link"> ¶</a></h3>
+<p>You can pass <strong>artisan</strong> commands into the container like this:</p>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail artisan tinker
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail artisan migrate:status
+</code></pre></div>
+<h3 id="yarn">Yarn<a class="headerlink" href="#yarn" title="Permanent link"> ¶</a></h3>
+<p>You can pass <strong>yarn</strong> commands into the container like this:</p>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail yarn install
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail yarn add pkg
+</code></pre></div>
+<h3 id="postgres">Postgres<a class="headerlink" href="#postgres" title="Permanent link"> ¶</a></h3>
+<p>You run an interactive <strong>psql</strong> shell like this:</p>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail psql
+</code></pre></div>
+<h3 id="php-composer">PHP / Composer<a class="headerlink" href="#php-composer" title="Permanent link"> ¶</a></h3>
+<p>You run <strong>composer</strong>, <strong>php</strong> and <strong>root-shell</strong> commands:</p>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail composer require --dev pkg
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail php -v
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail root-shell
+</code></pre></div>
                 
               
               
@@ -543,7 +757,7 @@ kubectl port-forward pods/<span class="nv">$DB_POD</span> --address <span class=
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../.." class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../quick-start/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -552,19 +766,19 @@ kubectl port-forward pods/<span class="nv">$DB_POD</span> --address <span class=
               <span class="md-footer__direction">
                 Previous
               </span>
-              Welcome
+              Quick start
             </div>
           </div>
         </a>
       
       
-        <a href="../k8s/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../docs/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Kubernetes
+              Documentation
             </div>
           </div>
           <div class="md-footer__button md-icon">

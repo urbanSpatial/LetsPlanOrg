@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://urbanspatial.github.io/letsplanorg/</loc>
-     <lastmod>2021-04-27</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://urbanspatial.github.io/letsplanorg/development/getting-started/</loc>
-     <lastmod>2021-04-27</lastmod>
+     <loc>https://urbanspatial.github.io/letsplanorg/development/quick-start/</loc>
+     <lastmod>2021-05-01</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://urbanspatial.github.io/letsplanorg/development/local-dev/</loc>
+     <lastmod>2021-05-01</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://urbanspatial.github.io/letsplanorg/development/docs/</loc>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://urbanspatial.github.io/letsplanorg/development/k8s/</loc>
-     <lastmod>2021-04-27</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://urbanspatial.github.io/letsplanorg/operations/k8s/</loc>
-     <lastmod>2021-04-27</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://urbanspatial.github.io/letsplanorg/operations/postgresql/</loc>
-     <lastmod>2021-04-27</lastmod>
+     <lastmod>2021-05-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
