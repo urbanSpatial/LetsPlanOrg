@@ -1,6 +1,7 @@
 # package caches
 /node_modules
 /vendor
+/.venv/
 
 # built assets
 /public/css/
