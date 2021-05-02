@@ -307,39 +307,9 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Quick start
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="./" class="md-nav__link md-nav__link--active">
         Quick start
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#quick-start_1" class="md-nav__link">
-    Quick start
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -460,21 +430,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#quick-start_1" class="md-nav__link">
-    Quick start
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -491,7 +446,6 @@
                 
                 
                 <h1 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link"> ¶</a></h1>
-<h2 id="quick-start_1">Quick start<a class="headerlink" href="#quick-start_1" title="Permanent link"> ¶</a></h2>
 <ol>
 <li>
 <p>Initialize new <code>.env</code> file:</p>
@@ -505,7 +459,7 @@
 </div>
 </li>
 <li>
-<p>Configure <code>.env</code> to use online database and map tiles so you can skip loading data and building tiles locally:</p>
+<p>Configure <code>.env</code> to use online/remote database and map tiles so you can skip loading data and building tiles locally:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">MBTILE_URL</span><span class="o">=</span><span class="s2">&quot;https://letsplan.live.k8s.jarv.us/urban/{z}/{x}/{y}.pbf&quot;</span>
 <span class="nv">MIX_MBTILE_URL</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MBTILE_URL</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="nv">DB_HOST</span><span class="o">=</span>WORKSTATION_LAN_IP
@@ -514,6 +468,11 @@
 <span class="nv">DB_PASSWORD</span><span class="o">=</span>FROM_BITWARDEN
 </code></pre></div>
 <p>The password is available in BitWarden under the entry <code>read_only @ postgresql</code></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The above configuration points <code>DB_PORT</code> at <strong>5433</strong> because we&rsquo;ll be opening a tunnel from there to the online/remote database with the <code>kubectl port-forward</code> command in step 4.</p>
+<p>We use that port to avoid conflict with the local PostgreSQL instance step 5 will still spin up on the default port <strong>5432</strong>, but which we will be ignoring and not loading any data into.</p>
+</div>
 </li>
 <li>
 <p>Use Docker to install PHP dependencies:</p>
