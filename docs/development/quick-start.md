@@ -30,6 +30,9 @@
     !!! note
         The above configuration points `DB_PORT` at **5433** because we'll be opening a tunnel from there to the online/remote database with the `kubectl port-forward` command in step 4.
         
+    !!! note
+        If using Windows + WSL2 + Docker, then `DB_HOST=host.docker.internal`.  All other steps with Windows + WSL2 + Docker should be the same.
+        
         We use that port to avoid conflict with the local PostgreSQL instance step 5 will still spin up on the default port **5432**, but which we will be ignoring and not loading any data into.
 
 3. Use Docker to install PHP dependencies:
