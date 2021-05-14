@@ -1,6 +1,6 @@
 # LetsPlan.org
 
-A tool for neighbors to learn from about their RCO with open data and engage in community planning.
+A tool for neighbors to learn about the economics of their RCO using open data so they can better engage in community planning.
 
 ## Documentation
 
