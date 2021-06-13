@@ -48,7 +48,7 @@
           value='0.5'
           content-class='teal--text'
         />
-        <parcel-figure
+        <!--parcel-figure
           name='Community'
           value='0.5'
           content-class='purple--text'
@@ -57,7 +57,7 @@
           name='Variance'
           value='0.5'
           content-class='orange--text'
-        />
+        /-->
         <parcel-figure
           name='Development'
           value='0.5'
