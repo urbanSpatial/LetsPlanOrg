@@ -23,7 +23,7 @@
         />
         <parcel-figure
           name="Zoning"
-          :value="parcel.bldg_code"
+          :value="landUse"
         />
         <parcel-figure
           name="Permits"
@@ -82,6 +82,50 @@ export default {
       cache: {},
       parcel: {},
       loading: false,
+      land_use_lookup: {
+        "12": "Special",
+        "2002": "Special",
+        "RSD1": "Low Res",
+        "RSD2": "Low Res",
+        "RSD3": "Low Res",
+        "RMX1": "Low Res",
+        "RMX2": "Low Res",
+        "RSA": "Low Res",
+        "RSA1": "Low Res",
+        "RSA2": "Low Res",
+        "RSA3": "Low Res",
+        "RS3": "Low Res",
+        "RSA4": "Low Res",
+        "RSA5": "Low Res",
+        "RTA1": "Low Res",
+        "RM1": "Hi Res",
+        "RM2": "Hi Res",
+        "RM3": "Hi Res",
+        "RM4": "Hi Res",
+        "RMX3": "Hi Res",
+        "IRMX": "Industrial",
+        "ICMX": "Industrial",
+        "I1": "Industrial",
+        "I2": "Industrial",
+        "I3": "Industrial",
+        "IP": "Industrial",
+        "CMX1": "Low Com",
+        "CMX2": "Low Com",
+        "CMX25": "Low Com",
+        "CMX3": "Hi Com",
+        "CMX4": "Hi Com",
+        "CMX5": "Hi Com",
+        "CA1": "Special",
+        "CA2": "Special",
+        "SPINS": "Special",
+        "SPENT": "Special",
+        "SPSTA": "Special",
+        "SPPOP": "Special",
+        "SPPOA": "Special",
+        "SPAIR": "Special",
+        "SC": "Special",
+        "SP": "Special"
+      }
     };
   },
 
@@ -90,6 +134,9 @@ export default {
       const price = this.parcel.sale_price_adj;
       return price ? numeral(price).format('$0.0a') : null;
     },
+    landUse() {
+      return this.land_use_lookup[this.parcel.zoning]
+    }
   },
 
   methods: {
