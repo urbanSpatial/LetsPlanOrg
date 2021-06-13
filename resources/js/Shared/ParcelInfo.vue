@@ -124,8 +124,8 @@ export default {
         SPPOA: 'Special',
         SPAIR: 'Special',
         SC: 'Special',
-        SP: 'Special'
-      }
+        SP: 'Special',
+      },
     };
   },
 
@@ -135,8 +135,8 @@ export default {
       return price ? numeral(price).format('$0.0a') : null;
     },
     landUse() {
-      return this.land_use_lookup[this.parcel.zoning]
-    }
+      return this.land_use_lookup[this.parcel.zoning];
+    },
   },
 
   methods: {
