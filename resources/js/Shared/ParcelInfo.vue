@@ -23,7 +23,7 @@
         />
         <parcel-figure
           name="Zoning"
-          :value="landUse"
+          :value="landUseLookup"
         />
         <parcel-figure
           name="Permits"
@@ -134,7 +134,7 @@ export default {
       const price = this.parcel.sale_price_adj;
       return price ? numeral(price).format('$0.0a') : null;
     },
-    landUse() {
+    landUseLookup() {
       return this.land_use_lookup[this.parcel.zoning];
     },
   },
