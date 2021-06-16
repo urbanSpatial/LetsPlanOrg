@@ -8,7 +8,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
 
-  PACKAGE_NAME: indevets-core
+  PACKAGE_NAME: laravel-site
   PACKAGE_REGISTRY: ghcr.io
 
 jobs:
