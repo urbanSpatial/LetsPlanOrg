@@ -29,7 +29,7 @@ jobs:
         echo "Verifying that ${BRANCH_DEPLOY} deploy branch exists..."
         if ! git ls-remote --exit-code --heads origin "${BRANCH_DEPLOY}"; then
           echo "Initializing ${BRANCH_DEPLOY} deploy branch..."
-          git fetch origin --unshallow
+          git fetch origin
           _first_projected_commit=$(git rev-list --max-parents=0 --first-parent "${BRANCH_RELEASE}")
           git push origin "${_first_projected_commit}:refs/heads/${BRANCH_DEPLOY}"
         fi
