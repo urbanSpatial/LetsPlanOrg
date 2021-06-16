@@ -1,0 +1,156 @@
+name: 'Release: Prepare laravel-site release PR'
+
+on:
+  push:
+    branches: [ releases/laravel-site ]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  BRANCH_RELEASE: releases/laravel-site
+  BRANCH_DEPLOY: deploys/laravel-site
+  BRANCH_TRUNK: develop
+  HOLOBRANCH: laravel-site-github
+
+jobs:
+
+  release-prepare:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Install hologit
+      run: sudo npm install -g hologit
+
+    - name: Create/update pull request
+      run: |
+        echo "Verifying that ${BRANCH_DEPLOY} deploy branch exists..."
+        if ! git ls-remote --exit-code --heads origin "${BRANCH_DEPLOY}"; then
+          echo "Initializing ${BRANCH_DEPLOY} deploy branch..."
+          git fetch origin --unshallow
+          _first_projected_commit=$(git rev-list --max-parents=0 --first-parent "${BRANCH_RELEASE}")
+          git push origin "${_first_projected_commit}:refs/heads/${BRANCH_DEPLOY}"
+        fi
+
+
+        echo "Getting latest release tag..."
+        latest_release=$(git describe --tags --abbrev=0 "origin/${BRANCH_RELEASE}")
+
+        if [ -n "${latest_release}" ]; then
+          echo "Found latest release tag: ${latest_release}"
+          latest_release_bumped=$(echo $latest_release | awk -F. -v OFS=. '{$NF++;print}')
+        else
+          echo "No existing release found"
+          latest_release_bumped="v0.0.1"
+        fi
+        echo "Generated next release tag: ${latest_release_bumped}"
+
+
+        echo "Building PR body..."
+        pr_body="$(cat <<EOF
+        Release: ${latest_release_bumped}
+
+        ## Improvements
+
+        ## Technical
+
+        EOF
+        )"
+
+        pr_number=$(hub pr list -b "${BRANCH_DEPLOY}" -h "${BRANCH_RELEASE}" -f '%I')
+
+        if [ -n "${pr_number}" ]; then
+          echo "Updating PR #${pr_number}"
+          existing_comment_id=$(hub api "/repos/${GITHUB_REPOSITORY}/issues/${pr_number}/comments" | jq '.[] | select(.user.login=="github-actions[bot]") | .id')
+        else
+          echo "Opening PR"
+          hub pull-request -b "${BRANCH_DEPLOY}" -h "${BRANCH_RELEASE}" -F <(echo "${pr_body}") > /tmp/pr.json
+          pr_number=$(hub pr list -b "${BRANCH_DEPLOY}" -h "${BRANCH_RELEASE}" -f '%I')
+          echo "Opened PR #${pr_number}"
+        fi
+
+
+        echo "Listing trunk commits since last deploy..."
+        last_deployed_trunk=$(git merge-base --octopus "origin/${BRANCH_TRUNK}" "origin/${BRANCH_RELEASE}" "origin/${BRANCH_DEPLOY}")
+        next_deployed_trunk=$(git merge-base --octopus "origin/${BRANCH_TRUNK}" "origin/${BRANCH_RELEASE}")
+        trunk_commits=$(
+          git log \
+            --first-parent \
+            --reverse \
+            --format="%H" \
+            "${last_deployed_trunk}..${next_deployed_trunk}"
+        )
+
+
+        echo "Identifying commits that change ${HOLOBRANCH} projection..."
+        deploy_commits=()
+        last_projected_tree=$(git holo project --no-lens --ref="${last_deployed_trunk}" "${HOLOBRANCH}" 2> /dev/null)
+
+        while read -r commit; do
+          echo "Examining commit ${commit} $(git show -s --format=%s "${commit}")"
+          projected_tree=$(git holo project --no-lens --ref="${commit}" "${HOLOBRANCH}" 2> /dev/null)
+
+          if [ "${projected_tree}" != "${last_projected_tree}" ]; then
+            # git diff-tree --stat "${last_projected_tree}" "${projected_tree}"
+            deploy_commits+=("${commit}")
+            last_projected_tree="${projected_tree}"
+          fi
+        done <<< "${trunk_commits}"
+
+
+        echo "Formatting changelog..."
+        changelog=()
+        for commit in "${deploy_commits[@]}"; do
+          subject="$(git show -s --format=%s "${commit}")"
+          line=""
+
+          if [[ "${subject}" =~ Merge\ pull\ request\ \#([0-9]+) ]]; then
+            line="$(hub pr show -f '%t [%i] @%au' "${BASH_REMATCH[1]}" || true)"
+          fi
+
+          if [ -z "${line}" ]; then
+            author="$(hub api "/repos/${GITHUB_REPOSITORY}/commits/${commit}" -H Accept:application/vnd.github.v3+json | jq -r '.author.login')"
+            if [ -n "${author}" ]; then
+              author="@${author}"
+            else
+              author="$(git show -s --format=%ae "${commit}")"
+            fi
+
+            line="${subject} ${author}"
+          fi
+
+          # move ticket number prefix into to existing square brackets at end
+          line="$(echo "${line}" | perl -pe 's/^([A-Z]+-[0-9]+):?\s*(.*?)\s*\[([^]]+)\]\s*(\S+)$/\2 [\3, \1] \4/')"
+
+          # move ticket number prefix into to new square brackets at end
+          line="$(echo "${line}" | perl -pe 's/^([A-Z]+-[0-9]+):?\s*(.*?)\s*(\S+)$/\2 [\1] \3/')"
+
+          # combine doubled square brackets at the end
+          line="$(echo "${line}" | perl -pe 's/^\s*(.*?)\s*\[([A-Z]+-[0-9]+)\]\s*\[([^]]+)\]\s*(\S+)$/\1 [\3, \2] \4/')"
+
+          changelog+=("- ${line}")
+        done
+
+
+        echo "Building changelog comment body..."
+        comment_body="$(cat <<EOF
+        ## Changelog
+
+        \`\`\`markdown
+        $(IFS=$'\n'; echo "${changelog[*]}")
+        \`\`\`
+        EOF
+        )"
+
+        if [ -n "${existing_comment_id}" ]; then
+          echo "Updating comment #${existing_comment_id}"
+          hub api "/repos/${GITHUB_REPOSITORY}/issues/comments/${existing_comment_id}" -f body="${comment_body}"
+        else
+          echo "Creating comment"
+          hub api "/repos/${GITHUB_REPOSITORY}/issues/${pr_number}/comments" -f body="${comment_body}"
+        fi
+
+    # - uses: mxschmitt/action-tmate@v3
+    #   if: failure()
