@@ -1,4 +1,4 @@
-name: 'Build: Publish laravel-site Container'
+name: 'Release: Publish Container'
 
 on:
   pull_request:
@@ -13,7 +13,7 @@ env:
 
 jobs:
 
-  build-container:
+  release-publish:
     if: github.event.pull_request.merged == true # only run on PR merge
     runs-on: ubuntu-latest
     steps:
