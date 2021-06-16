@@ -24,7 +24,7 @@ jobs:
       run: |
         PR_TITLE=$(jq -r ".pull_request.title" $GITHUB_EVENT_PATH)
         PR_BODY=$(jq -r ".pull_request.body" $GITHUB_EVENT_PATH)
-        RELEASE_TAG=$(echo "${PR_TITLE}" | grep -oP "(?<=^Release: )v\d+\.\d+\.\d+(-rc\.\d+)?$")
+        RELEASE_TAG=$(echo "${PR_TITLE}" | grep -oP "(?<=^Release: v)\d+\.\d+\.\d+(-rc\.\d+)?$")
 
         # if [[ "${RELEASE_TAG}" =~ -rc\.[0-9]+$ ]]; then
         #   RELEASE_PRERELEASE=true
@@ -138,7 +138,7 @@ jobs:
       with:
         token: ${{ env.GITHUB_TOKEN }}
         commit: '${{ github.event.pull_request.head.sha }}'
-        tag: '${{ env.RELEASE_TAG }}'
+        tag: 'v${{ env.RELEASE_TAG }}'
         body: '${{ env.PR_BODY }}'
         draft: false
         prerelease: ${{ env.RELEASE_PRERELEASE }}
