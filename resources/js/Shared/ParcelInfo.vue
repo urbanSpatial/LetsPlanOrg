@@ -1,52 +1,52 @@
 <template>
   <div>
     <v-progress-circular
-      v-if='loading'
-      class='ma-5'
-      color='grey'
+      v-if="loading"
+      class="ma-5"
+      color="grey"
       indeterminate
     />
 
-    <div v-if='!loading'>
-      <h1 class='popup__title pink--text text--darken-1'>
+    <div v-if="!loading">
+      <h1 class="popup__title pink--text text--darken-1">
         {{ parcel.address_1 }}
       </h1>
 
-      <div class='popup__subtitle text--secondary'>
+      <div class="popup__subtitle text--secondary">
         {{ parcel.property_type }}
       </div>
 
-      <div class='figure-group'>
+      <div class="figure-group">
         <parcel-figure
-          name='Built'
-          :value='parcel.year_built'
+          name="Built"
+          :value="parcel.year_built"
         />
         <parcel-figure
-          name='Zoning'
-          :value='landUse'
+          name="Zoning"
+          :value="landUse"
         />
         <parcel-figure
-          name='Permits'
-          :value='parcel.total_permits'
-        />
-      </div>
-
-      <div class='figure-group'>
-        <parcel-figure
-          name='Last Sale'
-          :value='formattedSalePrice'
-        />
-        <parcel-figure
-          name='Sale Date'
-          :value='parcel.sale_year'
+          name="Permits"
+          :value="parcel.total_permits"
         />
       </div>
 
-      <div class='figure-group -scores pb-0'>
+      <div class="figure-group">
         <parcel-figure
-          name='Preservation'
-          value='0.5'
-          content-class='teal--text'
+          name="Last Sale"
+          :value="formattedSalePrice"
+        />
+        <parcel-figure
+          name="Sale Date"
+          :value="parcel.sale_year"
+        />
+      </div>
+
+      <div class="figure-group -scores pb-0">
+        <parcel-figure
+          name="Preservation"
+          value="0.5"
+          content-class="teal--text"
         />
         <!--parcel-figure
           name='Community'
@@ -59,9 +59,9 @@
           content-class='orange--text'
         /-->
         <parcel-figure
-          name='Development'
-          value='0.5'
-          content-class='lime--text text--darken-2'
+          name="Development"
+          value="0.5"
+          content-class="lime--text text--darken-2"
         />
       </div>
     </div>
