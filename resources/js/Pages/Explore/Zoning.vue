@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       chartData: {
-        labels: ['Industrial', 'Lo Res', 'Hi Res', 'Lo Com', 'Hi Com', 'Special'],
+        labels: ['Industrial', 'Low Res', 'Hi Res', 'Low Com', 'Hi Com', 'Special'],
         datasets: [{
           data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
           backgroundColor: [

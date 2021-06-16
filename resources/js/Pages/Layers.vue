@@ -84,6 +84,7 @@ export default {
           isDialogVisible: false,
           value: true,
         },
+        /*
         {
           label: 'Community Preferences',
           color: 'purple',
@@ -96,6 +97,7 @@ export default {
           isDialogVisible: false,
           value: true,
         },
+        */
         {
           label: 'Development Suitability',
           color: 'lime',
