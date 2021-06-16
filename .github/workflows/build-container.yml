@@ -1,4 +1,4 @@
-name: Release laravel-site Container
+name: 'Build: Publish Container'
 
 on:
   push:
@@ -9,8 +9,7 @@ env:
 
 
 jobs:
-  release-laravel-site-container:
-    name: Build and Push
+  build-container:
     runs-on: ubuntu-latest
     steps:
 
