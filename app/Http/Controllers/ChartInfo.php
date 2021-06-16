@@ -72,7 +72,7 @@ class ChartInfo extends Controller
                 'id'   => 'zoning-x-axis',
                 'attributes' => array_merge(
                     [
-                        'labels' => ['Industrial', 'Lo Res', 'Hi Res', 'Lo Com', 'Hi Com', 'Special'],
+                        'labels' => ['Industrial', 'Low Res', 'High Res', 'Low Com', 'High Com', 'Special'],
                         'data' => [
                             $industrialPct,
                             $residentialLowPct,
