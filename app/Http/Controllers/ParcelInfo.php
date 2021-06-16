@@ -11,6 +11,17 @@ class ParcelInfo extends Controller
 {
     public function index(Request $request, $parcelId)
     {
+        $table = 'project_parcels_2';
+
+        $landUse = \DB::table($table)
+            ->select([
+                \DB::raw("RTRIM(zoning_land_use.zoning) as zoning"),
+            ])
+            ->leftJoin('atlas_data', 'atlas_data.parcel_id', $table . '.parcel_id')
+            ->where('atlas_data.parcel_id', '=', $parcelId)
+            ->leftJoin('zoning_land_use', 'zoning_land_use.opa_account_num', 'atlas_data.opa_account_num')
+            ->first();
+
         $parcel = Parcel::where('parcel_id', $parcelId)->first();
 
         $salePrice = RealEstateTx::leftJoin('atlas_data', 'atlas_data.opa_account_num', 'real_estate_tx.opa_account_num')
@@ -31,6 +42,7 @@ class ParcelInfo extends Controller
                 'id'   => $parcelId,
                 'attributes' => array_merge(
                     $parcel->getAttributes(),
+                    (array) $landUse,
                     $salePrice->getAttributes(),
                     $permits->getAttributes()
                 ),
