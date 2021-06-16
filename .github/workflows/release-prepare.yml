@@ -9,7 +9,7 @@ env:
   BRANCH_RELEASE: releases/laravel-site
   BRANCH_DEPLOY: deploys/laravel-site
   BRANCH_TRUNK: main
-  HOLOBRANCH: laravel-site-github
+  HOLOBRANCH: laravel-site
 
 jobs:
 
