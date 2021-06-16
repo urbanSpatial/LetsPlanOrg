@@ -1,0 +1,147 @@
+name: 'Build: Publish laravel-site Container'
+
+on:
+  pull_request:
+    branches: [ deploys/laravel-site ]
+    types: [ closed ]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
+
+  PACKAGE_NAME: indevets-core
+  PACKAGE_REGISTRY: ghcr.io
+
+jobs:
+
+  build-container:
+    if: github.event.pull_request.merged == true # only run on PR merge
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Grab PR Title
+      run: |
+        PR_TITLE=$(jq -r ".pull_request.title" $GITHUB_EVENT_PATH)
+        PR_BODY=$(jq -r ".pull_request.body" $GITHUB_EVENT_PATH)
+        RELEASE_TAG=$(echo "${PR_TITLE}" | grep -oP "(?<=^Release: )v\d+\.\d+\.\d+(-rc\.\d+)?$")
+
+        # if [[ "${RELEASE_TAG}" =~ -rc\.[0-9]+$ ]]; then
+        #   RELEASE_PRERELEASE=true
+        # else
+        #   RELEASE_PRERELEASE=false
+        # fi
+
+        echo "PR_TITLE=${PR_TITLE}" >> $GITHUB_ENV
+        echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_ENV
+        # echo "RELEASE_PRERELEASE=${RELEASE_PRERELEASE}" >> $GITHUB_ENV
+
+        echo 'PR_BODY<<END_OF_PR_BODY' >> $GITHUB_ENV
+        echo "${PR_BODY}" >> $GITHUB_ENV
+        echo 'END_OF_PR_BODY' >> $GITHUB_ENV
+        echo "REPO_NAME=$(echo ${GITHUB_REPOSITORY,,})" >> $GITHUB_ENV
+
+    - name: Login to ghcr.io
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Compute Docker container image address
+      run: |
+        DOCKER_TOKEN="$(echo '${{ secrets.GITHUB_TOKEN }}' | base64)"
+        DOCKER_PACKAGE="${PACKAGE_NAME}"
+        DOCKER_REPOSITORY="${GITHUB_REPOSITORY,,}"
+
+        DOCKER_IMAGE="${PACKAGE_REGISTRY}/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}"
+        echo "Using path: ${DOCKER_IMAGE}"
+        echo "DOCKER_IMAGE=${DOCKER_IMAGE}" >> $GITHUB_ENV
+        echo "DOCKER_REPOSITORY=${DOCKER_REPOSITORY}" >> $GITHUB_ENV
+        echo "DOCKER_PACKAGE=${DOCKER_PACKAGE}" >> $GITHUB_ENV
+        echo "DOCKER_TOKEN=${DOCKER_TOKEN}" >> $GITHUB_ENV
+
+        SOURCE_TREE="$(git rev-parse "HEAD^{tree}")"
+        echo "Using tree hash: ${SOURCE_TREE}"
+        echo "SOURCE_TREE=${SOURCE_TREE}" >> $GITHUB_ENV
+
+        echo "Checking registry for existing Docker container image"
+
+        set +e
+        DOCKER_MANIFEST="$(curl -X GET \
+          --header "Authorization: Bearer ${DOCKER_TOKEN}" \
+          --fail \
+          "https://${PACKAGE_REGISTRY}/v2/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}/manifests/${SOURCE_TREE}"
+        )"
+
+        if [ $? -eq 0 ]; then
+          echo "Found existing manifest"
+          echo "DOCKER_TAG_EXISTS=true" >> $GITHUB_ENV
+
+          echo 'DOCKER_MANIFEST<<END_OF_MANIFEST' >> $GITHUB_ENV
+          echo "${DOCKER_MANIFEST}" >> $GITHUB_ENV
+          echo 'END_OF_MANIFEST' >> $GITHUB_ENV
+        fi
+        set -e
+
+    - name: Applying :latest tag to existing Docker container image
+      if: env.DOCKER_TAG_EXISTS == 'true'
+      run: |
+        curl -X PUT \
+          --header "Authorization: Bearer ${DOCKER_TOKEN}" \
+          --header "Content-Type: application/vnd.docker.distribution.manifest.v2+json" \
+          --fail \
+          --data "${DOCKER_MANIFEST}" \
+          "https://${PACKAGE_REGISTRY}/v2/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}/manifests/latest"
+
+    - name: Applying release version tag to existing Docker container image
+      if: env.DOCKER_TAG_EXISTS == 'true'
+      run: |
+        curl -X PUT \
+          --header "Authorization: Bearer ${DOCKER_TOKEN}" \
+          --header "Content-Type: application/vnd.docker.distribution.manifest.v2+json" \
+          --fail \
+          --data "${DOCKER_MANIFEST}" \
+          "https://${PACKAGE_REGISTRY}/v2/${DOCKER_REPOSITORY}/${DOCKER_PACKAGE}/manifests/${{ env.RELEASE_TAG }}"
+
+    - name: Pull existing Docker container image
+      if: env.DOCKER_TAG_EXISTS != 'true'
+      run: docker pull "${DOCKER_IMAGE}:latest" || true
+
+    - name: Build Docker container image
+      if: env.DOCKER_TAG_EXISTS != 'true'
+      run: |
+        git archive HEAD --format=tar \
+          | docker build \
+              --cache-from "${DOCKER_IMAGE}:latest" \
+              --tag "${DOCKER_IMAGE}:${{ env.RELEASE_TAG }}" \
+              --tag "${DOCKER_IMAGE}:${SOURCE_TREE}" \
+              --tag "${DOCKER_IMAGE}:latest" \
+              --build-arg=SOURCE_COMMIT=${{ github.sha }} \
+              --build-arg=SOURCE_TAG=${{ env.RELEASE_TAG }} \
+              -
+
+    - name: Push Docker container image tag :${SOURCE_TREE}
+      if: env.DOCKER_TAG_EXISTS != 'true'
+      run: docker push "${DOCKER_IMAGE}:${SOURCE_TREE}"
+
+    - name: Push Docker container image tag :latest
+      if: env.DOCKER_TAG_EXISTS != 'true'
+      run: docker push "${DOCKER_IMAGE}:latest"
+
+    - name: Push Docker container image tag :${RELEASE_TAG}
+      if: env.DOCKER_TAG_EXISTS != 'true'
+      run: docker push "${DOCKER_IMAGE}:${RELEASE_TAG}"
+
+    - name: Create release
+      uses: ncipollo/release-action@v1
+      with:
+        token: ${{ env.GITHUB_TOKEN }}
+        commit: '${{ github.event.pull_request.head.sha }}'
+        tag: '${{ env.RELEASE_TAG }}'
+        body: '${{ env.PR_BODY }}'
+        draft: false
+        prerelease: ${{ env.RELEASE_PRERELEASE }}
+
+    # - uses: mxschmitt/action-tmate@v3
+    #   if: failure()

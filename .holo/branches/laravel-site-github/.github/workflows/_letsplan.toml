@@ -1,0 +1,9 @@
+[holomapping]
+root = ".github/workflows"
+files = [
+    # workflows triggered by pushes to projected branches must be included in the target branch
+    "build-container.yml",
+    "release-prepare.yml",
+    "release-publish.yml",
+    "release-validate.yml"
+]
