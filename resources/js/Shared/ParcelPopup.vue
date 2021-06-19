@@ -194,7 +194,7 @@ export default {
 
     $_bindSelfEvents(events, emitter) {
       // https://github.com/soal/vue-mapbox/blob/e0edd17bde5fe8d1db7f44029e0e3399e2bf35ea/src/components/UI/withSelfEvents.js
-      Object.keys(this.$listeners).forEach(eventName => {
+      Object.keys(this.$listeners).forEach((eventName) => {
         if (events.includes(eventName)) {
           emitter.on(eventName, this.$_emitSelfEvent);
         }
