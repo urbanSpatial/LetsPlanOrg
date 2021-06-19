@@ -50,7 +50,7 @@
           class="purple lighten-5 rounded-lg"
         >
           <v-card-title class="justify-center pb-0">
-            Everyone
+            Explore Planning Analytics
           </v-card-title>
           <v-card-text>
             <p>Check out the planning analytics and survey&nbsp;results</p>
