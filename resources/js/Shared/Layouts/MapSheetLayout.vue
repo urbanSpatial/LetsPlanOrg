@@ -99,7 +99,7 @@ export default {
         if (feat.properties.sale_price_adj) {
           fstate.rank = (feat.properties[propertyName] - featMin) / (featMax - featMin);
         }
-        fstate.rank = Math.round(fstate.rank * 100) * 10;
+        fstate.rank = Math.ceil(fstate.rank * 10) * 10; // use ceiling since 0 is for no value
         if (fstate.rank > 100) {
           fstate.rank = 100;
         }
