@@ -178,6 +178,8 @@ export default {
         }
       }
 
+      this.$_bindSelfEvents(['open', 'close'], this.popup);
+
       if (this.marker) {
         this.marker.setPopup(this.popup);
       }
@@ -190,8 +192,29 @@ export default {
       }
     },
 
+    $_bindSelfEvents(events, emitter) {
+      // https://github.com/soal/vue-mapbox/blob/e0edd17bde5fe8d1db7f44029e0e3399e2bf35ea/src/components/UI/withSelfEvents.js
+      Object.keys(this.$listeners).forEach(eventName => {
+        if (events.includes(eventName)) {
+          emitter.on(eventName, this.$_emitSelfEvent);
+        }
+      });
+    },
+
     $_emitSelfEvent(event) {
       this.$_emitMapEvent(event, { popup: this.popup });
+    },
+
+    $_emitEvent(name, data = {}) {
+      this.$emit(name, {
+        map: this.map,
+        component: this,
+        ...data,
+      });
+    },
+
+    $_emitMapEvent(event, data = {}) {
+      this.$_emitEvent(event.type, { mapboxEvent: event, ...data });
     },
 
     remove() {

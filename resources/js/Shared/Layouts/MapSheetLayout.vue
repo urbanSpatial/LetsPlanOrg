@@ -10,6 +10,7 @@
     <parcel-popup
       v-show="isPopupVisible"
       ref="parcelpopup"
+      @close="closePopup"
     >
       <parcel-info
         ref="parcelinfo"
@@ -124,6 +125,9 @@ export default {
         this.$refs.parcelinfo.fetchParcel(event.properties.parcel_id);
         this.$refs.mapboxmap.highlightSource(event.feature);
       }
+    },
+    closePopup() {
+      this.$refs.mapboxmap.highlightClear();
     },
   },
 };
