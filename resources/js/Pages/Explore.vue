@@ -68,6 +68,7 @@ import Alteration from './Explore/Alteration.vue';
 import NewConstruction from './Explore/NewConstruction.vue';
 import SalePrices from './Explore/SalePrices.vue';
 import Zoning from './Explore/Zoning.vue';
+import Layers from './Explore/Layers.vue';
 
 import uiState from '../uiState';
 
@@ -105,6 +106,10 @@ export default {
         title: 'Alteration Permits',
         component: Alteration,
         route: 'alteration',
+      }, {
+        title: 'Planning Overlays',
+        component: Layers,
+        route: 'layers',
       }],
     };
   },

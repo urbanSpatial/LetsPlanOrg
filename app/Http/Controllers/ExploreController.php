@@ -11,6 +11,7 @@ class ExploreController extends Controller
         'zoning' => 1,
         'construction' => 2,
         'alteration' => 3,
+        'layers' => 4,
     ];
 
     public function index(string $pane)
