@@ -33,7 +33,6 @@ export default {
       navItems: [
         { title: 'Engage!', route: 'engage', icon: 'mdi-flag-checkered' },
         { title: 'Explore', route: 'explore', icon: 'mdi-chart-timeline-variant' },
-        { title: 'Layers', route: 'layers', icon: 'mdi-layers' },
       ],
     };
   },
