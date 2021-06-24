@@ -3,6 +3,7 @@ import { App, plugin } from '@inertiajs/inertia-vue';
 import { InertiaProgress } from '@inertiajs/progress';
 import Layout from './Shared/Layouts/Layout.vue';
 import vuetify from './plugins/vuetify';
+import store from './store';
 
 import '../scss/app.scss';
 import 'vuetify/dist/vuetify.min.css';
@@ -23,6 +24,7 @@ const el = document.getElementById('app');
 
 new Vue({
   vuetify,
+  store,
   render: (h) => h(App, {
     props: {
       initialPage: JSON.parse(el.dataset.page),
