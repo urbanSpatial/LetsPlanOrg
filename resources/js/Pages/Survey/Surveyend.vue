@@ -73,7 +73,7 @@ export default {
     user() { this.updateUser(); },
     ipaddress() { this.updateUser(); },
     step_current(step) {
-      if (step == '4') {
+      if (step === '4') {
         window.console.log('trying to fetch results');
         this.$store.dispatch('update_survey_results_async');
       }
@@ -110,6 +110,7 @@ export default {
       }
 
       this.step_current = 4;
+      return null;
     },
   },
 };

@@ -83,6 +83,7 @@ export default {
               selected = true;
             }
             // set all to gray (unselected)
+            // eslint-disable-next-line no-underscore-dangle
             layer._map.__sprucehillgeo.setStyle({
               fillColor: '#555',
             });
@@ -96,7 +97,7 @@ export default {
               this.blockgroup = layer.feature.properties;
             }
 
-            DomEvent.stopPropagation;
+            DomEvent.stopPropagation();
           });
         }).bind(this),
       },
@@ -126,6 +127,7 @@ export default {
     this.$nextTick(() => {
       this.$refs.locationMap.mapObject.eachLayer((d) => {
         if (d instanceof window.L.GeoJSON) {
+          // eslint-disable-next-line no-underscore-dangle
           this.$refs.locationMap.mapObject.__sprucehillgeo = d;
         }
       });

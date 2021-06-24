@@ -6,7 +6,8 @@
     style="height:100%;"
   >
     <v-stepper-header
-      style="position: -webkit-sticky; position:sticky; top: 0px; z-index: 1099; background-color: white;">
+      class="stepper-header"
+    >
       <v-stepper-step
         :complete="step_current > 1"
         step="1"
@@ -55,15 +56,14 @@
 </template>
 
 <script>
+import { mapFields } from 'vuex-map-fields';
+
 import Layout from '../Shared/Layouts/Layout.vue';
 
-import { mapFields } from 'vuex-map-fields';
 import Surveyintro from './Survey/Surveyintro.vue';
 import Location from './Survey/Location.vue';
 import Surveyend from './Survey/Surveyend.vue';
 import Summary from './Survey/Summary.vue';
-
-import uiState from '../uiState';
 
 export default {
   name: 'Survey',
@@ -103,7 +103,7 @@ export default {
     this.survey_id = this.survey_ids[randIndex];
 
     // async defer
-    surveyScript.setAttribute('src', 'https://formfacade.com/include/112462077823067593328/form/' + this.survey_id + '/classic.js?div=ff-compose');
+    surveyScript.setAttribute('src', `https://formfacade.com/include/112462077823067593328/form/${this.survey_id}/classic.js?div=ff-compose`);
     document.head.appendChild(surveyScript);
   },
 };
@@ -116,5 +116,8 @@ export default {
 
   .stepper-fill-height >>> .v-stepper__wrapper {
     height: 100%;
+  }
+  .stepper-header {
+    position: -webkit-sticky; position:sticky; top: 0px; z-index: 1099; background-color: white;
   }
 </style>

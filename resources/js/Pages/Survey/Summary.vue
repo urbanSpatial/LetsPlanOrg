@@ -7,8 +7,9 @@
     >
       <div
         class="flex-grow-1 flex-shrink-0"
-        v-html="survey_results === null ? '' : survey_results.map(d => JSON.stringify(d)).join('<br/>')"
-      />
+      >
+        {{ theResults }}
+      </div>
       <v-card-actions>
         <v-btn
           @click="step_current = 3"
@@ -31,6 +32,9 @@ export default {
       'step_current',
       'survey_results',
     ]),
+    theResults() {
+      return this.survey_results === null ? '' : this.survey_results.map((d) => JSON.stringify(d)).join('<br/>');
+    },
   },
 };
 </script>
