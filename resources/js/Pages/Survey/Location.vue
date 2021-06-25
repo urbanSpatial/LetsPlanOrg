@@ -115,7 +115,7 @@ export default {
 
   watch: {
     step_current(value) {
-      if (value === 2) {
+      if (value === '2') {
         this.$nextTick(() => {
           this.$refs.locationMap.mapObject.invalidateSize();
         });
