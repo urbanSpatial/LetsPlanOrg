@@ -121,3 +121,58 @@ export default {
     position: -webkit-sticky; position:sticky; top: 0px; z-index: 1099; background-color: white;
   }
 </style>
+
+<style>
+  .ff-form .ff-image {
+    height: 400px !important;
+    max-height: 80vh !important;
+    object-fit: contain;
+  }
+  .ff-form .ff-multiple_choice .ff-image {
+    display: inline-block !important;
+  }
+  .ff-form .ff-multiple_choice .ff-check-table {
+    display: inline-block !important;
+    width: auto !important;
+  }
+  #ff-id-1317426661 {
+    display: none;
+  }
+  .ff-form .ff-next, .ff-form .ff-submit {
+    background-color: #5d33fb !important;
+    color: #fff !important;
+  }
+  .ff-form .ff-item {
+    border-bottom: 2px solid lightgray !important;
+  }
+  .ff-form .ff-item tr {
+    height: 1em !important;
+  }
+  .ff-form .ff-item tr td {
+    padding: 0 !important;
+  }
+  /* hide submit button since we will provide our own */
+  .ff-button-bar {
+    display: none;
+  }
+  .ff-powered-img, .ff-powered-img > img {
+    display: none !important;
+    height: 0;
+    width: 0;
+  }
+  #ff-submit-root {
+    width: 100%;
+  }
+  #ff-title-root {
+    display: none !important;
+  }
+  div.ff-section_header {
+    padding-bottom: 0 !important;
+  }
+  .ff-section_header:not(:first-of-type) {
+    padding-top: 3em !important;
+  }
+  h4.ff-section-header {
+    font-size: 150%;
+  }
+</style>
