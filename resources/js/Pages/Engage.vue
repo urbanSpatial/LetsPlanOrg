@@ -184,7 +184,7 @@ export default {
     },
 
     goToSurvey() {
-      // go to survey
+      this.$inertia.get(route('survey'), {}, { replace: true });
     },
 
     linkFieldClick() {
