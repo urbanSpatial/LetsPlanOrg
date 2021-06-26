@@ -12,6 +12,7 @@ files = [
     # https://github.com/JeffreyWay/laravel-mix/blob/467f0c9b01b7da71c519619ba8b310422321e0d6/src/Mix.js#L189
     "artisan",
 
+    "resources/data/**",
     "resources/js/**",
     "resources/scss/**",
 ]
