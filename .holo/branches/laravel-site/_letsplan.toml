@@ -1,5 +1,7 @@
 [holomapping]
 files = [
+    ".holo/lenses/**",
+
     "app/**",
     "bootstrap/*.php",
     "bootstrap/**/.gitignore",
