@@ -23,7 +23,7 @@ Route::get('/explore', function () {
     return redirect()->route('explore', ['pane' => 'sales']);
 });
 Route::get('/explore/{pane?}', 'ExploreController@index')->name('explore');
-Route::inertia('/layers', 'Layers')->name('layers');
+Route::inertia('/survey', 'Survey')->name('survey');
 
 Route::get('/{layer}/{z}/{x}/{y}.pbf', 'TileLayer@index');
 Route::get('/parcel/{parcelId}', 'ParcelInfo@index');

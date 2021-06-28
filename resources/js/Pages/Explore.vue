@@ -68,8 +68,9 @@ import Alteration from './Explore/Alteration.vue';
 import NewConstruction from './Explore/NewConstruction.vue';
 import SalePrices from './Explore/SalePrices.vue';
 import Zoning from './Explore/Zoning.vue';
+import Layers from './Explore/Layers.vue';
 
-import uiState from '../uiState';
+import store from '../store';
 
 export default {
   components: {
@@ -81,13 +82,13 @@ export default {
   props: {
     pane: {
       type: Number,
-      default: uiState.exploreCurrentPane,
+      default: store.exploreCurrentPane,
     },
   },
 
   data() {
     return {
-      isExpanded: uiState.exploreIsExpanded,
+      isExpanded: store.exploreIsExpanded,
       currentPane: this.pane,
       panes: [{
         title: 'Sale Prices',
@@ -105,6 +106,10 @@ export default {
         title: 'Alteration Permits',
         component: Alteration,
         route: 'alteration',
+      }, {
+        title: 'Planning Overlays',
+        component: Layers,
+        route: 'layers',
       }],
     };
   },
@@ -122,12 +127,12 @@ export default {
   methods: {
     handleNewPane() {
       window.history.pushState(null, null, `/explore/${this.currentPaneRoute}`);
-      uiState.exploreCurrentPane = this.currentPane;
+      store.exploreCurrentPane = this.currentPane;
       this.$parent.$emit('new-pane', this.currentPaneRoute);
     },
 
     handleToggle(newState) {
-      uiState.exploreIsExpanded = newState;
+      store.exploreIsExpanded = newState;
     },
 
     goToNextPane() {
