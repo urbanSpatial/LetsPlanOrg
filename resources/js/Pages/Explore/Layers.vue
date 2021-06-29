@@ -29,14 +29,8 @@
             {{ item.label }}
           </v-card-title>
 
-          <v-card-text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur.
-          </v-card-text>
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <v-card-text v-html="item.tooltip" />
 
           <v-card-actions>
             <v-spacer />
@@ -66,6 +60,11 @@ export default {
           color: 'teal',
           isDialogVisible: false,
           value: true,
+          tooltip: `The Preservation Index is built from our community survey <a href="/survey">here</a>.
+            Go to the [OurPlan Methodology](link to methods) to learn more about how the index is created.
+            Once enough responses have been collected, the Index will become active and you can explore
+            preservation preferences for each parcel. The index ranges from 1 to 100. A parcel scoring 100
+            suggests an overwhelming preference for preservation on behalf of the community.`,
         },
         /*
         {
@@ -86,6 +85,11 @@ export default {
           color: 'lime',
           isDialogVisible: false,
           value: true,
+          tooltip: `The Development Suitability Index illustrates which properties are more likely to be
+            developed without an official change to the zoning code. The index ranges from 1 to 100, where
+            100 reflects a parcel that has the greatest potential to be developed. The index calculates how
+            much higher a developer could build if they demolished the property and started anew. More
+            information can be found [here](link to methods).`,
         },
       ],
     };

@@ -11,8 +11,8 @@
       :height="null"
     />
     <p class="text--secondary mt-4 mb-0">
-      [Plotted as a line chart of average home prices by year.
-      This should be for the whole area not just the zoom.]
+      The line chart above shows the average sale price
+      for properties in Spruce Hill by year.
     </p>
   </div>
 </template>
