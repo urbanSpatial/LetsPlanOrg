@@ -9,7 +9,7 @@
         class="pip__color"
         :style="`background-color: ${pip.color}`"
       />
-      <div class="pip__name text-right">
+      <div class="pip__name text-left">
         {{ pip.name }}
       </div>
     </li>

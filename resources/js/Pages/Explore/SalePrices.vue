@@ -108,7 +108,7 @@ export default {
   methods: {
     updateLegend() {
       // make 5 buckets at 20% of max-min
-      const diff = (this.saleMeta.max - this.saleMeta.min) * 0.2;
+      const diff = (this.saleMeta.max - this.saleMeta.min) * 0.075;
       this.legendPips = [
         { color: '#28CAF4' },
         { color: '#377BF4' },
@@ -117,7 +117,7 @@ export default {
         { color: '#C804F4' },
       ].map((d, i) => {
         // eslint-disable-next-line no-param-reassign
-        d.name = numeral((i + 1) * diff + this.saleMeta.min).format('0.0a');
+        d.name = numeral((i * diff) + this.saleMeta.min).format('$0.0a') + (i === 4 ? '+' : '');
         return d;
       });
     },

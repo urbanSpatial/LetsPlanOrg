@@ -99,12 +99,10 @@ export default {
         if (feat.properties.sale_price_adj) {
           fstate.rank = (feat.properties[propertyName] - featMin) / (featMax - featMin);
         }
-        fstate.rank = Math.ceil(fstate.rank * 10) * 10; // use ceiling since 0 is for no value
-        if (fstate.rank > 100) {
-          fstate.rank = 100;
-        }
+        fstate.rank *= 100; // use ceiling since 0 is for no value
+
         if (Number.isNaN(fstate.rank)) {
-          fstate.rank = 0;
+          fstate.rank = -1;
         }
         this.$refs.mapboxmap.map.setFeatureState({
           source: 'urban-areas',
