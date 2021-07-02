@@ -61,7 +61,8 @@ export default {
           isDialogVisible: false,
           value: true,
           tooltip: `The Preservation Index is built from our community survey <a href="/survey">here</a>.
-            Go to the [OurPlan Methodology](link to methods) to learn more about how the index is created.
+            Go to the <a href="https://github.com/urbanSpatial/OurPlan_Methods/blob/main/README.md" target="_blank">OurPlan Methodology</a>
+            to learn more about how the index is created.
             Once enough responses have been collected, the Index will become active and you can explore
             preservation preferences for each parcel. The index ranges from 1 to 100. A parcel scoring 100
             suggests an overwhelming preference for preservation on behalf of the community.`,
@@ -89,7 +90,7 @@ export default {
             developed without an official change to the zoning code. The index ranges from 1 to 100, where
             100 reflects a parcel that has the greatest potential to be developed. The index calculates how
             much higher a developer could build if they demolished the property and started anew. More
-            information can be found [here](link to methods).`,
+            information can be found <a href="https://github.com/urbanSpatial/OurPlan_Methods/blob/main/README.md" target="_blank">here</a>.`,
         },
       ],
     };
