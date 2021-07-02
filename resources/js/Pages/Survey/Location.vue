@@ -35,6 +35,7 @@
 
         <v-btn
           color="primary"
+          :disabled="!blockgroup"
           @click="step_current = 3"
         >
           Continue
@@ -79,7 +80,7 @@ export default {
         color: 'white',
         weight: 2,
         onEachFeature: (function (feature, layer) {
-          layer.on('click', () => {
+          layer.on('click', (ev) => {
             let selected = false;
             if (layer.options.fillColor === 'purple') {
               selected = true;
@@ -99,7 +100,7 @@ export default {
               this.blockgroup = layer.feature.properties;
             }
 
-            DomEvent.stopPropagation();
+            DomEvent.stopPropagation(ev);
           });
         }).bind(this),
       },
@@ -117,7 +118,7 @@ export default {
 
   watch: {
     step_current(value) {
-      if (value === '2') {
+      if (value === '2' || value === 2) { // sometimes string and sometimes numeric
         this.$nextTick(() => {
           this.$refs.locationMap.mapObject.invalidateSize();
         });
