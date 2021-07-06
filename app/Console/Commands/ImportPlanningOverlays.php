@@ -15,14 +15,14 @@ class ImportPlanningOverlays extends Command
      * @var string
      */
     protected $signature = 'lp:import-planning_overlays' .
-                           ' {zoning-file : zoning CSV file relative to storage/app/}';
+                           ' {planning-file : zoning CSV file relative to storage/app/}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import Zoning Land Use';
+    protected $description = 'Import Planning Overlays';
 
     /**
      * Create a new command instance.
@@ -38,7 +38,7 @@ class ImportPlanningOverlays extends Command
      */
     public function handle()
     {
-        $dataFile = $this->argument('zoning-file');
+        $dataFile = $this->argument('planning-file');
         if (!Storage::disk('local')->exists($dataFile)) {
             $this->error('Cannot find [' . $dataFile . '] locally, existing ... ');
             return 1;
@@ -69,18 +69,14 @@ class ImportPlanningOverlays extends Command
             }
             $issAt = null;
 
-           // 1 "opa_account_num","zoning","landuse","number_stories","total_livable_area","bldg_desc","lat","lng"
-           // 2 "011012000","RSA5 ","Single Family",3,1465,"ROW 3 STY MASONRY",39.9302486735636,-75.1487657003407
-           // 3 "011012100","RSA5 ","Single Family",3,1465,"ROW 3 STY MASONRY",39.9302560204392,-75.1488218259425
-            // Points are lat, lng
-            $bp = new ZoningLandUse([
+           // 1 "opa_account_num","dev_index", "pres_index", "sum"
+           // 2 "11007810", 93, "NA", "NA"
+           // 3 "11008200", 2, "NA", "NA"
+            $bp = new PlanningOverlays([
                 "opa_account_num"    => $data_row[0] == 'NA' ? null : $data_row[0],
-                "zoning"             => $data_row[1] == 'NA' ? null : $data_row[1],
-                "landuse"            => $data_row[2] == 'NA' ? null : $data_row[2],
-                "number_stories"     => $data_row[3] == 'NA' ? null : $data_row[3],
-                "total_livable_area" => $data_row[4] == 'NA' ? null : $data_row[4],
-                "bldg_desc"          => $data_row[5] == 'NA' ? null : $data_row[5],
-                "geo_point"          => new Point($data_row[6], $data_row[7])
+                "dev_index"          => $data_row[1] == 'NA' ? null : $data_row[1],
+                "pres_index"         => $data_row[2] == 'NA' ? null : $data_row[2],
+                "sum"                => $data_row[3] == 'NA' ? null : $data_row[3],
             ]);
             $q = $bp->save();
         }
