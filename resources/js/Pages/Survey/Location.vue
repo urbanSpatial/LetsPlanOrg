@@ -79,7 +79,7 @@ export default {
         fillOpacity: 0.4,
         color: 'white',
         weight: 2,
-        onEachFeature: (function (feature, layer) {
+        onEachFeature: (function setupFeature(feature, layer) {
           layer.on('click', (ev) => {
             let selected = false;
             if (layer.options.fillColor === 'purple') {

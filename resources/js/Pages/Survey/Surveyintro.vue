@@ -25,7 +25,10 @@
             Finally, we will show you a series of photos illustrating different land uses
             in the community. Which would you like to see preserved into the future?
             More information on how we process survey data can be found
-            <a href="https://github.com/urbanSpatial/OurPlan_Methods/blob/main/README.md" target="_blank">here</a>.
+            <a
+              href="https://github.com/urbanSpatial/OurPlan_Methods/blob/main/README.md"
+              target="_blank"
+            >here</a>.
           </p>
         </v-col>
       </v-row>
