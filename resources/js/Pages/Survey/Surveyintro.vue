@@ -4,29 +4,34 @@
       class="d-flex flex-column"
       style="height: 100%;"
     >
-      <div class="flex-grow-1">
-        <p>
-          Welcome to the neighborhood survey tool.  The purpose of this tool is to
-          gather stakeholder feedback on their vision for the future.  Our goal is to
-          collect a representative sample, weighing the responses in favor of those
-          who may have been unable or discouraged from participating in community
-          planning.
-        </p>
-        <p>
-          Once a representative sample has been collected, plan administrators will
-          synthesize the results and add them to the
-          <router-link to="/explorer">
-            Community Explorer
-          </router-link> tool, where
-          participants can see the results on a map.
-        </p>
-        <p>
-          Step 1 asks you to select the Census block group in which you live.  Then,
-          continue to the survey tool.  We ask you to fill out the survey one time.
-          We will anonymously assign a 'hash' or identifier to your session to reduce repeat
-          survey takers in the sample.
-        </p>
-      </div>
+      <v-row justify="center">
+        <v-col
+          cols="12"
+          md="8"
+        >
+          <p>
+            Welcome to the neighborhood survey! The goal is to collect community feedback
+            on where new development should occur and what it should prioritize. We ask that
+            only residents of the neighborhood take this survey and just once.
+          </p>
+          <p>
+            Once enough responses have been collected, the results will be added to the
+            OurPlan Map Explorer and participants can explore both preservation and
+            development opportunities.
+          </p>
+          <p>
+            First, the survey will ask you to select the Census area in which you live.
+            Continuing on, we will ask your opinion on where development should occur.
+            Finally, we will show you a series of photos illustrating different land uses
+            in the community. Which would you like to see preserved into the future?
+            More information on how we process survey data can be found
+            <a
+              href="https://github.com/urbanSpatial/OurPlan_Methods/blob/main/README.md"
+              target="_blank"
+            >here</a>.
+          </p>
+        </v-col>
+      </v-row>
 
       <v-card-actions>
         <v-btn

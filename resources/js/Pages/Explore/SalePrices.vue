@@ -11,13 +11,14 @@
       :height="null"
     />
     <p class="text--secondary mt-4 mb-0">
-      [Plotted as a line chart of average home prices by year.
-      This should be for the whole area not just the zoom.]
+      The line chart above shows the average sale price
+      for properties in Spruce Hill by year.
     </p>
   </div>
 </template>
 
 <script>
+import numeral from 'numeral';
 import MapLegend from '../../Shared/MapLegend.vue';
 import LineChart from '../../Shared/LineChart.vue';
 
@@ -82,8 +83,15 @@ export default {
     this.fetchData()
       .then((result) => result.data)
       .then((jsonApi) => {
-        this.saleMeta.min = jsonApi.meta.min_price;
-        this.saleMeta.max = jsonApi.meta.max_price;
+        /* add current year min and max sales price to data
+          but since this is only the current year then will not match sales price chart legend
+          this.saleMeta.min = jsonApi.meta.current_year.min_price;
+          this.saleMeta.max = jsonApi.meta.current_year.max_price;
+        */
+
+        // use new all_year instead which should match min and max range of map features
+        this.saleMeta.min = jsonApi.meta.all_year.min_price;
+        this.saleMeta.max = jsonApi.meta.all_year.max_price;
         return jsonApi.data;
       })
       .then((dataset) => {
@@ -92,21 +100,26 @@ export default {
       })
       .then(() => {
         this.$nextTick(() => {
+          this.updateLegend();
           this.$refs.chartComponent.redraw();
         });
       });
   },
   methods: {
     updateLegend() {
-    // make 5 buckets at 20% of max-min
-    // const diff = this.saleMeta.max - this.saleMeta.min;
+      // make 5 buckets at 20% of max-min
+      // const diff = (this.saleMeta.max - this.saleMeta.min) * 0.075;
       this.legendPips = [
-        { name: '', color: '#28CAF4' },
-        { name: '', color: '#377BF4' },
-        { name: '', color: '#311DF4' },
-        { name: '', color: '#8104F4' },
-        { name: '', color: '#C804F4' },
-      ];
+        { color: '#28CAF4' },
+        { color: '#377BF4' },
+        { color: '#311DF4' },
+        { color: '#8104F4' },
+        { color: '#C804F4' },
+      ].map((d, i) => {
+        // eslint-disable-next-line no-param-reassign
+        d.name = numeral([0, 150000, 500000, 1000000, 5000000][i]).format('$0.0a');
+        return d;
+      });
     },
     fetchData() {
       /* eslint-disable-next-line prefer-template */

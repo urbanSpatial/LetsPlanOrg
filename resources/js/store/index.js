@@ -22,7 +22,7 @@ export default new Vuex.Store({
     submitted: false,
 
     // from letsplanorg
-    exploreIsExpanded: true,
+    exploreIsExpanded: false,
     layersIsExpanded: true,
     exploreCurrentPane: 0,
   },

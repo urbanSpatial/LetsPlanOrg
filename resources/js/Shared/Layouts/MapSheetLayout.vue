@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapFields } from 'vuex-map-fields';
 import Layout from './Layout.vue';
 import LPBottomSheet from './BottomSheetLayout.vue';
 import MapboxMap from '../MapboxMap.vue';
@@ -53,6 +54,11 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapFields([
+      'exploreIsExpanded',
+    ]),
+  },
   mounted: () => {
   },
   methods: {
@@ -67,6 +73,11 @@ export default {
         return;
       }
       this.changeParcelRank('sales');
+      /* example usage of triggers for tour
+      this.triggerPopup();
+      this.triggerExpanded();
+      setTimeout(this.triggerCollapsed, 3000);
+      */
     },
     changeParcelRank(rankType) {
       const features = this.$refs.mapboxmap.map.querySourceFeatures(
@@ -90,21 +101,18 @@ export default {
       }
     },
     rankProperty(propertyName, features) {
+      // use hard coded breaks for now so will not consider min and max
       /* eslint-disable prefer-spread */
-      const featMax = Math.max.apply(Math, features.map((f) => f.properties[propertyName] || 0));
+      // const featMax = Math.max.apply(Math, features.map((f) => f.properties[propertyName] || 0));
       /* eslint-disable prefer-spread */
-      const featMin = Math.min.apply(Math, features.map((f) => f.properties[propertyName] || 0));
+      // const featMin = Math.min.apply(Math, features.map((f) => f.properties[propertyName] || 0));
       features.forEach((feat) => {
         const fstate = { rank: 0 };
-        if (feat.properties.sale_price_adj) {
-          fstate.rank = (feat.properties[propertyName] - featMin) / (featMax - featMin);
-        }
-        fstate.rank = Math.round(fstate.rank * 100) * 10;
-        if (fstate.rank > 100) {
-          fstate.rank = 100;
-        }
-        if (Number.isNaN(fstate.rank)) {
-          fstate.rank = 0;
+        // no scaling or ranking since using hard coded sales price breaks
+        fstate.rank = feat.properties.sale_price_adj;
+        // for non-numeric and 0 assign negative number to color appropriately
+        if (!fstate.rank) {
+          fstate.rank = -1;
         }
         this.$refs.mapboxmap.map.setFeatureState({
           source: 'urban-areas',
@@ -128,6 +136,22 @@ export default {
     },
     closePopup() {
       this.$refs.mapboxmap.highlightClear();
+    },
+    // triggers for use with tour
+    triggerPopup() {
+      const feature = this.$refs.mapboxmap.map.querySourceFeatures('urban-areas', {
+        sourceLayer: 'urban-areas',
+        filter: ['==', 'parcel_id', '441425'],
+      });
+      const coordinates = { lat: 39.9534051531393, lng: -75.20876878307995 };
+      const parcel = feature[0].properties;
+      this.showPopup({ properties: parcel, coords: coordinates, feature: feature[0] });
+    },
+    triggerExpanded() {
+      this.exploreIsExpanded = true;
+    },
+    triggerCollapsed() {
+      this.exploreIsExpanded = false;
     },
   },
 };

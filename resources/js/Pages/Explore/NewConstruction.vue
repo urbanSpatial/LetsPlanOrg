@@ -7,7 +7,9 @@
       :height="null"
     />
     <p class="text--secondary mt-4 mb-0">
-      [A line plot with the count of new construction permits over the last ten years.]
+      The bar plot above shows the number of parcels
+      in Spruce Hill that received new construction permits
+      in the past ten years.
     </p>
   </div>
 </template>
