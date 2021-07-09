@@ -107,7 +107,17 @@ class ChartInfo extends Controller
             ->whereNotNull('sale_price_adj')
             ->first();
 
-
+        $minMaxAll = \DB::select('
+            select MIN(sub.sale_price_adj) as min_sale, MAX(sub.sale_price_adj) as max_sale
+            from (
+                select atlas_data.parcel_id as parcel, real_estate_tx.sale_price_adj, row_number() over (partition by atlas_data.parcel_id order by sale_date desc)
+                from "project_parcels_2"
+                left join "atlas_data" on "atlas_data"."parcel_id" = "project_parcels_2"."parcel_id"
+                left join "real_estate_tx" on "real_estate_tx"."opa_account_num" = "atlas_data"."opa_account_num"
+                where "sale_price_adj" is not null and "sale_price_adj" > 0
+            ) as sub
+            where sub.row_number = 1
+        ');
 
         $parcels = \DB::table($table)
             ->select([
@@ -139,6 +149,10 @@ class ChartInfo extends Controller
                 'current_year' => [
                     'min_price' => $minMax->min_sale,
                     'max_price' => $minMax->max_sale,
+                ],
+                'all_year' => [
+                    'min_price' => 0, //array_column($minMaxAll, 'min_sale')[0],
+                    'max_price' => array_column($minMaxAll, 'max_sale')[0],
                 ]
             ]
         ]);

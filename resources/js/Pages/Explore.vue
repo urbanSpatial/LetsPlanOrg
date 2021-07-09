@@ -1,6 +1,5 @@
 <template>
   <lp-bottom-sheet
-    :expanded="isExpanded"
     @toggle="handleToggle"
   >
     <template #sheet-collapsed>
@@ -59,6 +58,8 @@
 </template>
 
 <script>
+import { mapFields } from 'vuex-map-fields';
+
 import Layout from '../Shared/Layouts/Layout.vue';
 import MapSheetLayout from '../Shared/Layouts/MapSheetLayout.vue';
 import LPBottomSheet from '../Shared/LPBottomSheet.vue';
@@ -88,7 +89,6 @@ export default {
 
   data() {
     return {
-      isExpanded: store.exploreIsExpanded,
       currentPane: this.pane,
       panes: [{
         title: 'Sale Prices',
@@ -122,6 +122,10 @@ export default {
     paneCount() {
       return this.panes.length;
     },
+
+    ...mapFields([
+      'exploreIsExpanded',
+    ]),
   },
 
   methods: {
@@ -132,7 +136,7 @@ export default {
     },
 
     handleToggle(newState) {
-      store.exploreIsExpanded = newState;
+      this.exploreIsExpanded = newState;
     },
 
     goToNextPane() {

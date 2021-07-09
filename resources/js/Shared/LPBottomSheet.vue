@@ -7,7 +7,7 @@
         small
         @click="toggle"
       >
-        <v-icon>{{ isExpanded ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon>
+        <v-icon>{{ exploreIsExpanded ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon>
       </v-btn>
       <v-divider />
 
@@ -15,7 +15,7 @@
         style="flex: 1 1 auto; overflow: auto"
         flat
         tile
-        :value="isExpanded ? 0 : false"
+        :value="exploreIsExpanded ? 0 : false"
       >
         <v-expansion-panel readonly>
           <v-expansion-panel-header
@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import { mapFields } from 'vuex-map-fields';
+
 export default {
   name: 'LPBottomSheet',
 
@@ -51,21 +53,22 @@ export default {
   },
 
   data() {
-    return {
-      isExpanded: this.expanded,
-    };
+    return { };
   },
 
   computed: {
     hasCollapsedContent() {
       return !!(this.$slots['sheet-collapsed'] && this.$slots['sheet-collapsed'][0]);
     },
+
+    ...mapFields([
+      'exploreIsExpanded',
+    ]),
   },
 
   methods: {
     toggle() {
-      this.isExpanded = !this.isExpanded;
-      this.$emit('toggle', this.isExpanded);
+      this.exploreIsExpanded = !this.exploreIsExpanded;
     },
   },
 };
