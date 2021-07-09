@@ -22,6 +22,8 @@
         :complete="step_current > 2"
         step="2"
         editable
+        error-icon="$error"
+        :rules="[() => blockgroup!==null]"
       >
         Location
       </v-stepper-step>
@@ -31,7 +33,7 @@
       <v-stepper-step
         :complete="step_current > 3"
         step="3"
-        editable
+        :editable="blockgroup!==null"
       >
         Survey
       </v-stepper-step>
@@ -40,7 +42,6 @@
 
       <v-stepper-step
         step="4"
-        editable
       >
         Summary
       </v-stepper-step>
@@ -89,6 +90,7 @@ export default {
 
   computed: {
     ...mapFields([
+      'blockgroup',
       'step_current',
       'survey_id',
       'survey_results',

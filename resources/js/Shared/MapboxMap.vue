@@ -22,11 +22,11 @@ export default {
       colorRankSteps: [
         'step',
         ['feature-state', 'rank'],
-        '#c0c0c0', 1,
-        '#28caf4', 20,
-        '#377bf4', 40,
-        '#311df4', 60,
-        '#8104f4', 80,
+        '#c0c0c0', 0,
+        '#28caf4', 150000,
+        '#377bf4', 500000,
+        '#311df4', 1000000,
+        '#8104f4', 5000000,
         '#c804f4',
       ],
       colorZoningCategories: [

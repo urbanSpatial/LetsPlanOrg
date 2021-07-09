@@ -7,7 +7,8 @@
       :height="null"
     />
     <p class="text--secondary mt-4 mb-0">
-      [A bar plot showing the rate of each zoning designation by parcel.]
+      The bar plot above shows the rate of parcels by
+      zoning designation in Spruce Hill. “Res” is Residential; “Com” is Commercial.
     </p>
   </div>
 </template>
