@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapFields } from 'vuex-map-fields';
 import Layout from './Layout.vue';
 import LPBottomSheet from './BottomSheetLayout.vue';
 import MapboxMap from '../MapboxMap.vue';
@@ -53,6 +54,11 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapFields([
+      'exploreIsExpanded',
+    ]),
+  },
   mounted: () => {
   },
   methods: {
@@ -67,6 +73,9 @@ export default {
         return;
       }
       this.changeParcelRank('sales');
+      this.triggerPopup();
+      this.triggerExpanded();
+      setTimeout(this.triggerCollapsed, 3000);
     },
     changeParcelRank(rankType) {
       const features = this.$refs.mapboxmap.map.querySourceFeatures(
@@ -126,6 +135,22 @@ export default {
     },
     closePopup() {
       this.$refs.mapboxmap.highlightClear();
+    },
+    // triggers for use with tour
+    triggerPopup() {
+      const feature = this.$refs.mapboxmap.map.querySourceFeatures('urban-areas', {
+        sourceLayer: 'urban-areas',
+        filter: ['==', 'parcel_id', '441425'],
+      });
+      const coordinates = { lat: 39.9534051531393, lng: -75.20876878307995 };
+      const parcel = feature[0].properties;
+      this.showPopup({ properties: parcel, coords: coordinates, feature: feature[0] });
+    },
+    triggerExpanded() {
+      this.exploreIsExpanded = true;
+    },
+    triggerCollapsed() {
+      this.exploreIsExpanded = false;
     },
   },
 };
