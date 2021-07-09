@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitbe30322a5f78f5fcde472c1bfe8a9209
+class ComposerStaticInitfd894f4827ade2c25e55bb2ca4d77917
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -563,6 +563,7 @@ class ComposerStaticInitbe30322a5f78f5fcde472c1bfe8a9209
     public static $classMap = array (
         'App\\Console\\Commands\\ImportBldgPermits' => __DIR__ . '/../..' . '/app/Console/Commands/ImportBldgPermits.php',
         'App\\Console\\Commands\\ImportParcels' => __DIR__ . '/../..' . '/app/Console/Commands/ImportParcels.php',
+        'App\\Console\\Commands\\ImportPlanningOverlays' => __DIR__ . '/../..' . '/app/Console/Commands/ImportPlanningOverlays.php',
         'App\\Console\\Commands\\ImportRco' => __DIR__ . '/../..' . '/app/Console/Commands/ImportRco.php',
         'App\\Console\\Commands\\ImportReTransfers' => __DIR__ . '/../..' . '/app/Console/Commands/ImportReTransfers.php',
         'App\\Console\\Commands\\ImportZoningLandUse' => __DIR__ . '/../..' . '/app/Console/Commands/ImportZoningLandUse.php',
@@ -588,6 +589,7 @@ class ComposerStaticInitbe30322a5f78f5fcde472c1bfe8a9209
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Models\\BldgPermit' => __DIR__ . '/../..' . '/app/Models/BldgPermit.php',
         'App\\Models\\Parcel' => __DIR__ . '/../..' . '/app/Models/Parcel.php',
+        'App\\Models\\PlanningOverlays' => __DIR__ . '/../..' . '/app/Models/PlanningOverlays.php',
         'App\\Models\\Rco' => __DIR__ . '/../..' . '/app/Models/Rco.php',
         'App\\Models\\RealEstateTx' => __DIR__ . '/../..' . '/app/Models/RealEstateTx.php',
         'App\\Models\\Traits\\DefinesLandUseZones' => __DIR__ . '/../..' . '/app/Models/Traits/DefinesLandUseZones.php',
@@ -5621,10 +5623,10 @@ class ComposerStaticInitbe30322a5f78f5fcde472c1bfe8a9209
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitbe30322a5f78f5fcde472c1bfe8a9209::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitbe30322a5f78f5fcde472c1bfe8a9209::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitbe30322a5f78f5fcde472c1bfe8a9209::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitbe30322a5f78f5fcde472c1bfe8a9209::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitfd894f4827ade2c25e55bb2ca4d77917::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitfd894f4827ade2c25e55bb2ca4d77917::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitfd894f4827ade2c25e55bb2ca4d77917::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitfd894f4827ade2c25e55bb2ca4d77917::$classMap;
 
         }, null, ClassLoader::class);
     }

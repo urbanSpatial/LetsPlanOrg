@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Commands\\ImportBldgPermits' => $baseDir . '/app/Console/Commands/ImportBldgPermits.php',
     'App\\Console\\Commands\\ImportParcels' => $baseDir . '/app/Console/Commands/ImportParcels.php',
+    'App\\Console\\Commands\\ImportPlanningOverlays' => $baseDir . '/app/Console/Commands/ImportPlanningOverlays.php',
     'App\\Console\\Commands\\ImportRco' => $baseDir . '/app/Console/Commands/ImportRco.php',
     'App\\Console\\Commands\\ImportReTransfers' => $baseDir . '/app/Console/Commands/ImportReTransfers.php',
     'App\\Console\\Commands\\ImportZoningLandUse' => $baseDir . '/app/Console/Commands/ImportZoningLandUse.php',
@@ -33,6 +34,7 @@ return array(
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\Models\\BldgPermit' => $baseDir . '/app/Models/BldgPermit.php',
     'App\\Models\\Parcel' => $baseDir . '/app/Models/Parcel.php',
+    'App\\Models\\PlanningOverlays' => $baseDir . '/app/Models/PlanningOverlays.php',
     'App\\Models\\Rco' => $baseDir . '/app/Models/Rco.php',
     'App\\Models\\RealEstateTx' => $baseDir . '/app/Models/RealEstateTx.php',
     'App\\Models\\Traits\\DefinesLandUseZones' => $baseDir . '/app/Models/Traits/DefinesLandUseZones.php',
