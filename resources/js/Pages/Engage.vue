@@ -18,7 +18,8 @@
         <v-card
           elevation="1"
           max-width="300"
-          class="mb-3 light-blue lighten-5 rounded-lg"
+          class="mb-3 rounded-lg"
+          style="background: rgb(112 194 189 / 42%);"
         >
           <v-card-title class="justify-center pb-0">
             About OurPlan
@@ -28,7 +29,7 @@
               Learn more about OurPlan.
             </p>
             <v-btn
-              color="primary"
+              style="background: #238e88; color: white;"
               rounded
               block
               @click="goToAbout()"
