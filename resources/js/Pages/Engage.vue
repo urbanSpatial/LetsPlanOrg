@@ -18,6 +18,36 @@
         <v-card
           elevation="1"
           max-width="300"
+          class="mb-3 rounded-lg"
+          style="background: rgb(112 194 189 / 42%);"
+        >
+          <v-card-title class="justify-center pb-0">
+            About OurPlan
+          </v-card-title>
+          <v-card-text>
+            <p>
+              Learn more about OurPlan.
+            </p>
+            <v-btn
+              style="background: #238e88; color: white;"
+              rounded
+              block
+              @click="goToAbout()"
+            >
+              <v-icon
+                left
+                dense
+              >
+                mdi-information-outline
+              </v-icon>
+              About
+            </v-btn>
+          </v-card-text>
+        </v-card>
+
+        <v-card
+          elevation="1"
+          max-width="300"
           class="mb-3 light-blue lighten-5 rounded-lg"
         >
           <v-card-title class="justify-center pb-0">
@@ -177,6 +207,10 @@ export default {
         navigator.clipboard.writeText(this.currentUrl);
         this.copyIsConfirmed = true;
       }
+    },
+
+    goToAbout() {
+      this.$inertia.get(route('about'), {}, { replace: true });
     },
 
     goToData() {

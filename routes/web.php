@@ -24,6 +24,7 @@ Route::get('/explore', function () {
 });
 Route::get('/explore/{pane?}', 'ExploreController@index')->name('explore');
 Route::inertia('/survey', 'Survey')->name('survey');
+Route::inertia('/about', 'About')->name('about');
 
 Route::get('/{layer}/{z}/{x}/{y}.pbf', 'TileLayer@index');
 Route::get('/parcel/{parcelId}', 'ParcelInfo@index');

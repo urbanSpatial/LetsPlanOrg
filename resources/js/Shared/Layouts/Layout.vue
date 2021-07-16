@@ -11,6 +11,7 @@
         v-for="item in navItems"
         :key="item.route"
         :value="item.route"
+        :style="item.route === 'about' ? 'display:none;' : ''"
       >
         <span>{{ item.title }}</span>
         <v-icon>{{ item.icon }}</v-icon>
@@ -34,6 +35,7 @@ export default {
         { title: 'Engage!', route: 'engage', icon: 'mdi-flag-checkered' },
         { title: 'Explore', route: 'explore', icon: 'mdi-chart-timeline-variant' },
         { title: 'Survey', route: 'survey', icon: 'mdi-file-question-outline' },
+        { title: 'About', route: 'about', icon: 'mdi-information-outline' },
       ],
     };
   },
