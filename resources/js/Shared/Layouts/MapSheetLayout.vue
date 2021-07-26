@@ -57,9 +57,153 @@ export default {
   computed: {
     ...mapFields([
       'exploreIsExpanded',
+      'exploreCurrentPane',
     ]),
   },
-  mounted: () => {
+  mounted() {
+    this.$nextTick(() => {
+      const tour = this.$shepherd({
+        useModalOverlay: true,
+      });
+      const {
+        triggerPopup, closePopup,
+        triggerExpanded, triggerCollapsed,
+        triggerPlanningOverlays, triggerSales,
+      } = this;
+
+      tour.addStep({
+        id: 1,
+        text: `
+          <p>
+            Welcome to the OurPlan Map Explorer.
+          </p>
+          <p>
+            Here you can analyze the local market housing trends, zoning patterns, and changes in
+            both new construction and alteration permits.
+          </p>
+          <p>
+            Click below to start the tour.
+          </p>
+        `,
+        cancelIcon: { enabled: true },
+        buttons: [
+          {
+            text: 'Continue',
+            action: tour.next,
+          },
+          {
+            text: 'Cancel',
+            action: tour.cancel,
+          },
+        ],
+      });
+
+      tour.addStep({
+        text: `
+          <p>
+            Click on the map to view key indicators for any property in the neighborhood.
+            Use one finger to pan and two to zoom.
+          </p>
+        `,
+        when: {
+          show() {
+            triggerPopup();
+          },
+          hide() {
+            closePopup();
+          },
+        },
+        cancelIcon: { enabled: true },
+        buttons: [
+          {
+            text: 'Continue',
+            action: tour.next,
+          },
+          {
+            text: 'Cancel',
+            action: tour.cancel,
+          },
+        ],
+      });
+
+      tour.addStep({
+        text: `
+          <p>
+            Use the Data View panel from below.  Use the left and right arrows to map different indicators.
+            For each, view the graph to get a more in-depth understanding of the trends.
+          </p>
+        `,
+        when: {
+          show() {
+            triggerExpanded();
+          },
+        },
+        cancelIcon: { enabled: true },
+        buttons: [
+          {
+            text: 'Continue',
+            action: tour.next,
+          },
+          {
+            text: 'Cancel',
+            action: tour.cancel,
+          },
+        ],
+      });
+
+      tour.addStep({
+        text: `
+          <p>
+            Use the Planning Overlays interface to see how preservation and development suitability
+            balance across the neighborhood.  Toggle one indicator at a time, or turn both on to see
+            areas suitable for both preservation and development.
+          </p>
+        `,
+        when: {
+          show() {
+            triggerPlanningOverlays();
+          },
+        },
+        cancelIcon: { enabled: true },
+        buttons: [
+          {
+            text: 'Continue',
+            action: tour.next,
+          },
+          {
+            text: 'Cancel',
+            action: tour.cancel,
+          },
+        ],
+      });
+
+      tour.addStep({
+        text: `
+          <p>
+            When you are ready, go explore additional components of OurPlan.  Have fun!
+          </p>
+        `,
+        when: {
+          show() {
+            triggerCollapsed();
+            triggerSales();
+          },
+        },
+        cancelIcon: { enabled: true },
+        buttons: [
+          {
+            text: 'Start Over',
+            action() { return this.show(1); },
+          },
+          {
+            text: 'End',
+            action: tour.cancel,
+          },
+        ],
+      });
+
+      tour.start();
+    });
   },
   methods: {
     handleNewPane(pane) {
@@ -152,6 +296,12 @@ export default {
     },
     triggerCollapsed() {
       this.exploreIsExpanded = false;
+    },
+    triggerPlanningOverlays() {
+      this.exploreCurrentPane = 4;
+    },
+    triggerSales() {
+      this.exploreCurrentPane = 0;
     },
   },
 };
