@@ -3,6 +3,8 @@ import 'leaflet/dist/leaflet.css';
 import { Icon } from 'leaflet';
 import { App, plugin } from '@inertiajs/inertia-vue';
 import { InertiaProgress } from '@inertiajs/progress';
+import VueShepherd from 'vue-shepherd';
+import 'shepherd.js/dist/css/shepherd.css';
 import Layout from './Shared/Layouts/Layout.vue';
 import vuetify from './plugins/vuetify';
 import store from './store';
@@ -15,6 +17,9 @@ import './bootstrap';
 
 // set up inertia
 Vue.use(plugin);
+
+// add vue-shepherd
+Vue.use(VueShepherd);
 
 // set up progress indicators
 InertiaProgress.init();

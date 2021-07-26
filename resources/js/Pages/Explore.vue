@@ -16,7 +16,7 @@
           style="flex: 1 1 0"
         >
           <v-window
-            v-model="currentPane"
+            v-model="exploreCurrentPane"
             vertical
           >
             <v-window-item
@@ -41,7 +41,7 @@
 
     <template #sheet-expanded>
       <v-window
-        v-model="currentPane"
+        v-model="exploreCurrentPane"
         class="mt-n6"
       >
         <v-window-item
@@ -80,16 +80,8 @@ export default {
 
   layout: [Layout, MapSheetLayout],
 
-  props: {
-    pane: {
-      type: Number,
-      default: store.exploreCurrentPane,
-    },
-  },
-
   data() {
     return {
-      currentPane: this.pane,
       panes: [{
         title: 'Sale Prices',
         component: SalePrices,
@@ -116,7 +108,7 @@ export default {
 
   computed: {
     currentPaneRoute() {
-      return this.panes[this.currentPane].route;
+      return this.panes[this.exploreCurrentPane].route;
     },
 
     paneCount() {
@@ -125,13 +117,13 @@ export default {
 
     ...mapFields([
       'exploreIsExpanded',
+      'exploreCurrentPane',
     ]),
   },
 
   methods: {
     handleNewPane() {
       window.history.pushState(null, null, `/explore/${this.currentPaneRoute}`);
-      store.exploreCurrentPane = this.currentPane;
       this.$parent.$emit('new-pane', this.currentPaneRoute);
     },
 
@@ -140,20 +132,20 @@ export default {
     },
 
     goToNextPane() {
-      if (this.currentPane + 1 < this.paneCount) {
-        this.currentPane += 1;
+      if (this.exploreCurrentPane + 1 < this.paneCount) {
+        this.exploreCurrentPane += 1;
       } else {
-        this.currentPane = 0;
+        this.exploreCurrentPane = 0;
       }
 
       this.handleNewPane();
     },
 
     goToPrevPane() {
-      if (this.currentPane > 0) {
-        this.currentPane -= 1;
+      if (this.exploreCurrentPane > 0) {
+        this.exploreCurrentPane -= 1;
       } else {
-        this.currentPane = this.paneCount - 1;
+        this.exploreCurrentPane = this.paneCount - 1;
       }
 
       this.handleNewPane();
