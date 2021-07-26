@@ -302,7 +302,7 @@ export default {
     },
     triggerSales() {
       this.exploreCurrentPane = 0;
-    }
+    },
   },
 };
 </script>
