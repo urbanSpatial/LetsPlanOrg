@@ -68,11 +68,10 @@ export default {
       const {
         triggerPopup, closePopup,
         triggerExpanded, triggerCollapsed,
-        triggerPlanningOverlays, triggerSales
+        triggerPlanningOverlays, triggerSales,
       } = this;
 
       tour.addStep({
-        //attachTo: { element: this.$el, on: 'top' },
         id: 1,
         text: `
           <p>

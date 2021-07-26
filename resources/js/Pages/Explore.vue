@@ -71,8 +71,6 @@ import SalePrices from './Explore/SalePrices.vue';
 import Zoning from './Explore/Zoning.vue';
 import Layers from './Explore/Layers.vue';
 
-import store from '../store';
-
 export default {
   components: {
     'lp-bottom-sheet': LPBottomSheet,
