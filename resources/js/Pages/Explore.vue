@@ -119,6 +119,12 @@ export default {
     ]),
   },
 
+  watch: {
+    exploreCurrentPane() {
+      this.handleNewPane();
+    },
+  },
+
   methods: {
     handleNewPane() {
       window.history.pushState(null, null, `/explore/${this.currentPaneRoute}`);

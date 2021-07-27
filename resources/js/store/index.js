@@ -25,6 +25,7 @@ export default new Vuex.Store({
     exploreIsExpanded: false,
     layersIsExpanded: true,
     exploreCurrentPane: 0,
+    tourShown: false,
   },
   mutations: {
     update_survey_results(state, value) {
