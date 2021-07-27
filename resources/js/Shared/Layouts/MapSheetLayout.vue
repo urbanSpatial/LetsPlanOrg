@@ -58,21 +58,23 @@ export default {
     ...mapFields([
       'exploreIsExpanded',
       'exploreCurrentPane',
+      'shownTour',
     ]),
   },
   mounted() {
+    // if already shown before then do not show again
+    if (this.shownTour) { return; }
     this.$nextTick(() => {
       const tour = this.$shepherd({
         useModalOverlay: true,
       });
       const {
-        triggerPopup, closePopup,
+        triggerPopup,
         triggerExpanded, triggerCollapsed,
         triggerPlanningOverlays, triggerSales,
       } = this;
 
       tour.addStep({
-        id: 1,
         text: `
           <p>
             Welcome to the OurPlan Map Explorer.
@@ -110,7 +112,13 @@ export default {
             triggerPopup();
           },
           hide() {
-            closePopup();
+            // enclose in try catch for local testing
+            try {
+              triggerPopup();
+            // eslint-disable-next-line no-empty
+            } catch (e) {
+
+            }
           },
         },
         cancelIcon: { enabled: true },
@@ -187,22 +195,40 @@ export default {
           show() {
             triggerCollapsed();
             triggerSales();
+            // do this the hard way but I do not think we have any utilities for this
+            //  and I would prefer not to add another dependency at this point
+            document.querySelector('button[value="engage"]').style.border = '2px solid purple';
+            document.querySelector('button[value="survey"]').style.border = '2px solid purple';
+          },
+          hide() {
+            document.querySelector('button[value="engage"]').style.border = '';
+            document.querySelector('button[value="survey"]').style.border = '';
+          },
+          cancel() {
+            document.querySelector('button[value="engage"]').style.border = '';
+            document.querySelector('button[value="survey"]').style.border = '';
           },
         },
         cancelIcon: { enabled: true },
         buttons: [
           {
             text: 'Start Over',
-            action() { return this.show(1); },
+            action() { return this.show(0); },
           },
           {
             text: 'End',
-            action: tour.cancel,
+            action: tour.next,
           },
         ],
       });
 
+      tour.on('complete', () => {
+        document.querySelector('button[value="engage"]').style.border = '';
+        document.querySelector('button[value="survey"]').style.border = '';
+      });
       tour.start();
+      // set shownTour to true after show when initially mounted
+      this.shownTour = true;
     });
   },
   methods: {
@@ -306,3 +332,9 @@ export default {
   },
 };
 </script>
+
+<style>
+  .shepherd-content {
+    font-family: inherit;
+  }
+</style>
