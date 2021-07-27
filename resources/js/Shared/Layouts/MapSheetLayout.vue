@@ -58,9 +58,12 @@ export default {
     ...mapFields([
       'exploreIsExpanded',
       'exploreCurrentPane',
+      'shownTour',
     ]),
   },
   mounted() {
+    // if already shown before then do not show again
+    if (this.shownTour) { return; }
     this.$nextTick(() => {
       const tour = this.$shepherd({
         useModalOverlay: true,
@@ -72,7 +75,6 @@ export default {
       } = this;
 
       tour.addStep({
-        id: 1,
         text: `
           <p>
             Welcome to the OurPlan Map Explorer.
@@ -110,7 +112,13 @@ export default {
             triggerPopup();
           },
           hide() {
-            triggerPopup();
+            // enclose in try catch for local testing
+            try {
+              triggerPopup();
+            // eslint-disable-next-line no-empty
+            } catch (e) {
+
+            }
           },
         },
         cancelIcon: { enabled: true },
@@ -193,7 +201,7 @@ export default {
         buttons: [
           {
             text: 'Start Over',
-            action() { return this.show(1); },
+            action() { return this.show(0); },
           },
           {
             text: 'End',
@@ -203,6 +211,8 @@ export default {
       });
 
       tour.start();
+      // set shownTour to true after show when initially mounted
+      this.shownTour = true;
     });
   },
   methods: {
