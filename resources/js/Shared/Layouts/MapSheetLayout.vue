@@ -66,7 +66,7 @@ export default {
         useModalOverlay: true,
       });
       const {
-        triggerPopup, closePopup,
+        triggerPopup,
         triggerExpanded, triggerCollapsed,
         triggerPlanningOverlays, triggerSales,
       } = this;
@@ -110,7 +110,7 @@ export default {
             triggerPopup();
           },
           hide() {
-            closePopup();
+            triggerPopup();
           },
         },
         cancelIcon: { enabled: true },
@@ -306,3 +306,9 @@ export default {
   },
 };
 </script>
+
+<style>
+  .shepherd-content {
+    font-family: inherit;
+  }
+</style>
