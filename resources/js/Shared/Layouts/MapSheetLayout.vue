@@ -195,6 +195,18 @@ export default {
           show() {
             triggerCollapsed();
             triggerSales();
+            // do this the hard way but I do not think we have any utilities for this
+            //  and I would prefer not to add another dependency at this point
+            document.querySelector('button[value="engage"]').style.border = '2px solid purple';
+            document.querySelector('button[value="survey"]').style.border = '2px solid purple';
+          },
+          hide() {
+            document.querySelector('button[value="engage"]').style.border = '';
+            document.querySelector('button[value="survey"]').style.border = '';
+          },
+          cancel() {
+            document.querySelector('button[value="engage"]').style.border = '';
+            document.querySelector('button[value="survey"]').style.border = '';
           },
         },
         cancelIcon: { enabled: true },
@@ -205,11 +217,15 @@ export default {
           },
           {
             text: 'End',
-            action: tour.cancel,
+            action: tour.next,
           },
         ],
       });
 
+      tour.on('complete', () => {
+        document.querySelector('button[value="engage"]').style.border = '';
+        document.querySelector('button[value="survey"]').style.border = '';
+      });
       tour.start();
       // set shownTour to true after show when initially mounted
       this.shownTour = true;
