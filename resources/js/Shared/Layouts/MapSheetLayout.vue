@@ -335,6 +335,10 @@ export default {
 
 <style>
   .shepherd-content {
-    font-family: inherit;
+    font-family: Roboto,sans-serif;
+  }
+
+  .shepherd-text p {
+    padding-bottom: 0.5em;
   }
 </style>
