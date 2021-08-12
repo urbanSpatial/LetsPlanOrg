@@ -18,7 +18,10 @@
       </v-btn>
     </v-bottom-navigation>
 
-    <v-main style="overflow: hidden">
+    <v-main
+      style="overflow: hidden"
+      :class="{ isSilk: isSilk }"
+    >
       <slot />
     </v-main>
   </v-app>
@@ -26,6 +29,7 @@
 
 <script>
 import '@inertiajs/inertia';
+import { mapFields } from 'vuex-map-fields';
 
 export default {
   data() {
@@ -40,6 +44,20 @@ export default {
     };
   },
 
+  computed: {
+    ...mapFields([
+      'isSilk',
+    ]),
+  },
+
+  mounted() {
+    // try to detect silk browser for special styling
+    const match = /(?:; ([^;)]+) Build\/.*)?\bSilk\/([0-9._-]+)\b(.*\bMobile Safari\b)?/.exec(window.navigator.userAgent);
+    if (match) {
+      this.isSilk = true;
+    }
+  },
+
   methods: {
     handleNavChange() {
       this.$inertia.get(route(this.currentRoute), {}, { replace: true });
@@ -47,3 +65,9 @@ export default {
   },
 };
 </script>
+
+<style>
+  .v-main.isSilk {
+    max-height: calc(100vh - 112px);
+  }
+</style>
