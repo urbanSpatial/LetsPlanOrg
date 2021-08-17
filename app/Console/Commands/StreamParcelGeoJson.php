@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\RealEstateTx;
 use App\Models\ZoningLandUse;
 use App\Models\BldgPermit;
+use App\Models\PlanningOverlays;
 use App\Models\Traits\DefinesLandUseZones;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -103,6 +104,16 @@ class StreamParcelGeoJson extends Command
                 ->first();
 
 
+            $planOverlay = PlanningOverlays::leftJoin(
+                    'atlas_data',
+                    'atlas_data.opa_account_num',
+                    'planning_overlays.opa_account_num'
+                )
+                ->select('planning_overlays.dev_index')
+                ->where('atlas_data.parcel_id', $parcel->parcel_id)
+                ->first();
+
+
             $feature = [
                 'type' => 'Feature',
                 'properties' => [
@@ -113,6 +124,7 @@ class StreamParcelGeoJson extends Command
                     'alter_permits' => $alterPermit->permit_count ?? null,
                     'const_permits' => $constPermit->permit_count ?? null,
                     'zoning' => $this->transformLandUse($landUse),
+                    'dev_index' => $planOverlay->dev_index ?? null,
                 ],
                 'geometry' => $geoJson
             ];

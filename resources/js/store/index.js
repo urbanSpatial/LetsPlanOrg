@@ -8,6 +8,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   strict: true,
   state: {
+    // need special behavior for Kindle Fire Silk Browser
+    isSilk: false,
+
     blockgroup: null,
     step_current: 1,
     ipaddress: null,
