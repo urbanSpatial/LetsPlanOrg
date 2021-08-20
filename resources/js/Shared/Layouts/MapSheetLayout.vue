@@ -300,7 +300,7 @@ export default {
         this.isPopupVisible = true;
         this.$refs.parcelpopup.setMapboxMap(this.$refs.mapboxmap.map);
         this.$refs.parcelpopup.setCoords(event.coords);
-        this.$refs.parcelinfo.fetchParcel(event.properties.parcel_id);
+        this.$refs.parcelinfo.fetchParcel(event.properties);
         this.$refs.mapboxmap.highlightSource(event.feature);
       }
     },

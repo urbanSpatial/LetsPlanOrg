@@ -21,12 +21,22 @@ export default {
       colorNone: '#c0c0c0',
       colorRankSteps: [
         'step',
-        ['feature-state', 'rank'],
+        ['feature-state', 'dev_index'],
         '#c0c0c0', 0,
         '#28caf4', 150000,
         '#377bf4', 500000,
         '#311df4', 1000000,
         '#8104f4', 5000000,
+        '#c804f4',
+      ],
+      colorLayersSteps: [
+        'step',
+        ['get', 'dev_index'],
+        '#c0c0c0', 0,
+        '#28caf4', 20,
+        '#377bf4', 40,
+        '#311df4', 60,
+        '#8104f4', 80,
         '#c804f4',
       ],
       colorZoningCategories: [
@@ -104,6 +114,10 @@ export default {
       }
       if (tiles === 'construction') {
         this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorPermitsConstSteps);
+        return;
+      }
+      if (tiles === 'layers') {
+        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorLayersSteps);
         return;
       }
       this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorNone);

@@ -45,7 +45,6 @@
       <div class="figure-group -scores pb-0">
         <parcel-figure
           name="Preservation"
-          value="0.5"
           content-class="teal--text"
         />
         <!--parcel-figure
@@ -60,7 +59,7 @@
         /-->
         <parcel-figure
           name="Development"
-          value="0.5"
+          :value="parcel.dev_index"
           content-class="lime--text text--darken-2"
         />
       </div>
@@ -140,19 +139,19 @@ export default {
   },
 
   methods: {
-    fetchParcel(parcelId) {
+    fetchParcel({ id, dev_index }) {
       // avoid having to load the same parcel data twice in a session
-      if (this.cache[parcelId]) {
-        this.parcel = this.cache[parcelId];
+      if (this.cache[id]) {
+        this.parcel = this.cache[id];
         return;
       }
 
       this.loading = true;
-      window.axios.get(`/parcel/${parcelId}`)
+      window.axios.get(`/parcel/${id}`)
         .then((response) => response.data.data).then((data) => {
-          const parcel = { id: data.id, ...data.attributes };
+          const parcel = { id: data.id, ...data.attributes, dev_index };
           this.parcel = parcel;
-          this.cache[parcelId] = parcel;
+          this.cache[id] = parcel;
         }).catch(() => {
           this.parcel = {};
         })
