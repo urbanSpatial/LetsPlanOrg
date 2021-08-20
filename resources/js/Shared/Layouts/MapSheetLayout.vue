@@ -277,12 +277,15 @@ export default {
       /* eslint-disable prefer-spread */
       // const featMin = Math.min.apply(Math, features.map((f) => f.properties[propertyName] || 0));
       features.forEach((feat) => {
-        const fstate = { rank: 0 };
-        // no scaling or ranking since using hard coded sales price breaks
-        fstate.rank = feat.properties.sale_price_adj;
-        // for non-numeric and 0 assign negative number to color appropriately
-        if (!fstate.rank) {
-          fstate.rank = -1;
+        const { dev_index } = feat.properties
+        // TODO uncomment this line to see preservation on map
+        // const preservation = (dev_index * 4357) % 100
+        const preservation = undefined
+        const fstate = {
+          rank: feat.properties.sale_price_adj || -1,
+          combined_layers: (dev_index || 0) + (preservation || 0),
+          preservation: preservation || -1,
+          dev_index: dev_index || -1,
         }
         this.$refs.mapboxmap.map.setFeatureState({
           source: 'urban-areas',

@@ -21,22 +21,12 @@ export default {
       colorNone: '#c0c0c0',
       colorRankSteps: [
         'step',
-        ['feature-state', 'dev_index'],
+        ['feature-state', 'rank'],
         '#c0c0c0', 0,
         '#28caf4', 150000,
         '#377bf4', 500000,
         '#311df4', 1000000,
         '#8104f4', 5000000,
-        '#c804f4',
-      ],
-      colorLayersSteps: [
-        'step',
-        ['get', 'dev_index'],
-        '#c0c0c0', 0,
-        '#28caf4', 20,
-        '#377bf4', 40,
-        '#311df4', 60,
-        '#8104f4', 80,
         '#c804f4',
       ],
       colorZoningCategories: [
@@ -82,6 +72,34 @@ export default {
   },
 
   methods: {
+    getLayerSteps() {
+      const { dev_index, preservation } = this.$store.getters.getField('layers')
+
+      let max = 100
+      let attribute
+
+      if (preservation && dev_index) { // both
+        max = 200
+        attribute = 'combined_layers'
+      } else if (preservation) {
+        attribute = 'preservation'
+      } else if (dev_index) {
+        attribute = 'dev_index'
+      } else { // neither
+        return this.colorNone
+      }
+
+      return [
+        'step',
+        ['feature-state', attribute],
+        '#c0c0c0', 0,
+        '#28caf4', 0.2 * max,
+        '#377bf4', 0.4 * max,
+        '#311df4', 0.6 * max,
+        '#8104f4', 0.8 * max,
+        '#c804f4',
+      ];
+    },
     highlightSource(feature) {
       const clickHighlightSource = this.map.getSource('click-highlight');
       clickHighlightSource.setData(feature);
@@ -117,7 +135,8 @@ export default {
         return;
       }
       if (tiles === 'layers') {
-        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorLayersSteps);
+        this.getLayerSteps()
+        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.getLayerSteps());
         return;
       }
       this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorNone);
@@ -234,6 +253,11 @@ export default {
         });
 
         this.showTiles(this.tiles);
+        this.$store.subscribe((mutation, state) => {
+          if (mutation.type === 'updateLayers') {
+            this.showTiles(this.tiles)
+          }
+        })
       });
     },
   },

@@ -23,6 +23,7 @@ export default new Vuex.Store({
     },
     survey_results: null,
     submitted: false,
+    layers: { dev_index: true, preservation: true },
 
     // from letsplanorg
     exploreIsExpanded: false,
@@ -36,6 +37,9 @@ export default new Vuex.Store({
       state.survey_results = value;
     },
     updateField,
+    updateLayers(state, layers) {
+      state.layers = layers
+    }
   },
   getters: {
     getField,
