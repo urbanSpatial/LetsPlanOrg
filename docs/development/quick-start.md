@@ -68,8 +68,8 @@
     ./vendor/bin/sail yarn install
     ```
 
-8. Execute a frontend build:
+8. Build frontend and watch for changes:
 
     ```bash
-    ./vendor/bin/sail yarn production
+    ./vendor/bin/sail yarn watch
     ```
