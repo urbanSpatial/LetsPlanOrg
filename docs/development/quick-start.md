@@ -17,8 +17,6 @@
 2. Configure `.env` to use online/remote database and map tiles so you can skip loading data and building tiles locally:
 
     ```bash
-    MBTILE_URL="https://letsplan.live.k8s.jarv.us/urban/{z}/{x}/{y}.pbf"
-    MIX_MBTILE_URL="${MBTILE_URL}"
     DB_HOST=WORKSTATION_LAN_IP
     DB_PORT=5433
     DB_USERNAME=read_only
@@ -26,12 +24,12 @@
     ```
 
     The password is available in BitWarden under the entry `read_only @ postgresql`
-    
+
     !!! note
         The above configuration points `DB_PORT` at **5433** because we'll be opening a tunnel from there to the online/remote database with the `kubectl port-forward` command in step 4.
-        
+
         We use that port to avoid conflict with the local PostgreSQL instance step 5 will still spin up on the default port **5432**, but which we will be ignoring and not loading any data into.
-        
+
     !!! note
         If using Windows + WSL2 + Docker, then `DB_HOST=host.docker.internal`.  All other steps with Windows + WSL2 + Docker should be the same.
 
