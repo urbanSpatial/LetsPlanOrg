@@ -91,7 +91,7 @@ export default {
         */
         {
           label: 'Development Suitability',
-          attribute: 'dev_index',
+          attribute: 'devIndex',
           color: 'lime',
           isDialogVisible: false,
           value: true,
@@ -106,28 +106,32 @@ export default {
   },
   computed: {
     legendPips() {
-      const count = this.switches.filter(({value}) => value).length
+      const count = this.switches.filter(({ value }) => value).length;
       if (!count) {
         // neither switch is flipped, do not show legend
-        return
+        return null;
       }
-      const pips = [
-        { color: '#28CAF4' },
-        { color: '#377BF4' },
-        { color: '#311DF4' },
-        { color: '#8104F4' },
-        { color: '#C804F4' },
-      ]
-      pips.forEach((p, i) => p.name = i * 20 * count)
-      return pips
-    }
+      const colors = [
+        '#28CAF4',
+        '#377BF4',
+        '#311DF4',
+        '#8104F4',
+        '#C804F4',
+      ];
+      return colors.map((color, i) => ({
+        color,
+        name: i * 20 * count,
+      }));
+    },
   },
   methods: {
     onChange() {
-      const attributes = {}
-      this.switches.forEach(({attribute, value}) => attributes[attribute] = value)
-      this.$store.commit('updateLayers', attributes)
-    }
-  }
+      const attributes = {};
+      this.switches.forEach(({ attribute, value }) => {
+        attributes[attribute] = value;
+      });
+      this.$store.commit('updateLayers', attributes);
+    },
+  },
 };
 </script>

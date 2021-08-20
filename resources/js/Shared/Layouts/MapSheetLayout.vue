@@ -277,16 +277,16 @@ export default {
       /* eslint-disable prefer-spread */
       // const featMin = Math.min.apply(Math, features.map((f) => f.properties[propertyName] || 0));
       features.forEach((feat) => {
-        const { dev_index } = feat.properties
+        const { dev_index: devIndex } = feat.properties;
         // TODO uncomment this line to see preservation on map
-        // const preservation = (dev_index * 4357) % 100
-        const preservation = undefined
+        // const preservation = (devIndex * 4357) % 100
+        const preservation = undefined;
         const fstate = {
           rank: feat.properties.sale_price_adj || -1,
-          combined_layers: (dev_index || 0) + (preservation || 0),
+          combined_layers: (devIndex || 0) + (preservation || 0),
           preservation: preservation || -1,
-          dev_index: dev_index || -1,
-        }
+          devIndex: devIndex || -1,
+        };
         this.$refs.mapboxmap.map.setFeatureState({
           source: 'urban-areas',
           sourceLayer: 'urban-areas',

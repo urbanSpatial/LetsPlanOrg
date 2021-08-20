@@ -73,20 +73,20 @@ export default {
 
   methods: {
     getLayerSteps() {
-      const { dev_index, preservation } = this.$store.getters.getField('layers')
+      const { devIndex, preservation } = this.$store.getters.getField('layers');
 
-      let max = 100
-      let attribute
+      let max = 100;
+      let attribute;
 
-      if (preservation && dev_index) { // both
-        max = 200
-        attribute = 'combined_layers'
+      if (preservation && devIndex) { // both
+        max = 200;
+        attribute = 'combined_layers';
       } else if (preservation) {
-        attribute = 'preservation'
-      } else if (dev_index) {
-        attribute = 'dev_index'
+        attribute = 'preservation';
+      } else if (devIndex) {
+        attribute = 'devIndex';
       } else { // neither
-        return this.colorNone
+        return this.colorNone;
       }
 
       return [
@@ -135,7 +135,7 @@ export default {
         return;
       }
       if (tiles === 'layers') {
-        this.getLayerSteps()
+        this.getLayerSteps();
         this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.getLayerSteps());
         return;
       }
@@ -253,11 +253,12 @@ export default {
         });
 
         this.showTiles(this.tiles);
-        this.$store.subscribe((mutation, state) => {
+        this.$store.subscribe((mutation) => {
+          // re-render map overlay if layers was changed
           if (mutation.type === 'updateLayers') {
-            this.showTiles(this.tiles)
+            this.showTiles(this.tiles);
           }
-        })
+        });
       });
     },
   },
