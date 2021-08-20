@@ -8,7 +8,7 @@
 
     !!! tip
 
-        Change the web port from 7780 to something unsused if you have a port conflict.
+        Change the web port from 7780 to something unsused if you have a port conflict. If you do this though, be aware that you will see CORS errors from the public tiles server and will need to either use your own CORS-enabling proxy or ask for your preferred port to be added to [the production ingress annotations](https://github.com/JarvusInnovations/jarvus-live-cluster/blob/main/letsplan/release-values.yaml)
 
         Change the MailHog web port from 8725 to something unsused if you have a port conflict.
 

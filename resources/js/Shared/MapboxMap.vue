@@ -110,6 +110,10 @@ export default {
     },
 
     initMap() {
+      const parcelsTileUrl = process.env.MIX_MBTILE_URL ? process.env.MIX_MBTILE_URL : `${window.location.origin}/urban/{z}/{x}/{y}.pbf`;
+      const parcelsTileHostname = new URL(parcelsTileUrl).hostname;
+      const parcelsTileUrlRegex = new RegExp(`^https?://${parcelsTileHostname}`, 'i');
+
       const emptyPolygonFeature = {
         type: 'Feature',
         geometry: {
@@ -123,6 +127,11 @@ export default {
         style: 'mapbox://styles/mapbox/dark-v10?optimize=true',
         center: [-75.207138, 39.950872],
         zoom: 14,
+        transformRequest: (url) => ({
+          url,
+          // allow cross-origin credentials for parcels tiles:
+          credentials: parcelsTileUrlRegex.test(url) ? 'include' : 'same-origin',
+        }),
       });
 
       this.map
@@ -149,8 +158,7 @@ export default {
             type: 'vector',
             generateId: true,
             promoteId: 'parcel_id',
-            /* eslint-disable prefer-template */
-            tiles: [process.env.MIX_MBTILE_URL ? process.env.MIX_MBTILE_URL : window.location.origin + '/urban/{z}/{x}/{y}.pbf'],
+            tiles: [parcelsTileUrl],
             maxzoom: 14, // max zoom compiled into the mbtiles file
           });
 
