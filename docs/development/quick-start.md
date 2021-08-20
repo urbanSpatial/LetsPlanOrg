@@ -77,4 +77,4 @@
     ./vendor/bin/sail yarn watch
     ```
 
-9. The server will now be running on http://localhost:7780
+9. The server will now be running on <http://localhost:7780>
