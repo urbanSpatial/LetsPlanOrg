@@ -20,7 +20,7 @@ services:
         depends_on:
             # - mysql
             - pgsql
-            - redis
+            # - redis
             # - selenium
     # selenium:
     #     image: 'selenium/standalone-chrome'
