@@ -459,7 +459,7 @@
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Change the web port from 7780 to something unsused if you have a port conflict.</p>
+<p>Change the web port from 7780 to something unsused if you have a port conflict. If you do this though, be aware that you will see CORS errors from the public tiles server and will need to either use your own CORS-enabling proxy or ask for your preferred port to be added to <a href="https://github.com/JarvusInnovations/jarvus-live-cluster/blob/main/letsplan/release-values.yaml">the production ingress annotations</a></p>
 <p>Change the MailHog web port from 8725 to something unsused if you have a port conflict.</p>
 <p>If you have another Postgres running on 5432, add a line to your .env like <code>FORWARD_DB_PORT=5433</code></p>
 </div>
@@ -511,8 +511,8 @@ kubectl port-forward pods/<span class="nv">$DB_POD</span> --address <span class=
 </code></pre></div>
 </li>
 <li>
-<p>Execute a frontend build:</p>
-<div class="highlight"><pre><span></span><code>./vendor/bin/sail yarn production
+<p>Build frontend and watch for changes:</p>
+<div class="highlight"><pre><span></span><code>./vendor/bin/sail yarn watch
 </code></pre></div>
 </li>
 </ol>
