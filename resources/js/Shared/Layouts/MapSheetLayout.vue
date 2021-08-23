@@ -277,13 +277,16 @@ export default {
       /* eslint-disable prefer-spread */
       // const featMin = Math.min.apply(Math, features.map((f) => f.properties[propertyName] || 0));
       features.forEach((feat) => {
-        const fstate = { rank: 0 };
-        // no scaling or ranking since using hard coded sales price breaks
-        fstate.rank = feat.properties.sale_price_adj;
-        // for non-numeric and 0 assign negative number to color appropriately
-        if (!fstate.rank) {
-          fstate.rank = -1;
-        }
+        const { dev_index: devIndex } = feat.properties;
+        // TODO uncomment this line to see preservation on map
+        // const preservation = (devIndex * 4357) % 100
+        const preservation = undefined;
+        const fstate = {
+          rank: feat.properties.sale_price_adj || -1,
+          combined_layers: (devIndex || 0) + (preservation || 0),
+          preservation: preservation || -1,
+          devIndex: devIndex || -1,
+        };
         this.$refs.mapboxmap.map.setFeatureState({
           source: 'urban-areas',
           sourceLayer: 'urban-areas',
@@ -300,7 +303,7 @@ export default {
         this.isPopupVisible = true;
         this.$refs.parcelpopup.setMapboxMap(this.$refs.mapboxmap.map);
         this.$refs.parcelpopup.setCoords(event.coords);
-        this.$refs.parcelinfo.fetchParcel(event.properties.parcel_id);
+        this.$refs.parcelinfo.fetchParcel(event.properties);
         this.$refs.mapboxmap.highlightSource(event.feature);
       }
     },
