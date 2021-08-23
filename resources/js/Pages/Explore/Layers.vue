@@ -16,6 +16,7 @@
         class="flex-grow-1"
         :label="item.label"
         :color="item.color"
+        :disabled="item.disabled"
         @change="onChange"
       />
 
@@ -67,7 +68,8 @@ export default {
           attribute: 'preservation',
           color: 'teal',
           isDialogVisible: false,
-          value: true,
+          value: false,
+          disabled: true,
           tooltip: `The Preservation Index is built from our community survey <a href="/survey">here</a>.
             Go to the <a href="https://github.com/urbanSpatial/OurPlan_Methods/blob/main/README.md" target="_blank">OurPlan Methodology</a>
             to learn more about how the index is created.

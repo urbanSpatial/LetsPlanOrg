@@ -23,7 +23,7 @@ export default new Vuex.Store({
     },
     survey_results: null,
     submitted: false,
-    layers: { devIndex: true, preservation: true },
+    layers: { devIndex: true, preservation: false },
 
     // from letsplanorg
     exploreIsExpanded: false,
