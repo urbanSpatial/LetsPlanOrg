@@ -1,5 +1,5 @@
 <template>
-  <lp-bottom-sheet @new-pane="handleNewPane">
+  <lp-bottom-sheet>
     <mapbox-map
       ref="mapboxmap"
       :tiles="mapTiles"
@@ -57,11 +57,13 @@ export default {
   computed: {
     ...mapFields([
       'exploreIsExpanded',
-      'exploreCurrentPane',
       'shownTour',
     ]),
   },
   mounted() {
+    this.$inertia.on('finish', () => {
+      this.mapTiles = route().params.pane;
+    });
     // if already shown before then do not show again
     if (this.shownTour) { return; }
     this.$nextTick(() => {
@@ -232,9 +234,6 @@ export default {
     });
   },
   methods: {
-    handleNewPane(pane) {
-      this.mapTiles = pane;
-    },
 
     sourceDataLoaded(event) {
       // we should not mess with the parcel color
@@ -317,7 +316,7 @@ export default {
         filter: ['==', 'parcel_id', '441425'],
       });
       const coordinates = { lat: 39.9534051531393, lng: -75.20876878307995 };
-      const parcel = feature[0].properties;
+      const parcel = feature[0] ? feature[0].properties : undefined;
       this.showPopup({ properties: parcel, coords: coordinates, feature: feature[0] });
     },
     triggerExpanded() {
@@ -327,10 +326,10 @@ export default {
       this.exploreIsExpanded = false;
     },
     triggerPlanningOverlays() {
-      this.exploreCurrentPane = 4;
+      this.$inertia.visit('/explore/layers', { replace: true });
     },
     triggerSales() {
-      this.exploreCurrentPane = 0;
+      this.$inertia.visit('/explore/sales', { replace: true });
     },
   },
 };

@@ -28,7 +28,6 @@ export default new Vuex.Store({
     // from letsplanorg
     exploreIsExpanded: false,
     layersIsExpanded: true,
-    exploreCurrentPane: 0,
     tourShown: false,
   },
   mutations: {
