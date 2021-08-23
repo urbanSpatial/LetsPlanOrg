@@ -64,12 +64,7 @@ import Layout from '../Shared/Layouts/Layout.vue';
 import MapSheetLayout from '../Shared/Layouts/MapSheetLayout.vue';
 import LPBottomSheet from '../Shared/LPBottomSheet.vue';
 
-// panes
-import Alteration from './Explore/Alteration.vue';
-import NewConstruction from './Explore/NewConstruction.vue';
-import SalePrices from './Explore/SalePrices.vue';
-import Zoning from './Explore/Zoning.vue';
-import Layers from './Explore/Layers.vue';
+import panes from './Explore/panes';
 
 export default {
   components: {
@@ -79,29 +74,7 @@ export default {
   layout: [Layout, MapSheetLayout],
 
   data() {
-    return {
-      panes: [{
-        title: 'Sale Prices',
-        component: SalePrices,
-        route: 'sales',
-      }, {
-        title: 'Zoning',
-        component: Zoning,
-        route: 'zoning',
-      }, {
-        title: 'New Construction Permits',
-        component: NewConstruction,
-        route: 'construction',
-      }, {
-        title: 'Alteration Permits',
-        component: Alteration,
-        route: 'alteration',
-      }, {
-        title: 'Planning Overlays',
-        component: Layers,
-        route: 'layers',
-      }],
-    };
+    return { panes };
   },
 
   computed: {

@@ -2,8 +2,14 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import { getField, updateField } from 'vuex-map-fields';
 import { parse } from 'papaparse';
+import panes from '../Pages/Explore/panes';
 
 Vue.use(Vuex);
+
+const getInitialPane = () => {
+  const { pane } = route().params;
+  return panes.findIndex((p) => p.route === pane);
+};
 
 export default new Vuex.Store({
   strict: true,
@@ -28,7 +34,7 @@ export default new Vuex.Store({
     // from letsplanorg
     exploreIsExpanded: false,
     layersIsExpanded: true,
-    exploreCurrentPane: 0,
+    exploreCurrentPane: getInitialPane(),
     tourShown: false,
   },
   mutations: {
