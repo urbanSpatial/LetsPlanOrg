@@ -474,6 +474,10 @@
 <p>The password is available in BitWarden under the entry <code>read_only @ postgresql</code></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
+<p>Your WORKSTATION_LAN_IP should start with <code>192.</code> or <code>10.</code> and can be found with <code>hostname -I</code> on Linux and <code>ifconfig</code> on mac.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>The above configuration points <code>DB_PORT</code> at <strong>5433</strong> because we&rsquo;ll be opening a tunnel from there to the online/remote database with the <code>kubectl port-forward</code> command in step 4.</p>
 <p>We use that port to avoid conflict with the local PostgreSQL instance step 5 will still spin up on the default port <strong>5432</strong>, but which we will be ignoring and not loading any data into.</p>
 </div>
@@ -488,7 +492,7 @@
 </code></pre></div>
 </li>
 <li>
-<p>Open a tunnel from the online PostgreSQL database to local port <code>5433</code>:</p>
+<p>Open a tunnel from the online PostgreSQL database to local port <code>5433</code> (if you modified the DB_PORT in step 2 you should change <code>5433</code> below):</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">KUBECONFIG</span><span class="o">=</span>~/.kube/letsplan-deployer.yaml
 <span class="nv">DB_POD</span><span class="o">=</span><span class="k">$(</span>kubectl get pod -l <span class="nv">component</span><span class="o">=</span>database -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span>
 kubectl port-forward pods/<span class="nv">$DB_POD</span> --address <span class="m">0</span>.0.0.0 <span class="m">5433</span>:5432
@@ -514,6 +518,9 @@ kubectl port-forward pods/<span class="nv">$DB_POD</span> --address <span class=
 <p>Build frontend and watch for changes:</p>
 <div class="highlight"><pre><span></span><code>./vendor/bin/sail yarn watch
 </code></pre></div>
+</li>
+<li>
+<p>The server will now be running on <a href="http://localhost:7780">http://localhost:7780</a></p>
 </li>
 </ol>
                 
