@@ -26,6 +26,9 @@
     The password is available in BitWarden under the entry `read_only @ postgresql`
 
     !!! note
+        Your WORKSTATION_LAN_IP should start with `192.` or `10.` and can be found with `hostname -I` on Linux and `ifconfig` on mac.
+
+    !!! note
         The above configuration points `DB_PORT` at **5433** because we'll be opening a tunnel from there to the online/remote database with the `kubectl port-forward` command in step 4.
 
         We use that port to avoid conflict with the local PostgreSQL instance step 5 will still spin up on the default port **5432**, but which we will be ignoring and not loading any data into.
@@ -40,7 +43,7 @@
     docker run -ti --rm -v $(pwd):/app -w /app composer:2.0 composer install
     ```
 
-4. Open a tunnel from the online PostgreSQL database to local port `5433`:
+4. Open a tunnel from the online PostgreSQL database to local port `5433` (if you modified the DB_PORT in step 2 you should change `5433` below):
 
     ```bash
     export KUBECONFIG=~/.kube/letsplan-deployer.yaml
@@ -73,3 +76,5 @@
     ```bash
     ./vendor/bin/sail yarn watch
     ```
+
+9. The server will now be running on <http://localhost:7780>

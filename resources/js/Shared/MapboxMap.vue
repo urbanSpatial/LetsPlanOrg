@@ -72,6 +72,34 @@ export default {
   },
 
   methods: {
+    getLayerSteps() {
+      const { devIndex, preservation } = this.$store.getters.getField('layers');
+
+      let max = 100;
+      let attribute;
+
+      if (preservation && devIndex) { // both
+        max = 200;
+        attribute = 'combined_layers';
+      } else if (preservation) {
+        attribute = 'preservation';
+      } else if (devIndex) {
+        attribute = 'devIndex';
+      } else { // neither
+        return this.colorNone;
+      }
+
+      return [
+        'step',
+        ['feature-state', attribute],
+        '#c0c0c0', 0,
+        '#28caf4', 0.2 * max,
+        '#377bf4', 0.4 * max,
+        '#311df4', 0.6 * max,
+        '#8104f4', 0.8 * max,
+        '#c804f4',
+      ];
+    },
     highlightSource(feature) {
       const clickHighlightSource = this.map.getSource('click-highlight');
       clickHighlightSource.setData(feature);
@@ -104,6 +132,11 @@ export default {
       }
       if (tiles === 'construction') {
         this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorPermitsConstSteps);
+        return;
+      }
+      if (tiles === 'layers') {
+        this.getLayerSteps();
+        this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.getLayerSteps());
         return;
       }
       this.map.setPaintProperty('urban-areas-fill', 'fill-color', this.colorNone);
@@ -220,6 +253,12 @@ export default {
         });
 
         this.showTiles(this.tiles);
+        this.$store.subscribe((mutation) => {
+          // re-render map overlay if layers was changed
+          if (mutation.type === 'updateLayers') {
+            this.showTiles(this.tiles);
+          }
+        });
       });
     },
   },
