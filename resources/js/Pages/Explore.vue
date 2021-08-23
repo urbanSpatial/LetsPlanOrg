@@ -6,7 +6,7 @@
       <v-card-title class="px-1">
         <v-btn
           icon
-          @click="goToPrevPane"
+          @click="() => currentPane--"
         >
           <span class="d-sr-only">Previous data</span>
           <v-icon>mdi-chevron-left</v-icon>
@@ -16,7 +16,7 @@
           style="flex: 1 1 0"
         >
           <v-window
-            v-model="exploreCurrentPane"
+            v-model="currentPane"
             vertical
           >
             <v-window-item
@@ -31,7 +31,7 @@
         </div>
         <v-btn
           icon
-          @click="goToNextPane"
+          @click="() => currentPane++"
         >
           <span class="d-sr-only">Next data</span>
           <v-icon>mdi-chevron-right</v-icon>
@@ -41,7 +41,7 @@
 
     <template #sheet-expanded>
       <v-window
-        v-model="exploreCurrentPane"
+        v-model="currentPane"
         class="mt-n6"
       >
         <v-window-item
@@ -105,54 +105,33 @@ export default {
   },
 
   computed: {
-    currentPaneRoute() {
-      return this.panes[this.exploreCurrentPane].route;
-    },
-
     paneCount() {
       return this.panes.length;
     },
 
+    currentPane: {
+      get() {
+        const { pane } = route().params;
+        return this.panes.findIndex((p) => p.route === pane);
+      },
+      set(value) {
+        let index = value;
+        if (index < 0) {
+          index = this.panes.length - 1;
+        } else if (index >= this.panes.length) {
+          index = 0;
+        }
+        this.$inertia.visit(`/explore/${this.panes[index].route}`, { replace: true });
+      },
+    },
+
     ...mapFields([
       'exploreIsExpanded',
-      'exploreCurrentPane',
     ]),
   },
-
-  watch: {
-    exploreCurrentPane() {
-      this.handleNewPane();
-    },
-  },
-
   methods: {
-    handleNewPane() {
-      window.history.pushState(null, null, `/explore/${this.currentPaneRoute}`);
-      this.$parent.$emit('new-pane', this.currentPaneRoute);
-    },
-
     handleToggle(newState) {
       this.exploreIsExpanded = newState;
-    },
-
-    goToNextPane() {
-      if (this.exploreCurrentPane + 1 < this.paneCount) {
-        this.exploreCurrentPane += 1;
-      } else {
-        this.exploreCurrentPane = 0;
-      }
-
-      this.handleNewPane();
-    },
-
-    goToPrevPane() {
-      if (this.exploreCurrentPane > 0) {
-        this.exploreCurrentPane -= 1;
-      } else {
-        this.exploreCurrentPane = this.paneCount - 1;
-      }
-
-      this.handleNewPane();
     },
   },
 };
