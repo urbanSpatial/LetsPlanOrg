@@ -45,7 +45,7 @@
       <div class="figure-group -scores pb-0">
         <parcel-figure
           name="Preservation"
-          value="0.5"
+          :value="parcel.preservation"
           content-class="teal--text"
         />
         <!--parcel-figure
@@ -60,7 +60,7 @@
         /-->
         <parcel-figure
           name="Development"
-          value="0.5"
+          :value="parcel.devIndex"
           content-class="lime--text text--darken-2"
         />
       </div>
@@ -140,7 +140,7 @@ export default {
   },
 
   methods: {
-    fetchParcel(parcelId) {
+    fetchParcel({ parcel_id: parcelId, dev_index: devIndex, preservation }) {
       // avoid having to load the same parcel data twice in a session
       if (this.cache[parcelId]) {
         this.parcel = this.cache[parcelId];
@@ -150,7 +150,11 @@ export default {
       this.loading = true;
       window.axios.get(`/parcel/${parcelId}`)
         .then((response) => response.data.data).then((data) => {
-          const parcel = { id: data.id, ...data.attributes };
+          const parcel = {
+            id: parcelId, ...data.attributes, devIndex, preservation,
+          };
+          // TODO uncomment next line to use dummy value for preservation
+          // parcel.preservation = (parcel.devIndex * 4357) % 100
           this.parcel = parcel;
           this.cache[parcelId] = parcel;
         }).catch(() => {
