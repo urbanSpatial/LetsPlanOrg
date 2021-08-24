@@ -1,9 +1,11 @@
 <template>
   <v-container>
-    <v-row justify="center">
+    <v-row
+      justify="center"
+    >
       <v-col
         cols="12"
-        md="8"
+        md="9"
         align="center"
       >
         <!-- eslint-disable-next-line vue/html-self-closing -->
@@ -34,12 +36,51 @@
         <!-- eslint-disable-next-line vue/html-self-closing -->
         <img
           src="/images/OurPlan_city.png"
-          style="max-height: 300px; max-width: 100%;"
+          style="max-height: 300px; max-width: 100%; padding-bottom: 0.75em;"
         />
+        <v-divider style="padding-bottom:0.75em;" />
         <p>
           Watch these short videos to learn why land use and equity is so important.
         </p>
-        <h1>...Three Videos Here...</h1>
+        <v-row style="margin-bottom:1em;">
+          <v-col
+            cols="12"
+            sm="4"
+          >
+            <div class="video-container">
+              <iframe
+                class="video"
+                src="https://www.youtube.com/embed/edIIfpSJFbQ"
+                allowfullscreen
+              />
+            </div>
+          </v-col>
+          <v-col
+            cols="12"
+            sm="4"
+          >
+            <div class="video-container">
+              <iframe
+                class="video"
+                src="https://www.youtube.com/embed/FNoUIxkMbdI"
+                allowfullscreen
+              />
+            </div>
+          </v-col>
+          <v-col
+            cols="12"
+            sm="4"
+          >
+            <div class="video-container">
+              <iframe
+                class="video"
+                src="https://www.youtube.com/embed/VhFk9UO0Olg"
+                allowfullscreen
+              />
+            </div>
+          </v-col>
+        </v-row>
+        <v-divider />
       </v-col>
     </v-row>
     <v-row justify="center">
@@ -48,7 +89,6 @@
         md="8"
         justify="start"
       >
-        <v-divider />
         <h1>About OurPlan</h1>
         <p>
           OurPlan started as a student project in the Master of Urban Spatial Analytics
@@ -69,7 +109,7 @@
           We are still discovering who can benefit from OurPlan but we foresee potential users
           including neighborhood groups, the Planning Commission, City Councilpersons, and bespoke
           community engagement endeavors. We’d love to talk to you about how OurPlan can help!
-          Reach out
+          Reach out to
           <a href="mailto:ksteif@upenn.edu">ksteif@upenn.edu</a>
           for more info.
         </p>
@@ -128,3 +168,19 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  .video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+  }
+  .video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+</style>
