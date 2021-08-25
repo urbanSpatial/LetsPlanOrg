@@ -155,7 +155,7 @@
 </template>
 
 <script>
-import Layout from '../Shared/Layouts/Layout.vue';
+import Layout from '../Shared/Layouts/LayoutOverflow.vue';
 
 export default {
   name: 'About',
