@@ -59,7 +59,7 @@
 <script>
 import { mapFields } from 'vuex-map-fields';
 
-import Layout from '../Shared/Layouts/Layout.vue';
+import Layout from '../Shared/Layouts/LayoutOverflow.vue';
 
 import Surveyintro from './Survey/Surveyintro.vue';
 import Location from './Survey/Location.vue';
