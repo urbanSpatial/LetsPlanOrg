@@ -70,7 +70,7 @@ export default {
           isDialogVisible: false,
           value: false,
           disabled: true,
-          tooltip: `The Preservation Index is built from our community survey <a href="/survey">here</a>.
+          tooltip: `The Preservation Index is built from our community survey <a href="/sprucehill/survey">here</a>.
             Go to the <a href="https://github.com/urbanSpatial/OurPlan_Methods/blob/main/README.md" target="_blank">OurPlan Methodology</a>
             to learn more about how the index is created.
             Once enough responses have been collected, the Index will become active and you can explore

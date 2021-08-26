@@ -121,7 +121,7 @@ export default {
         } else if (index >= this.panes.length) {
           index = 0;
         }
-        this.$inertia.visit(`/explore/${this.panes[index].route}`, { replace: true });
+        this.$inertia.visit(`/sprucehill/explore/${this.panes[index].route}`, { replace: true });
       },
     },
 

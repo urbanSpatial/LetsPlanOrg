@@ -34,7 +34,7 @@
           class="primary--text"
           style="padding-bottom:1em;"
         >
-          Click <a href="/engage">here</a> to check out OurPlan in Spruce Hill!
+          Click <a href="/sprucehill/engage">here</a> to check out OurPlan in Spruce Hill!
         </h1>
         <v-divider style="padding-bottom:2.5em;" />
         <p>

@@ -326,10 +326,10 @@ export default {
       this.exploreIsExpanded = false;
     },
     triggerPlanningOverlays() {
-      this.$inertia.visit('/explore/layers', { replace: true });
+      this.$inertia.visit('/sprucehill/explore/layers', { replace: true });
     },
     triggerSales() {
-      this.$inertia.visit('/explore/sales', { replace: true });
+      this.$inertia.visit('/sprucehill/explore/sales', { replace: true });
     },
   },
 };
