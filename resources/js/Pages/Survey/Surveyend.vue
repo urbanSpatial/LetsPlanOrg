@@ -18,7 +18,7 @@
         <p>
           Once more of your neighbors take the survey,
           we will publish the Preservation Index in the
-          <router-link to="/explorer">
+          <router-link to="/sprucehill/explorer">
             Community Explorer
           </router-link>.
           In the meantime, you can learn more about the OurPlan effort
