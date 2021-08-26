@@ -64,7 +64,7 @@ import Layout from '../Shared/Layouts/LayoutOverflow.vue';
 import Surveyintro from './Survey/Surveyintro.vue';
 import Location from './Survey/Location.vue';
 import Surveyend from './Survey/Surveyend.vue';
-import Summary from './Survey/Summary.vue';
+// import Summary from './Survey/Summary.vue';
 
 export default {
   name: 'Survey',
@@ -73,7 +73,7 @@ export default {
     Surveyintro,
     Location,
     Surveyend,
-    Summary,
+    // Summary
   },
 
   layout: [Layout],
