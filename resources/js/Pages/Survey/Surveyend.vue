@@ -2,7 +2,7 @@
   <v-stepper-content step="3">
     <v-card
       class="d-flex flex-column"
-      style="height: 100%; width:100%"
+      style="height: 100%; width:100%; padding-bottom: 100px;"
     >
       <div v-if="!submitted">
         <div id="ff-compose" />
