@@ -40,18 +40,18 @@
 
       <v-divider />
 
-      <v-stepper-step
+      <!--v-stepper-step
         step="4"
       >
         Summary
-      </v-stepper-step>
+      </v-stepper-step-->
     </v-stepper-header>
 
     <v-stepper-items class="d-flex flex-grow-1 flex-shrink-0">
       <Surveyintro />
       <Location />
       <Surveyend />
-      <Summary />
+      <!--Summary /-->
     </v-stepper-items>
   </v-stepper>
 </template>

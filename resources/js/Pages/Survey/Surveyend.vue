@@ -17,7 +17,7 @@
         </p>
         <p>
           Once more of your neighbors take the survey,
-          we will publish the Preservation Indexin the
+          we will publish the Preservation Index in the
           <router-link to="/explorer">
             Community Explorer
           </router-link>.
@@ -37,6 +37,7 @@
 
         <v-btn
           color="primary"
+          :disabled="submitted"
           @click="submitForm"
         >
           {{ nexttext }}
@@ -109,7 +110,7 @@ export default {
         return null;
       }
 
-      this.step_current = 4;
+      // this.step_current = 4;
       return null;
     },
   },
