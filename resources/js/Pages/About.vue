@@ -30,19 +30,17 @@
           Currently, OurPlan is live in
           <span style="font-weight: bold;">Spruce Hill, Philadelphia</span>.
         </p>
-        <h1 class="primary--text">
+        <h1
+          class="primary--text"
+          style="padding-bottom:1em;"
+        >
           Click <a href="/engage">here</a> to check out OurPlan in Spruce Hill!
         </h1>
-        <!-- eslint-disable-next-line vue/html-self-closing -->
-        <img
-          src="/images/OurPlan_city.png"
-          style="max-height: 300px; max-width: 100%; padding-bottom: 0.75em;"
-        />
-        <v-divider style="padding-bottom:0.75em;" />
+        <v-divider style="padding-bottom:2.5em;" />
         <p>
           Watch these short videos to learn why land use and equity is so important.
         </p>
-        <v-row style="margin-bottom:1em;">
+        <v-row style="margin-bottom:2.5em;">
           <v-col
             cols="12"
             sm="4"

@@ -2,7 +2,7 @@
   <v-stepper-content step="3">
     <v-card
       class="d-flex flex-column"
-      style="height: 100%; width:100%"
+      style="height: 100%; width:100%; padding-bottom: 100px;"
     >
       <div v-if="!submitted">
         <div id="ff-compose" />
@@ -17,7 +17,7 @@
         </p>
         <p>
           Once more of your neighbors take the survey,
-          we will publish the Preservation Indexin the
+          we will publish the Preservation Index in the
           <router-link to="/explorer">
             Community Explorer
           </router-link>.
@@ -37,6 +37,7 @@
 
         <v-btn
           color="primary"
+          :disabled="submitted"
           @click="submitForm"
         >
           {{ nexttext }}
@@ -109,7 +110,7 @@ export default {
         return null;
       }
 
-      this.step_current = 4;
+      // this.step_current = 4;
       return null;
     },
   },

@@ -8,7 +8,7 @@
       <div
         class="flex-grow-1 flex-shrink-0"
       >
-        {{ theResults }}
+        Once we have collected enough survey results, we will share results from others.
       </div>
       <v-card-actions>
         <v-btn
