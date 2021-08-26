@@ -17,14 +17,19 @@ use Illuminate\Http\Request;
 Route::get('/', function () {
     return redirect()->route('engage');
 })->name('home');
-Route::inertia('/engage', 'Engage')->name('engage');
-// Route::inertia('/explore', 'Explore')->name('explore');
-Route::get('/explore', function () {
+
+Route::get('/sprucehill', function () {
+    return redirect()->route('engage');
+})->name('sprucehill');
+
+Route::inertia('/sprucehill/engage', 'Engage')->name('engage');
+// Route::inertia('/sprucehill/explore', 'Explore')->name('explore');
+Route::get('/sprucehill/explore', function () {
     return redirect()->route('explore', ['pane' => 'sales']);
 });
-Route::get('/explore/{pane?}', 'ExploreController@index')->name('explore');
-Route::inertia('/survey', 'Survey')->name('survey');
-Route::inertia('/about', 'About')->name('about');
+Route::get('/sprucehill/explore/{pane?}', 'ExploreController@index')->name('explore');
+Route::inertia('/sprucehill/survey', 'Survey')->name('survey');
+Route::inertia('/sprucehill/about', 'About')->name('about');
 
 Route::get('/{layer}/{z}/{x}/{y}.pbf', 'TileLayer@index');
 Route::get('/parcel/{parcelId}', 'ParcelInfo@index');
