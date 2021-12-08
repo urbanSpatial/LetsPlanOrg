@@ -8,14 +8,14 @@
       
       
       
-        <link rel="canonical" href="https://urbanspatial.github.io/LetsPlanOrg/operations/postgresql/">
+        <link rel="canonical" href="https://urbanspatial.github.io/LetsPlanOrg/operations/planning-overlays/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.0.5">
     
     
       
-        <title>PostgreSQL - Let's Plan</title>
+        <title>Planning Overlays - Let's Plan</title>
       
     
     
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#postgresql" class="md-skip">
+        <a href="#planning-overlays" class="md-skip">
           Skip to content
         </a>
       
@@ -99,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              PostgreSQL
+              Planning Overlays
             
           </span>
         </div>
@@ -411,20 +411,6 @@
               
   
   
-  
-    <li class="md-nav__item">
-      <a href="../planning-overlays/" class="md-nav__link">
-        Planning Overlays
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
     
   
   
@@ -437,12 +423,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          PostgreSQL
+          Planning Overlays
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        PostgreSQL
+        Planning Overlays
       </a>
       
         
@@ -461,8 +447,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#set-up-read-only-user" class="md-nav__link">
-    Set up read only user
+  <a href="#load-data" class="md-nav__link">
+    Load data
   </a>
   
 </li>
@@ -471,6 +457,20 @@
   
 </nav>
       
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../postgresql/" class="md-nav__link">
+        PostgreSQL
+      </a>
     </li>
   
 
@@ -509,8 +509,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#set-up-read-only-user" class="md-nav__link">
-    Set up read only user
+  <a href="#load-data" class="md-nav__link">
+    Load data
   </a>
   
 </li>
@@ -527,23 +527,55 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/urbanSpatial/LetsPlanOrg/edit/main/docs/operations/postgresql.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/urbanSpatial/LetsPlanOrg/edit/main/docs/operations/planning-overlays.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
 
-<h1 id="postgresql">PostgreSQL<a class="headerlink" href="#postgresql" title="Permanent link"> ¶</a></h1>
-<h2 id="set-up-read-only-user">Set up read only user<a class="headerlink" href="#set-up-read-only-user" title="Permanent link"> ¶</a></h2>
-<p>This user is manually created on the production PostgreSQL instance to provide read-only access to local development instances:</p>
-<div class="highlight"><pre><span></span><code><span class="k">CREATE</span> <span class="k">ROLE</span> <span class="n">read_only</span> <span class="n">LOGIN</span> <span class="n">PASSWORD</span> <span class="s1">&#39;{stored in bitwarden}&#39;</span><span class="p">;</span>
-
-<span class="k">GRANT</span> <span class="k">CONNECT</span> <span class="k">ON</span> <span class="k">DATABASE</span> <span class="n">laravel</span> <span class="k">TO</span> <span class="n">read_only</span><span class="p">;</span>
-
-<span class="k">GRANT</span> <span class="k">USAGE</span> <span class="k">ON</span> <span class="k">SCHEMA</span> <span class="k">public</span> <span class="k">TO</span> <span class="n">read_only</span><span class="p">;</span>
-
-<span class="k">GRANT</span> <span class="k">SELECT</span> <span class="k">ON</span> <span class="k">ALL</span> <span class="n">TABLES</span> <span class="k">IN</span> <span class="k">SCHEMA</span> <span class="k">public</span> <span class="k">TO</span> <span class="n">read_only</span><span class="p">;</span>
+<h1 id="planning-overlays">Planning Overlays<a class="headerlink" href="#planning-overlays" title="Permanent link"> ¶</a></h1>
+<h2 id="load-data">Load data<a class="headerlink" href="#load-data" title="Permanent link"> ¶</a></h2>
+<ol>
+<li>
+<p>Connect to Kubernetes cluster:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">KUBECONFIG</span><span class="o">=</span>~/.kube/jarvus-live-kubeconfig.yaml
+kubectl get nodes
 </code></pre></div>
-<p>The actual password is stored in the BitWarden shared entry <code>read_only @ postgresql</code></p>
+</li>
+<li>
+<p>Capture name of current database pod:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">DB_POD</span><span class="o">=</span><span class="k">$(</span>kubectl -n letsplan get pod -l <span class="nv">component</span><span class="o">=</span>database -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span>
+</code></pre></div>
+</li>
+<li>
+<p>Backup existing database:</p>
+<div class="highlight"><pre><span></span><code>kubectl -n letsplan <span class="nb">exec</span> <span class="nv">$DB_POD</span> <span class="se">\</span>
+    -- bash -c <span class="s1">&#39;pg_dumpall --clean -U${POSTGRES_USER}&#39;</span> <span class="se">\</span>
+    &gt; /tmp/letsplan.sql
+</code></pre></div>
+</li>
+<li>
+<p>Capture name of current application pod:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">APP_POD</span><span class="o">=</span><span class="k">$(</span>kubectl -n letsplan get pod -l <span class="nv">component</span><span class="o">=</span>app -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.items[0].metadata.name}&#39;</span><span class="k">)</span>
+</code></pre></div>
+</li>
+<li>
+<p>Copy new planning overlay CSV into application pod:</p>
+<div class="highlight"><pre><span></span><code>kubectl -n letsplan cp <span class="se">\</span>
+    ~/Downloads/LetsPlanParcelData/planningOverlays.csv <span class="se">\</span>
+    <span class="nv">$APP_POD</span>:/srv/app/storage/app
+</code></pre></div>
+</li>
+<li>
+<p>Truncate existing planning overlay data:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span> <span class="s1">&#39;TRUNCATE TABLE planning_overlays&#39;</span> <span class="p">|</span> kubectl -n letsplan <span class="nb">exec</span> -i <span class="nv">$DB_POD</span> -- psql -U admin laravel
+</code></pre></div>
+</li>
+<li>
+<p>Load planning overlay CSV into database:</p>
+<div class="highlight"><pre><span></span><code>kubectl -n letsplan <span class="nb">exec</span> -it <span class="nv">$APP_POD</span> -- php artisan lp:import-planning_overlays planningOverlays.csv
+</code></pre></div>
+</li>
+</ol>
 
               
             </article>
@@ -557,7 +589,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../planning-overlays/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Planning Overlays" rel="prev">
+        <a href="../k8s/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Kubernetes" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -566,11 +598,26 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              Planning Overlays
+              Kubernetes
             </div>
           </div>
         </a>
       
+      
+        
+        <a href="../postgresql/" class="md-footer__link md-footer__link--next" aria-label="Next: PostgreSQL" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              PostgreSQL
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
       
     </nav>
   
