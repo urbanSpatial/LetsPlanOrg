@@ -65,7 +65,7 @@ export default {
       switches: [
         {
           label: 'Preservation',
-          attribute: 'preservation',
+          attribute: 'presIndex',
           color: 'teal',
           isDialogVisible: false,
           value: false,
