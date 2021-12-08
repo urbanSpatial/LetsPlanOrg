@@ -109,7 +109,10 @@ class StreamParcelGeoJson extends Command
                     'atlas_data.opa_account_num',
                     'planning_overlays.opa_account_num'
                 )
-                ->select('planning_overlays.dev_index')
+                ->select([
+                    'planning_overlays.dev_index',
+                    'planning_overlays.pres_index',
+                ])
                 ->where('atlas_data.parcel_id', $parcel->parcel_id)
                 ->first();
 
@@ -125,6 +128,7 @@ class StreamParcelGeoJson extends Command
                     'const_permits' => $constPermit->permit_count ?? null,
                     'zoning' => $this->transformLandUse($landUse),
                     'dev_index' => $planOverlay->dev_index ?? null,
+                    'pres_index' => $planOverlay->pres_index ?? null,
                 ],
                 'geometry' => $geoJson
             ];
