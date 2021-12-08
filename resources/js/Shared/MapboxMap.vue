@@ -73,16 +73,16 @@ export default {
 
   methods: {
     getLayerSteps() {
-      const { devIndex, preservation } = this.$store.getters.getField('layers');
+      const { devIndex, presIndex } = this.$store.getters.getField('layers');
 
       let max = 100;
       let attribute;
 
-      if (preservation && devIndex) { // both
+      if (presIndex && devIndex) { // both
         max = 200;
         attribute = 'combined_layers';
-      } else if (preservation) {
-        attribute = 'preservation';
+      } else if (presIndex) {
+        attribute = 'presIndex';
       } else if (devIndex) {
         attribute = 'devIndex';
       } else { // neither
