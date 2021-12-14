@@ -279,7 +279,7 @@ export default {
         const { dev_index: devIndex, pres_index: presIndex } = feat.properties;
         const fstate = {
           rank: feat.properties.sale_price_adj || -1,
-          combined_layers: (devIndex || 0) + (presIndex || 0),
+          combined_layers: ((devIndex || 0) + (presIndex || 0)) || -1,
           presIndex: presIndex || -1,
           devIndex: devIndex || -1,
         };
