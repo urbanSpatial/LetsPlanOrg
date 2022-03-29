@@ -114,3 +114,13 @@ volumes:
   database:
     data:
       size: 10Gi
+
+backups:
+  enabled: false
+  snitchUrl: ~
+  schedule: "30 4 * * *"
+  secretName: "restic"
+  prune:
+    keepLast: 3
+    keepDaily: 7
+    keepWeekly: 52
