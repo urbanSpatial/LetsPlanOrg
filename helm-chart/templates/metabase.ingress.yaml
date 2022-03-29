@@ -35,7 +35,7 @@ spec:
               service:
                 name: {{ $fullName }}-metabase
                 port:
-                  number: http
+                  name: http
           {{- end }}
     {{- end }}
   {{- end }}
