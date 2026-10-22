@@ -1,5 +1,5 @@
 [hololens]
-package = "holo/lens-yarn-run"
+container = "ghcr.io/hologit/lenses/yarn-run:v2"
 
 [hololens.input]
 files = [
@@ -20,6 +20,10 @@ files = [
 [hololens.yarn-run]
 command = "production"
 output_dir = "public"
+
+# the locked webpack/postcss toolchain predates Node 17 (md4 hashing, "./"
+# exports mappings), so build on Node 14 like the old habitat lens did
+node_version = "14"
 
 [hololens.output]
 root = "public"
