@@ -33,6 +33,9 @@ COPY --chown=root:www-data . /srv/app
 RUN chmod -R 775 storage bootstrap/cache \
     && chmod -R g+s storage bootstrap/cache
 
+# interim mitigation for PHP CVE-2026-109619 (php:7.3 is EOL and unpatched)
+RUN echo 'session.upload_progress.enabled = Off' > /usr/local/etc/php/conf.d/zz-cve-2026-109619.ini
+
 # install nginx configuration and entrypoint
 RUN mv /srv/app/nginx.conf /etc/nginx/conf.d/default.conf \
     && mv /srv/app/docker-entrypoint.sh /docker-entrypoint.sh
