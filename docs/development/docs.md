@@ -15,7 +15,7 @@
     hab pkg exec jarvus/mkdocs python -m venv "./.venv"
     source "./.venv/bin/activate"
     pip install --upgrade pip
-    pip install mkdocs mkdocs-material mkdocs-awesome-pages-plugin fontawesome_markdown
+    pip install mkdocs mkdocs-material mkdocs-awesome-pages-plugin
     ```
 
 - Launch live preview server:

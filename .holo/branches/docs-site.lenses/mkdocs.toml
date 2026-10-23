@@ -1,7 +1,6 @@
 [hololens]
 container = "ghcr.io/hologit/lenses/mkdocs:v2"
 requirements = [
-    "fontawesome_markdown",
     "mkdocs-awesome-pages-plugin",
     "mkdocs-material",
 ]
