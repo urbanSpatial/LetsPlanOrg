@@ -1,10 +1,9 @@
 FROM php:7.3-fpm-alpine3.13
 
 # install additional system dependencies
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
-    && apk --update add --no-cache \
+RUN apk --update add --no-cache \
         bash \
-        gosu \
+        su-exec \
         multirun \
         nginx \
         postgresql-dev \
@@ -24,7 +23,7 @@ EXPOSE 80
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 
 # execute Laravel schedule runner every minute
-RUN echo "* * * * * cd /srv/app && gosu www-data php artisan schedule:run --verbose --no-interaction" > /etc/crontabs/root
+RUN echo "* * * * * cd /srv/app && su-exec www-data php artisan schedule:run --verbose --no-interaction" > /etc/crontabs/root
 
 # copy app source folder (less .dockerignore exclusions)
 COPY --chown=root:www-data . /srv/app
