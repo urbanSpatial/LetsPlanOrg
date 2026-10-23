@@ -4,6 +4,10 @@ on:
   push:
     branches: [ releases/laravel-site ]
 
+permissions:
+  contents: read
+  pull-requests: write
+
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   BRANCH_RELEASE: releases/laravel-site
@@ -17,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
@@ -37,7 +41,6 @@ jobs:
 
         echo "Getting latest release tag..."
         latest_release=$(git describe --tags --abbrev=0 "origin/${BRANCH_RELEASE}")
-
         if [ -n "${latest_release}" ]; then
           echo "Found latest release tag: ${latest_release}"
           latest_release_bumped=$(echo $latest_release | awk -F. -v OFS=. '{$NF++;print}')
@@ -49,9 +52,8 @@ jobs:
 
 
         echo "Building PR body..."
+        pr_title="Release: ${latest_release_bumped}"
         pr_body="$(cat <<EOF
-        Release: ${latest_release_bumped}
-
         ## Improvements
 
         ## Technical
@@ -59,15 +61,15 @@ jobs:
         EOF
         )"
 
-        pr_number=$(hub pr list -b "${BRANCH_DEPLOY}" -h "${BRANCH_RELEASE}" -f '%I')
+        pr_number=$(gh pr list -B "${BRANCH_DEPLOY}" -H "${BRANCH_RELEASE}" --state open --json number --jq '.[0].number // empty')
 
         if [ -n "${pr_number}" ]; then
           echo "Updating PR #${pr_number}"
-          existing_comment_id=$(hub api "/repos/${GITHUB_REPOSITORY}/issues/${pr_number}/comments" | jq '.[] | select(.user.login=="github-actions[bot]") | .id')
+          existing_comment_id=$(gh api "/repos/${GITHUB_REPOSITORY}/issues/${pr_number}/comments" | jq '.[] | select(.user.login=="github-actions[bot]") | .id')
         else
           echo "Opening PR"
-          hub pull-request -b "${BRANCH_DEPLOY}" -h "${BRANCH_RELEASE}" -F <(echo "${pr_body}") > /tmp/pr.json
-          pr_number=$(hub pr list -b "${BRANCH_DEPLOY}" -h "${BRANCH_RELEASE}" -f '%I')
+          gh pr create -B "${BRANCH_DEPLOY}" -H "${BRANCH_RELEASE}" --title "${pr_title}" --body "${pr_body}"
+          pr_number=$(gh pr list -B "${BRANCH_DEPLOY}" -H "${BRANCH_RELEASE}" --state open --json number --jq '.[0].number // empty')
           echo "Opened PR #${pr_number}"
         fi
 
@@ -107,11 +109,11 @@ jobs:
           line=""
 
           if [[ "${subject}" =~ Merge\ pull\ request\ \#([0-9]+) ]]; then
-            line="$(hub pr show -f '%t [%i] @%au' "${BASH_REMATCH[1]}" || true)"
+            line="$(gh pr view "${BASH_REMATCH[1]}" --json title,number,author --jq '"\(.title) [#\(.number)] @\(.author.login)"' || true)"
           fi
 
           if [ -z "${line}" ]; then
-            author="$(hub api "/repos/${GITHUB_REPOSITORY}/commits/${commit}" -H Accept:application/vnd.github.v3+json | jq -r '.author.login')"
+            author="$(gh api "/repos/${GITHUB_REPOSITORY}/commits/${commit}" --jq '.author.login // empty')"
             if [ -n "${author}" ]; then
               author="@${author}"
             else
@@ -146,11 +148,8 @@ jobs:
 
         if [ -n "${existing_comment_id}" ]; then
           echo "Updating comment #${existing_comment_id}"
-          hub api "/repos/${GITHUB_REPOSITORY}/issues/comments/${existing_comment_id}" -f body="${comment_body}"
+          gh api -X PATCH "/repos/${GITHUB_REPOSITORY}/issues/comments/${existing_comment_id}" -f body="${comment_body}"
         else
           echo "Creating comment"
-          hub api "/repos/${GITHUB_REPOSITORY}/issues/${pr_number}/comments" -f body="${comment_body}"
+          gh api -X POST "/repos/${GITHUB_REPOSITORY}/issues/${pr_number}/comments" -f body="${comment_body}"
         fi
-
-    # - uses: mxschmitt/action-tmate@v3
-    #   if: failure()
